@@ -21,12 +21,12 @@ public class InMemoryProductRepository extends InMemoryAbstractRepository<Produc
      * <p>
      * <b>Nota de implementación:</b>
      * Realiza un filtrado secuencial sobre todos los elementos en memoria.
-     * Se retorna una lista vacía si name es null
+     * Se retorna una lista vacía si name es null o isBlank es true
      * </p>
      */
     @Override
     public List<Product> findByNameIgnoreCase(String name) {
-        if (name == null){
+        if (name == null || name.isBlank()){
             return List.of();
         }
         return DB.values().stream()
