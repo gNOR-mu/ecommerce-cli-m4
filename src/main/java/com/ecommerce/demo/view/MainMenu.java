@@ -19,9 +19,9 @@ public class MainMenu extends AbstractMenu {
                 *** Menú principal ***
                 **********************
                 
+                0) SALIR
                 1) ADMIN
                 2) USUARIO
-                0) SALIR
                 """);
     }
 

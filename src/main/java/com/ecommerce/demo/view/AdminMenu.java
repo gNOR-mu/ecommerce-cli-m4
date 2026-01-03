@@ -16,9 +16,9 @@ public class AdminMenu extends AbstractMenu {
                 *** Menú ADMIN ***
                 **********************
                 
+                0) SALIR
                 1) -
                 2) -
-                0) SALIR
                 """);
     }
 

@@ -16,9 +16,9 @@ public class UserMenu extends AbstractMenu {
                 *** Menú USER ***
                 **********************
                 
+                0) SALIR
                 1) -
                 2) -
-                0) SALIR
                 """);
     }
 
