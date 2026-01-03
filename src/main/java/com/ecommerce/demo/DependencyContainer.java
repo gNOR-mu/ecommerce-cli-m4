@@ -22,6 +22,7 @@ public class DependencyContainer {
     private final OrderItemService ORDER_ITEM_SERVICE;
 
     public DependencyContainer() {
+        // creación de repositorios
         this.CATEGORY_REPOSITORY = new InMemoryCategoryRepository();
         this.CUSTOMER_REPOSITORY = new InMemoryCustomerRepository();
         this.INVENTORY_REPOSITORY = new InMemoryInventoryRepository();
@@ -30,12 +31,17 @@ public class DependencyContainer {
         this.PAYMENT_REPOSITORY = new InMemoryPaymentRepository();
         this.PRODUCT_REPOSITORY = new InMemoryProductRepository();
 
+        //creación de servicios
         this.CATEGORY_SERVICE = new CategoryService(CATEGORY_REPOSITORY);
         this.CUSTOMER_SERVICE = new CustomerService(CUSTOMER_REPOSITORY);
         this.PAYMENT_SERVICE = new PaymentService(PAYMENT_REPOSITORY);
         this.PRODUCT_SERVICE = new ProductService(PRODUCT_REPOSITORY, CATEGORY_SERVICE);
         this.ORDER_SERVICE = new OrderService(ORDER_REPOSITORY, CUSTOMER_SERVICE, PAYMENT_SERVICE);
         this.ORDER_ITEM_SERVICE = new OrderItemService(ORDER_ITEM_REPOSITORY, ORDER_SERVICE, PRODUCT_SERVICE);
+
+        //inicialización de datos
+        DataSeeder seeder = new DataSeeder(PRODUCT_SERVICE, CATEGORY_SERVICE);
+        seeder.loadData();
     }
 
     public CategoryRepository getCategoryRepository() {
