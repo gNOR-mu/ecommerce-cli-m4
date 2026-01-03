@@ -3,6 +3,7 @@ package com.ecommerce.demo.service;
 import com.ecommerce.demo.model.Product;
 import com.ecommerce.demo.repository.ProductRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ProductService implements ReadOnlyService<Product,Long> {
@@ -18,5 +19,13 @@ public class ProductService implements ReadOnlyService<Product,Long> {
     @Override
     public Optional<Product> findById(Long id) {
         return productRepository.findById(id);
+    }
+
+    public List<Product> findAll(){
+        return productRepository.findAll();
+    }
+
+    public Product create(Product product){
+        return productRepository.save(product);
     }
 }

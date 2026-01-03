@@ -1,5 +1,6 @@
 package com.ecommerce.demo.view.admin;
 
+import com.ecommerce.demo.model.Product;
 import com.ecommerce.demo.service.ProductService;
 import com.ecommerce.demo.view.AbstractMenu;
 
@@ -47,7 +48,7 @@ public class ProductManagerMenu extends AbstractMenu {
     }
 
     private void listAll() {
-
+        System.out.println(productService.findAll());
     }
 
     private void search() {
@@ -55,7 +56,10 @@ public class ProductManagerMenu extends AbstractMenu {
     }
 
     public void create() {
-
+        System.out.println("Ingresa la id de la categoría");
+        Long categoryId;
+        BigDecimal price;
+        String name;
     }
 
     private void edit() {
