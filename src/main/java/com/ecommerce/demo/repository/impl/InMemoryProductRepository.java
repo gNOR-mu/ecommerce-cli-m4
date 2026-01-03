@@ -19,8 +19,9 @@ public class InMemoryProductRepository extends InMemoryAbstractRepository<Produc
     /**
      * {@inheritDoc}
      * <p>
-     * <b>Nota de implementación:</b> Realiza un filtrado secuencial sobre todos los
-     * elementos en memoria.
+     * <b>Nota de implementación:</b>
+     * Realiza un filtrado secuencial sobre todos los elementos en memoria.
+     * Se retorna una lista vacía si name es null
      * </p>
      */
     @Override
@@ -36,8 +37,9 @@ public class InMemoryProductRepository extends InMemoryAbstractRepository<Produc
     /**
      * {@inheritDoc}
      * <p>
-     * <b>Nota de implementación:</b> Realiza un filtrado secuencial sobre todos los
-     * elementos en memoria.
+     * <b>Nota de implementación:</b>
+     * Realiza un filtrado secuencial sobre todos los elementos en memoria.
+     * Se retorna una lista vacía si categoryId es null
      * </p>
      */
     @Override
