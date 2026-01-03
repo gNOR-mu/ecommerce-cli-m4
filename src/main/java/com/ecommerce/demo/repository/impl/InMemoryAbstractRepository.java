@@ -3,10 +3,7 @@ package com.ecommerce.demo.repository.impl;
 import com.ecommerce.demo.model.base.Identifiable;
 import com.ecommerce.demo.repository.CrudRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class InMemoryAbstractRepository<T extends Identifiable<Long>> implements CrudRepository<T, Long> {
@@ -47,6 +44,6 @@ public abstract class InMemoryAbstractRepository<T extends Identifiable<Long>> i
 
     @Override
     public List<T> findAll(){
-        return DB.values().stream().toList();
+        return new ArrayList<>(DB.values());
     }
 }

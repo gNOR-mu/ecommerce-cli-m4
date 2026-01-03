@@ -51,4 +51,14 @@ public class Product implements Identifiable<Long> {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", categoryId=" + categoryId +
+                ", price=" + price +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

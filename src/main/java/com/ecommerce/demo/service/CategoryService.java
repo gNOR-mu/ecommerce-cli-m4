@@ -17,4 +17,8 @@ public class CategoryService implements ReadOnlyService<Category, Long> {
     public Optional<Category> findById(Long id) {
         return categoryRepository.findById(id);
     }
+
+    public Category create(Category category) {
+        return categoryRepository.save(category);
+    }
 }

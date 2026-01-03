@@ -4,6 +4,7 @@ import com.ecommerce.demo.model.Product;
 import com.ecommerce.demo.service.ProductService;
 import com.ecommerce.demo.view.AbstractMenu;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class ProductManagerMenu extends AbstractMenu {
@@ -37,7 +38,7 @@ public class ProductManagerMenu extends AbstractMenu {
             case 0 -> {
                 return false;
             }
-            case 1 -> listAll();
+            case 1 -> findAll();
             case 2 -> search();
             case 3 -> create();
             case 4 -> edit();
@@ -47,8 +48,11 @@ public class ProductManagerMenu extends AbstractMenu {
         return true;
     }
 
-    private void listAll() {
-        System.out.println(productService.findAll());
+    private void findAll() {
+        var products = productService.findAll();
+        for(Product product:products){
+            System.out.println(product);
+        }
     }
 
     private void search() {
@@ -56,10 +60,11 @@ public class ProductManagerMenu extends AbstractMenu {
     }
 
     public void create() {
-        System.out.println("Ingresa la id de la categoría");
-        Long categoryId;
-        BigDecimal price;
-        String name;
+        Long categoryId = readLong("Ingresa la id de la categoría: ");
+        BigDecimal price = readBigDecimal("Ingresa el precio del producto: ");
+        String name = readText("Ingresa el nombre del producto: ");
+        Product product = new Product(categoryId, price, name);
+        productService.create(product);
     }
 
     private void edit() {
