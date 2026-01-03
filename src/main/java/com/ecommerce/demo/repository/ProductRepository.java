@@ -36,7 +36,6 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
      * Recupera una lista de productos cuya id de la categoría coincide con la id de categoría proporcionada.
      * <p>
      * La búsqueda debe ser exacta con la id de categoría.
-     * Si el término de búsqueda es vacío, el comportamiento depende de la implementación.
      * </p>
      *
      * @param categoryId id de la categoría a buscar.
