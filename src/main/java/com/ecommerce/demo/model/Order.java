@@ -2,6 +2,7 @@ package com.ecommerce.demo.model;
 
 import com.ecommerce.demo.model.base.Identifiable;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Order implements Identifiable<Long> {
@@ -10,9 +11,9 @@ public class Order implements Identifiable<Long> {
     private Long paymentId;
 
     LocalDateTime creationDate;
-    double total;
+    BigDecimal total;
 
-    public Order(Long customerId, Long paymentId, LocalDateTime creationDate, double total) {
+    public Order(Long customerId, Long paymentId, LocalDateTime creationDate, BigDecimal total) {
         this.customerId = customerId;
         this.paymentId = paymentId;
         this.creationDate = creationDate;
@@ -53,11 +54,11 @@ public class Order implements Identifiable<Long> {
         this.creationDate = creationDate;
     }
 
-    public double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 }

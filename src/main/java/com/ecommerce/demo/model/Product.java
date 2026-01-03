@@ -3,14 +3,16 @@ package com.ecommerce.demo.model;
 
 import com.ecommerce.demo.model.base.Identifiable;
 
+import java.math.BigDecimal;
+
 public class Product implements Identifiable<Long> {
     private Long id;
     private Long categoryId;
 
-    private int price;
+    private BigDecimal price;
     private String name;
 
-    public Product(Long categoryId, int price, String name) {
+    public Product(Long categoryId, BigDecimal price, String name) {
         this.categoryId = categoryId;
         this.price = price;
         this.name = name;
@@ -30,7 +32,7 @@ public class Product implements Identifiable<Long> {
         return categoryId;
     }
 
-    public int getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 

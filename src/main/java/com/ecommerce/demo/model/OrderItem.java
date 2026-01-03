@@ -2,16 +2,18 @@ package com.ecommerce.demo.model;
 
 import com.ecommerce.demo.model.base.Identifiable;
 
+import java.math.BigDecimal;
+
 public class OrderItem implements Identifiable<Long> {
     private Long id;
     private Long productId;
     private Long orderId;
 
-    private double subTotal;
-    private double unitPrice;
+    private BigDecimal subTotal;
+    private BigDecimal unitPrice;
     private int quantity;
 
-    public OrderItem(Long productId, Long orderId, double subTotal, double unitPrice, int quantity) {
+    public OrderItem(Long productId, Long orderId, BigDecimal subTotal, BigDecimal unitPrice, int quantity) {
         this.productId = productId;
         this.orderId = orderId;
         this.subTotal = subTotal;
@@ -45,19 +47,19 @@ public class OrderItem implements Identifiable<Long> {
         this.orderId = orderId;
     }
 
-    public double getSubTotal() {
+    public BigDecimal getSubTotal() {
         return subTotal;
     }
 
-    public void setSubTotal(double subTotal) {
+    public void setSubTotal(BigDecimal subTotal) {
         this.subTotal = subTotal;
     }
 
-    public double getUnitPrice() {
+    public BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(double unitPrice) {
+    public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
 
