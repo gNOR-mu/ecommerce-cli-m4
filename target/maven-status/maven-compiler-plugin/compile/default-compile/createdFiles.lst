@@ -1,8 +1,12 @@
+com\ecommerce\demo\view\MenuRunner.class
+com\ecommerce\demo\view\AbstractMenu.class
 com\ecommerce\demo\model\Category.class
 com\ecommerce\demo\repository\CategoryRepository.class
+com\ecommerce\demo\view\user\UserMenu.class
 com\ecommerce\demo\repository\impl\InMemoryCustomerRepository.class
 com\ecommerce\demo\repository\impl\InMemoryPaymentRepository.class
 com\ecommerce\demo\service\OrderItemService.class
+com\ecommerce\demo\view\admin\ProductManagerMenu.class
 com\ecommerce\demo\model\OrderItem.class
 com\ecommerce\demo\service\CategoryService.class
 com\ecommerce\demo\repository\OrderRepository.class
@@ -18,6 +22,7 @@ com\ecommerce\demo\model\Product.class
 com\ecommerce\demo\model\Order.class
 com\ecommerce\demo\repository\CustomerRepository.class
 com\ecommerce\demo\repository\ProductRepository.class
+com\ecommerce\demo\view\MainMenu.class
 com\ecommerce\demo\service\OrderService.class
 com\ecommerce\demo\repository\InventoryRepository.class
 com\ecommerce\demo\enums\PaymentsMethod.class
@@ -26,6 +31,7 @@ com\ecommerce\demo\model\Customer.class
 com\ecommerce\demo\model\Inventory.class
 com\ecommerce\demo\repository\impl\InMemoryOrderRepository.class
 com\ecommerce\demo\repository\impl\InMemoryCategoryRepository.class
+com\ecommerce\demo\view\Menu.class
 com\ecommerce\demo\DependencyContainer.class
 com\ecommerce\demo\repository\PaymentRepository.class
 com\ecommerce\demo\service\ProductService.class

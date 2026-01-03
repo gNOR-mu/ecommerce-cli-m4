@@ -1,11 +1,13 @@
-package com.ecommerce.demo.view;
+package com.ecommerce.demo.view.user;
+
+import com.ecommerce.demo.view.AbstractMenu;
 
 import java.util.Scanner;
 
-public class AdminMenu extends AbstractMenu {
+public class UserMenu extends AbstractMenu {
     //TODO Definir servicios a utilizar
 
-    public AdminMenu(Scanner scanner) {
+    public UserMenu(Scanner scanner) {
         super(scanner);
     }
 
@@ -13,7 +15,7 @@ public class AdminMenu extends AbstractMenu {
     protected void printMenuOptions() {
         System.out.println("""
                 **********************
-                *** Menú ADMIN ***
+                *** Menú USER ***
                 **********************
                 
                 0) SALIR
