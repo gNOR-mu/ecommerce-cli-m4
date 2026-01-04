@@ -3,9 +3,10 @@ package com.ecommerce.demo.view;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public abstract class AbstractMenu implements Menu {
-    private static final List<String> CONFIRMATION  = List.of("sí","si","s");
+    private static final List<String> CONFIRMATION = List.of("sí", "si", "s");
 
     protected final Scanner scanner;
 
@@ -29,59 +30,42 @@ public abstract class AbstractMenu implements Menu {
 
 
     // métodos de utilidad para leer sobre el teclado
-    protected String readText(String msg) {
+    private <T> T readInput(String msg, Function<String, T> parser) {
         while (true) {
             System.out.print(msg);
             String input = scanner.nextLine().trim();
-            if (!input.isEmpty()) {
-                return input;
+            try {
+                return parser.apply(input);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-            System.out.println("Error: El texto no puede estar vacío.");
         }
+    }
+
+    protected String readText(String msg) {
+        return readInput(msg, str -> {
+            if (str.isEmpty()) throw new IllegalArgumentException();
+            return str;
+        });
     }
 
     protected int readInt(String msg) {
-        while (true) {
-            System.out.print(msg);
-            try {
-                return Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Error: Debes ingresar un número entero válido.");
-            }
-        }
+        return readInput(msg, Integer::parseInt);
     }
 
     protected Long readLong(String msg) {
-        while (true) {
-            System.out.print(msg);
-            try {
-                return Long.parseLong(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Error: Debes ingresar un número entero válido.");
-            }
-        }
+        return readInput(msg, Long::parseLong);
     }
 
     protected BigDecimal readBigDecimal(String msg) {
-        while (true) {
-            System.out.print(msg);
-            try {
-                String input = scanner.nextLine();
-                BigDecimal value = new BigDecimal(input);
-
-                // Validación extra: Que no sea negativo
-                if (value.compareTo(BigDecimal.ZERO) < 0) {
-                    System.out.println("Error: El precio no puede ser negativo.");
-                    continue;
-                }
-                return value;
-            } catch (NumberFormatException e) {
-                System.out.println("Error: Ingresa un precio válido.");
-            }
-        }
+        return readInput(msg, str -> {
+            BigDecimal val = new BigDecimal(str);
+            if (val.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("El número no debe ser negativo");
+            return val;
+        });
     }
 
-    protected boolean confirm(String msg){
+    protected boolean confirm(String msg) {
         return CONFIRMATION.contains(msg);
     }
 }
