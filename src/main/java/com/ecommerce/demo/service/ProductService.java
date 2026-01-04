@@ -87,4 +87,33 @@ public class ProductService implements ReadOnlyService<Product, Long> {
 
         return productRepository.save(existing);
     }
+
+    public List<ProductSummaryDto> search(String searchText) {
+        String searchLower = searchText.toLowerCase();
+
+        List<Long> matchingCategoryIds = categoryService.findIdsByName(searchText);
+        List<Product> matches = productRepository.findAll().stream()
+                .filter(p -> {
+                    boolean nameMatches = p.getName().toLowerCase().contains(searchLower);
+                    boolean categoryMatches = matchingCategoryIds.contains(p.getCategoryId());
+                    return nameMatches || categoryMatches;
+                })
+                .toList();
+
+        return matches.stream().map(this::convertToDto).toList();
+    }
+
+    private ProductSummaryDto convertToDto(Product p) {
+        //prácticamente es como un mapper
+        String catName = categoryService.getById(p.getCategoryId()).getName();
+        int stock = inventoryService.getByProductId(p.getId()).getQuantity();
+        return new ProductSummaryDto(
+                p.getId(),
+                p.getName(),
+                catName,
+                p.getPrice(),
+                stock,
+                p.getCategoryId()
+        );
+    }
 }

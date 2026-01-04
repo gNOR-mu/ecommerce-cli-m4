@@ -32,4 +32,7 @@ public class CategoryService implements ReadOnlyService<Category, Long> {
         return categoryRepository.save(category);
     }
 
+    public List<Long> findIdsByName(String name) {
+        return categoryRepository.findIdsByName(name);
+    }
 }

@@ -61,11 +61,13 @@ public class ProductManagerMenu extends AbstractMenu {
     }
 
     private void search() {
-
+        String searchText = inputHandler.readText("Texto a buscar nombre/categoría: ");
+        List<ProductSummaryDto> res = productService.search(searchText);
+        FormatUtil.printProductSummary(res);
     }
 
     public void create() {
-       List<Category> categories = categoryService.findAll();
+        List<Category> categories = categoryService.findAll();
 
         String name = inputHandler.readText("Ingresa el nombre del producto: ");
 
