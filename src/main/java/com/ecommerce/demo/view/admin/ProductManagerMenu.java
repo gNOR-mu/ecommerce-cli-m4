@@ -5,6 +5,7 @@ import com.ecommerce.demo.model.Category;
 import com.ecommerce.demo.model.Product;
 import com.ecommerce.demo.service.CategoryService;
 import com.ecommerce.demo.service.ProductService;
+import com.ecommerce.demo.util.FormatUtil;
 import com.ecommerce.demo.view.AbstractMenu;
 
 import java.math.BigDecimal;
@@ -25,16 +26,16 @@ public class ProductManagerMenu extends AbstractMenu {
     protected void printMenuOptions() {
         //TODO averiguar a que se refiere con: Buscar (nombre/categoría)
         System.out.println("""
-                ----------------------
-                        ADMIN
-                     Menú Producto
-                ----------------------
-                0) Salir
-                1) Listar productos
-                2) Buscar
-                3) Crear producto
-                4) Editar producto
-                5) Eliminar producto
+                +-----------------------------------+
+                |   Admin - Menú Producto           |
+                +-----------------------------------+
+                |   1) Listar productos             |
+                |   2) Buscar                       |
+                |   3) Crear producto               |
+                |   4) Editar producto              |
+                |   5) Eliminar producto            |
+                |   0) Salir                        |
+                +-----------------------------------+
                 """);
     }
 
@@ -56,9 +57,7 @@ public class ProductManagerMenu extends AbstractMenu {
 
     private void findAll() {
         List<ProductSummaryDto> products = productService.findAllSummary();
-        for (ProductSummaryDto product : products) {
-            System.out.println(product);
-        }
+        FormatUtil.printProductSummary(products);
     }
 
     private void search() {
@@ -72,12 +71,12 @@ public class ProductManagerMenu extends AbstractMenu {
         }
 
         System.out.println();
-        String name = readText("Ingresa el nombre del producto: ");
-        Long categoryId = readLong("Ingresa la id de la categoría: ");
-        BigDecimal price = readBigDecimal("Ingresa el precio del producto: ");
+        String name = inputHandler.readText("Ingresa el nombre del producto: ");
+        Long categoryId = inputHandler.readLong("Ingresa la id de la categoría: ");
+        BigDecimal price = inputHandler.readBigDecimal("Ingresa el precio del producto: ");
         Product product = new Product(categoryId, price, name);
         //TODO pensar si es necesario permitir o no un valor negativo
-        int stock = readInt("Cantidad de stock: ");
+        int stock = inputHandler.readInt("Cantidad de stock: ");
 
         try {
             productService.create(product, stock);
@@ -91,9 +90,9 @@ public class ProductManagerMenu extends AbstractMenu {
     }
 
     private void delete() {
-        long id = readLong("Ingresa la id del producto a eliminar: ");
+        long id = inputHandler.readLong("Ingresa la id del producto a eliminar: ");
         try {
-            String confirmDelete = readText("¿Seguro que quieres eliminar el producto con id = " + id + "? (Sí/No): ");
+            String confirmDelete = inputHandler.readText("¿Seguro que quieres eliminar el producto con id = " + id + "? (Sí/No): ");
             if (confirm(confirmDelete)) {
                 productService.deleteById(id);
                 System.out.println("Producto eliminado");

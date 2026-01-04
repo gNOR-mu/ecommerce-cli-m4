@@ -2,6 +2,7 @@ package com.ecommerce.demo.view;
 
 import com.ecommerce.demo.DependencyContainer;
 import com.ecommerce.demo.view.admin.ProductManagerMenu;
+import com.ecommerce.demo.view.user.UserMenu;
 
 import java.util.Scanner;
 
@@ -16,13 +17,13 @@ public class MainMenu extends AbstractMenu {
     @Override
     protected void printMenuOptions() {
         System.out.println("""
-                **********************
-                *** Menú principal ***
-                **********************
-                
-                0) SALIR
-                1) ADMIN
-                2) USUARIO
+                +-----------------------------------+
+                |   Menú principal                  |
+                +-----------------------------------+
+                |   1. Administrador                |
+                |   2. Usuario                      |
+                |   0. Salir                        |
+                +-----------------------------------+
                 """);
     }
 
@@ -39,6 +40,7 @@ public class MainMenu extends AbstractMenu {
                     dependencyContainer.getProductService(),
                     dependencyContainer.getCategoryService()));
             //TODO menu usuario
+            case 2 -> MenuRunner.run((new UserMenu(scanner)));
             default -> System.out.println("Opción inválida");
         }
         return true;

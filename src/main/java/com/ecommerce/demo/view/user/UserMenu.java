@@ -14,13 +14,16 @@ public class UserMenu extends AbstractMenu {
     @Override
     protected void printMenuOptions() {
         System.out.println("""
-                **********************
-                *** Menú USER ***
-                **********************
-                
-                0) SALIR
-                1) -
-                2) -
+                +-----------------------------------+
+                |   Usuario                         |
+                +-----------------------------------+
+                |   1) Listar productos             |
+                |   2) -                            |
+                |   3) -                            |
+                |   4) -                            |
+                |   5) -                            |
+                |   0) Salir                        |
+                +-----------------------------------+
                 """);
     }
 
