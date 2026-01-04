@@ -9,8 +9,8 @@ import java.util.Scanner;
 public class MainMenu extends AbstractMenu {
     private final DependencyContainer dependencyContainer;
 
-    public MainMenu(DependencyContainer dependencyContainer, Scanner scanner) {
-        super(scanner);
+    public MainMenu(DependencyContainer dependencyContainer) {
+        super(dependencyContainer.getInputHandler());
         this.dependencyContainer = dependencyContainer;
     }
 
@@ -36,11 +36,11 @@ public class MainMenu extends AbstractMenu {
             // por el momento es innecesario tener una clase intermedia como admin debido a los requerimientos
             // así que ingreso directamente a la administración de productos
             case 1 -> MenuRunner.run(new ProductManagerMenu(
-                    scanner,
+                    dependencyContainer.getInputHandler(),
                     dependencyContainer.getProductService(),
                     dependencyContainer.getCategoryService()));
             //TODO menu usuario
-            case 2 -> MenuRunner.run((new UserMenu(scanner)));
+            case 2 -> MenuRunner.run((new UserMenu(dependencyContainer.getInputHandler())));
             default -> System.out.println("Opción inválida");
         }
         return true;

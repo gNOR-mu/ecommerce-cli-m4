@@ -10,9 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         DependencyContainer dependencyContainer = new DependencyContainer();
-        Scanner scanner = new Scanner(System.in);
-        Menu mainMenu = new MainMenu(dependencyContainer, scanner);
+        Menu mainMenu = new MainMenu(dependencyContainer);
         mainMenu.show();
-        scanner.close();
     }
 }

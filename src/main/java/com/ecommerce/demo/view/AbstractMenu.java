@@ -8,11 +8,9 @@ import java.util.Scanner;
 public abstract class AbstractMenu implements Menu {
     private static final List<String> CONFIRMATION = List.of("sí", "si");
     protected final InputHandler inputHandler;
-    protected final Scanner scanner;
 
-    public AbstractMenu(Scanner scanner) {
-        this.inputHandler = new InputHandler(scanner);
-        this.scanner = scanner;
+    protected AbstractMenu(InputHandler inputHandler) {
+        this.inputHandler = inputHandler;
     }
 
     @Override

@@ -6,18 +6,18 @@ import com.ecommerce.demo.model.Product;
 import com.ecommerce.demo.service.CategoryService;
 import com.ecommerce.demo.service.ProductService;
 import com.ecommerce.demo.util.FormatUtil;
+import com.ecommerce.demo.util.InputHandler;
 import com.ecommerce.demo.view.AbstractMenu;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Scanner;
 
 public class ProductManagerMenu extends AbstractMenu {
     private final ProductService productService;
     private final CategoryService categoryService;
 
-    public ProductManagerMenu(Scanner scanner, ProductService productService, CategoryService categoryService) {
-        super(scanner);
+    public ProductManagerMenu(InputHandler inputHandler, ProductService productService, CategoryService categoryService) {
+        super(inputHandler);
         this.productService = productService;
         this.categoryService = categoryService;
     }

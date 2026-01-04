@@ -3,6 +3,9 @@ package com.ecommerce.demo;
 import com.ecommerce.demo.repository.*;
 import com.ecommerce.demo.repository.impl.*;
 import com.ecommerce.demo.service.*;
+import com.ecommerce.demo.util.InputHandler;
+
+import java.util.Scanner;
 
 public class DependencyContainer {
     //TODO evaluar nombre de las constantes.
@@ -22,6 +25,9 @@ public class DependencyContainer {
     private final OrderItemService ORDER_ITEM_SERVICE;
     private final InventoryService INVENTORY_SERVICE;
 
+    private final Scanner scanner;
+    private final InputHandler inputHandler;
+
     public DependencyContainer() {
         // creación de repositorios
         this.CATEGORY_REPOSITORY = new InMemoryCategoryRepository();
@@ -40,6 +46,9 @@ public class DependencyContainer {
         this.PRODUCT_SERVICE = new ProductService(PRODUCT_REPOSITORY, CATEGORY_SERVICE, INVENTORY_SERVICE);
         this.ORDER_SERVICE = new OrderService(ORDER_REPOSITORY, CUSTOMER_SERVICE, PAYMENT_SERVICE);
         this.ORDER_ITEM_SERVICE = new OrderItemService(ORDER_ITEM_REPOSITORY, ORDER_SERVICE, PRODUCT_SERVICE);
+
+        this.scanner = new Scanner(System.in);
+        this.inputHandler = new InputHandler(scanner);
 
         //inicialización de datos
         DataSeeder seeder = new DataSeeder(PRODUCT_SERVICE, CATEGORY_SERVICE);
@@ -96,5 +105,13 @@ public class DependencyContainer {
 
     public OrderItemService getOrderItemService() {
         return ORDER_ITEM_SERVICE;
+    }
+
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    public InputHandler getInputHandler() {
+        return inputHandler;
     }
 }

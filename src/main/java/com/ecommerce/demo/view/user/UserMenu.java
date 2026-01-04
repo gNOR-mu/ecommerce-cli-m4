@@ -1,5 +1,6 @@
 package com.ecommerce.demo.view.user;
 
+import com.ecommerce.demo.util.InputHandler;
 import com.ecommerce.demo.view.AbstractMenu;
 
 import java.util.Scanner;
@@ -7,8 +8,8 @@ import java.util.Scanner;
 public class UserMenu extends AbstractMenu {
     //TODO Definir servicios a utilizar
 
-    public UserMenu(Scanner scanner) {
-        super(scanner);
+    public UserMenu(InputHandler inputHandler) {
+        super(inputHandler);
     }
 
     @Override
