@@ -52,11 +52,19 @@ public class ProductService implements ReadOnlyService<Product, Long> {
         for (Product product : products) {
             var category = categoryService.getById(product.getCategoryId());
             var inventory = inventoryService.getByProductId(product.getId());
-            res.add(new ProductSummaryDto(product.getId(), product.getName(), category.getName(), product.getPrice(), inventory.getQuantity()));
+            res.add(new ProductSummaryDto(product.getId(), product.getName(), category.getName(), product.getPrice(),
+                    inventory.getQuantity(), product.getCategoryId()));
         }
 
         return res;
+    }
 
+    public ProductSummaryDto getSummaryById(Long id) {
+        Product product = getById(id);
+        Inventory inventory = inventoryService.getById(product.getId());
+        Category category = categoryService.getById(product.getCategoryId());
+        return new ProductSummaryDto(product.getId(), product.getName(), category.getName(), product.getPrice(),
+                inventory.getQuantity(), product.getCategoryId());
     }
 
 
@@ -64,5 +72,19 @@ public class ProductService implements ReadOnlyService<Product, Long> {
         Product product = getById(id);
         productRepository.deleteById(id);
         inventoryService.deleteById(product.getCategoryId());
+    }
+
+    public Product update(Long id, Product product, int stock) {
+        if (!categoryService.existsById(product.getCategoryId())) {
+            throw new IllegalArgumentException("No existe una categoría con la id = " + product.getCategoryId());
+        }
+        Product existing = getById(id);
+        inventoryService.updateByProductId(id, stock);
+//TODO validaciones
+        existing.setName(product.getName());
+        existing.setCategoryId(product.getCategoryId());
+        existing.setPrice(product.getPrice());
+
+        return productRepository.save(existing);
     }
 }
