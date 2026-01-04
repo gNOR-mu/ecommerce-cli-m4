@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.function.Function;
 
 public abstract class AbstractMenu implements Menu {
-    private static final List<String> CONFIRMATION = List.of("sí", "si", "s");
+    private static final List<String> CONFIRMATION = List.of("sí", "si");
 
     protected final Scanner scanner;
 
@@ -66,6 +66,6 @@ public abstract class AbstractMenu implements Menu {
     }
 
     protected boolean confirm(String msg) {
-        return CONFIRMATION.contains(msg);
+        return CONFIRMATION.contains(msg.toLowerCase());
     }
 }

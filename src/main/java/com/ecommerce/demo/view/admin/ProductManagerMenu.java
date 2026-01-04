@@ -1,5 +1,6 @@
 package com.ecommerce.demo.view.admin;
 
+import com.ecommerce.demo.dto.ProductSummaryDto;
 import com.ecommerce.demo.model.Category;
 import com.ecommerce.demo.model.Product;
 import com.ecommerce.demo.service.CategoryService;
@@ -7,7 +8,7 @@ import com.ecommerce.demo.service.ProductService;
 import com.ecommerce.demo.view.AbstractMenu;
 
 import java.math.BigDecimal;
-import java.sql.SQLOutput;
+import java.util.List;
 import java.util.Scanner;
 
 public class ProductManagerMenu extends AbstractMenu {
@@ -54,8 +55,8 @@ public class ProductManagerMenu extends AbstractMenu {
     }
 
     private void findAll() {
-        var products = productService.findAll();
-        for (Product product : products) {
+        List<ProductSummaryDto> products = productService.findAllSummary();
+        for (ProductSummaryDto product : products) {
             System.out.println(product);
         }
     }
@@ -92,12 +93,12 @@ public class ProductManagerMenu extends AbstractMenu {
     private void delete() {
         long id = readLong("Ingresa la id del producto a eliminar: ");
         try {
-            String confirmDelete = readText("¿Seguro que quieres eliminar el producto con id = " + id + "? (Sí/No) ").toLowerCase();
+            String confirmDelete = readText("¿Seguro que quieres eliminar el producto con id = " + id + "? (Sí/No): ");
             if (confirm(confirmDelete)) {
                 productService.deleteById(id);
                 System.out.println("Producto eliminado");
             } else {
-                //prácticamente el no está de adorno
+                //prácticamente el "No" del texto está de adorno
                 System.out.println("No se ha eliminado el producto");
             }
         } catch (Exception e) {

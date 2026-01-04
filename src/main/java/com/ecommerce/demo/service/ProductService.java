@@ -1,10 +1,12 @@
 package com.ecommerce.demo.service;
 
+import com.ecommerce.demo.dto.ProductSummaryDto;
+import com.ecommerce.demo.model.Category;
 import com.ecommerce.demo.model.Inventory;
 import com.ecommerce.demo.model.Product;
-import com.ecommerce.demo.repository.InventoryRepository;
 import com.ecommerce.demo.repository.ProductRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,10 +32,6 @@ public class ProductService implements ReadOnlyService<Product, Long> {
         return productRepository.existsById(id);
     }
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
-    }
-
     public Product create(Product product, int quantity) {
         if (!categoryService.existsById(product.getCategoryId())) {
             throw new IllegalArgumentException("La categoría con id = " + product.getCategoryId() + " no existe");
@@ -43,14 +41,28 @@ public class ProductService implements ReadOnlyService<Product, Long> {
 
         Inventory inventory = new Inventory(createdProduct.getId(), quantity);
         inventoryService.create(inventory);
-
         return createdProduct;
+    }
+
+    public List<ProductSummaryDto> findAllSummary() {
+        List<Product> products = productRepository.findAll();
+        List<ProductSummaryDto> res = new ArrayList<>();
+
+        //NOTA no es la forma más óptima, sin embargo, el rendimiento no es un requisito
+        for (Product product : products) {
+            var category = categoryService.getById(product.getCategoryId());
+            var inventory = inventoryService.getByProductId(product.getId());
+            res.add(new ProductSummaryDto(product.getId(), product.getName(), category.getName(), product.getPrice(), inventory.getQuantity()));
+        }
+
+        return res;
+
     }
 
 
     public void deleteById(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No se ha encontrado un producto con la id = " + id));
-        inventoryService.deleteById(product.getCategoryId());
+        Product product = getById(id);
         productRepository.deleteById(id);
+        inventoryService.deleteById(product.getCategoryId());
     }
 }
