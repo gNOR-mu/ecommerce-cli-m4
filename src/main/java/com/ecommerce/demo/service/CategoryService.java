@@ -3,6 +3,7 @@ package com.ecommerce.demo.service;
 import com.ecommerce.demo.model.Category;
 import com.ecommerce.demo.repository.CategoryRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public class CategoryService implements ReadOnlyService<Category, Long> {
@@ -18,7 +19,17 @@ public class CategoryService implements ReadOnlyService<Category, Long> {
         return categoryRepository.findById(id);
     }
 
+    @Override
+    public boolean existsById(Long id) {
+        return categoryRepository.existsById(id);
+    }
+
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
+    }
+
     public Category create(Category category) {
         return categoryRepository.save(category);
     }
+
 }

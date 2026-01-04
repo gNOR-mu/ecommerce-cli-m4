@@ -21,4 +21,9 @@ public class OrderItemService implements ReadOnlyService<OrderItem, Long> {
     public Optional<OrderItem> findById(Long id) {
         return orderItemRepository.findById(id);
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return orderItemRepository.existsById(id);
+    }
 }

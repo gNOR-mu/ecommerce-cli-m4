@@ -5,18 +5,29 @@ import com.ecommerce.demo.repository.InventoryRepository;
 
 import java.util.Optional;
 
-public class InventoryService implements ReadOnlyService<Inventory,Long>{
+public class InventoryService implements ReadOnlyService<Inventory, Long> {
     //TODO averiguar nombre constante
     private final InventoryRepository inventoryRepository;
-    private final ProductService productService;
 
-    public InventoryService(InventoryRepository inventoryRepository, ProductService productService) {
+    public InventoryService(InventoryRepository inventoryRepository) {
         this.inventoryRepository = inventoryRepository;
-        this.productService = productService;
     }
 
     @Override
     public Optional<Inventory> findById(Long id) {
         return inventoryRepository.findById(id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return inventoryRepository.existsById(id);
+    }
+
+    public Inventory create(Inventory inventory) {
+        return inventoryRepository.save(inventory);
+    }
+
+    public void deleteById(Long id) {
+        inventoryRepository.deleteById(id);
     }
 }

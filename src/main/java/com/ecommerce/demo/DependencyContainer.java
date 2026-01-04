@@ -20,6 +20,7 @@ public class DependencyContainer {
     private final ProductService PRODUCT_SERVICE;
     private final OrderService ORDER_SERVICE;
     private final OrderItemService ORDER_ITEM_SERVICE;
+    private final InventoryService INVENTORY_SERVICE;
 
     public DependencyContainer() {
         // creación de repositorios
@@ -35,7 +36,8 @@ public class DependencyContainer {
         this.CATEGORY_SERVICE = new CategoryService(CATEGORY_REPOSITORY);
         this.CUSTOMER_SERVICE = new CustomerService(CUSTOMER_REPOSITORY);
         this.PAYMENT_SERVICE = new PaymentService(PAYMENT_REPOSITORY);
-        this.PRODUCT_SERVICE = new ProductService(PRODUCT_REPOSITORY, CATEGORY_SERVICE);
+        this.INVENTORY_SERVICE = new InventoryService(INVENTORY_REPOSITORY);
+        this.PRODUCT_SERVICE = new ProductService(PRODUCT_REPOSITORY, CATEGORY_SERVICE, INVENTORY_SERVICE);
         this.ORDER_SERVICE = new OrderService(ORDER_REPOSITORY, CUSTOMER_SERVICE, PAYMENT_SERVICE);
         this.ORDER_ITEM_SERVICE = new OrderItemService(ORDER_ITEM_REPOSITORY, ORDER_SERVICE, PRODUCT_SERVICE);
 

@@ -1,9 +1,12 @@
 package com.ecommerce.demo.view;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 public abstract class AbstractMenu implements Menu {
+    private static final List<String> CONFIRMATION  = List.of("sí","si","s");
+
     protected final Scanner scanner;
 
     public AbstractMenu(Scanner scanner) {
@@ -15,16 +18,8 @@ public abstract class AbstractMenu implements Menu {
         boolean running = true;
         while (running) {
             printMenuOptions();
-            try {
-                System.out.print("Ingrese una opción: ");
-                int option = Integer.parseInt(scanner.nextLine());
-                running = handleOption(option);
-
-                //TODO catch de posibles errores como ingreso de letras, etc
-            } catch (Exception e) {
-                System.out.println("Algo ha salido mal");
-                e.printStackTrace();
-            }
+            int option = readInt("Ingrese una opción: ");
+            running = handleOption(option);
         }
     }
 
@@ -34,7 +29,7 @@ public abstract class AbstractMenu implements Menu {
 
 
     // métodos de utilidad para leer sobre el teclado
-    protected String readText(String msg){
+    protected String readText(String msg) {
         while (true) {
             System.out.print(msg);
             String input = scanner.nextLine().trim();
@@ -44,6 +39,18 @@ public abstract class AbstractMenu implements Menu {
             System.out.println("Error: El texto no puede estar vacío.");
         }
     }
+
+    protected int readInt(String msg) {
+        while (true) {
+            System.out.print(msg);
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Debes ingresar un número entero válido.");
+            }
+        }
+    }
+
     protected Long readLong(String msg) {
         while (true) {
             System.out.print(msg);
@@ -60,17 +67,21 @@ public abstract class AbstractMenu implements Menu {
             System.out.print(msg);
             try {
                 String input = scanner.nextLine();
-                BigDecimal valor = new BigDecimal(input);
+                BigDecimal value = new BigDecimal(input);
 
                 // Validación extra: Que no sea negativo
-                if (valor.compareTo(BigDecimal.ZERO) < 0) {
+                if (value.compareTo(BigDecimal.ZERO) < 0) {
                     System.out.println("Error: El precio no puede ser negativo.");
                     continue;
                 }
-                return valor;
+                return value;
             } catch (NumberFormatException e) {
                 System.out.println("Error: Ingresa un precio válido.");
             }
         }
+    }
+
+    protected boolean confirm(String msg){
+        return CONFIRMATION.contains(msg);
     }
 }

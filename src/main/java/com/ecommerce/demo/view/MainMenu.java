@@ -34,7 +34,10 @@ public class MainMenu extends AbstractMenu {
             }
             // por el momento es innecesario tener una clase intermedia como admin debido a los requerimientos
             // así que ingreso directamente a la administración de productos
-            case 1 -> MenuRunner.run(new ProductManagerMenu(scanner, dependencyContainer.getProductService()));
+            case 1 -> MenuRunner.run(new ProductManagerMenu(
+                    scanner,
+                    dependencyContainer.getProductService(),
+                    dependencyContainer.getCategoryService()));
             //TODO menu usuario
             default -> System.out.println("Opción inválida");
         }

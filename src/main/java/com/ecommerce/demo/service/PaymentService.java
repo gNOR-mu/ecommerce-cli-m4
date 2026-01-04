@@ -17,4 +17,9 @@ public class PaymentService implements ReadOnlyService<Payment, Long> {
     public Optional<Payment> findById(Long id) {
         return paymentRepository.findById(id);
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return paymentRepository.existsById(id);
+    }
 }

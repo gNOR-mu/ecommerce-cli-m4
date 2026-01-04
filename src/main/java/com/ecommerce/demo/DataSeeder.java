@@ -23,10 +23,10 @@ public class DataSeeder {
         categoryService.create(new Category("Expedición"));
         categoryService.create(new Category("Vestimenta"));
         // productos iniciales
-        productService.create(new Product(1L, new BigDecimal("25000"), "Lentes de sol"));
-        productService.create(new Product(1L, new BigDecimal("100000"), "Mochila"));
-        productService.create(new Product(2L, new BigDecimal("55000"), "Carpa"));
-        productService.create(new Product(3L, new BigDecimal("50000"), "Polera térmica"));
+        productService.create(new Product(1L, new BigDecimal("25000"), "Lentes de sol"), 12);
+        productService.create(new Product(1L, new BigDecimal("100000"), "Mochila"), 32);
+        productService.create(new Product(2L, new BigDecimal("55000"), "Carpa"), 14);
+        productService.create(new Product(3L, new BigDecimal("50000"), "Polera térmica"), 25);
 
     }
 }

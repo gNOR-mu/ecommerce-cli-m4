@@ -17,4 +17,9 @@ public class CustomerService implements ReadOnlyService<Customer,Long> {
     public Optional<Customer> findById(Long id) {
         return customerRepository.findById(id);
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return customerRepository.existsById(id);
+    }
 }
