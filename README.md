@@ -68,3 +68,10 @@ El usuario debe poder listar los descuentos vigentes por consola.
 - Datos en memoria.
 - Git/GitHub: repo público ecommerce-cli-m4, mínimo 3 commits con mensajes descriptivos.
 
+# Notas
+- En windows, si se ejecuta el programa desde cmd es posible que no se interpreten correctamente los caracteres 
+mostrando un texto similar a <<Men├║>>, se soluciona especificando UTF-8 con:
+
+```BASH
+  chcp 65001
+```
