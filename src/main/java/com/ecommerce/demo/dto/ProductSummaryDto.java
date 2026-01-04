@@ -7,5 +7,6 @@ public record ProductSummaryDto(
         String name,
         String category,
         BigDecimal price,
-        int stock
+        int stock,
+        Long categoryId
 ){}
