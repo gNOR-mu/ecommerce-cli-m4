@@ -26,6 +26,9 @@ public class InventoryService implements ReadOnlyService<Inventory, Long> {
 
 
     public Inventory create(Inventory inventory) {
+        if (inventory.getQuantity() < 0) {
+            throw new IllegalArgumentException("El inventario no puede ser inferior a 0");
+        }
         return inventoryRepository.save(inventory);
     }
 
@@ -36,5 +39,14 @@ public class InventoryService implements ReadOnlyService<Inventory, Long> {
     public Inventory getByProductId(Long productId) {
         return inventoryRepository.findByProductId(productId).orElseThrow(
                 () -> new IllegalArgumentException("No se ha encontrado un inventario con el producto id = " + productId));
+    }
+
+    public Inventory updateByProductId(Long productId, int quantity) {
+        if (quantity < 0) {
+            throw new IllegalArgumentException("El inventario no puede ser inferior a 0");
+        }
+        Inventory existing = getByProductId(productId);
+        existing.setQuantity(quantity);
+        return inventoryRepository.save(existing);
     }
 }
