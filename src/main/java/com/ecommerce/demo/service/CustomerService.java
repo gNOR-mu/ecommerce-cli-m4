@@ -7,19 +7,19 @@ import java.util.Optional;
 
 public class CustomerService implements ReadOnlyService<Customer,Long> {
     //TODO averiguar nombre constante
-    private final CustomerRepository customerRepository;
+    private final CustomerRepository CUSTOMER_REPOSITORY;
 
     public CustomerService(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+        this.CUSTOMER_REPOSITORY = customerRepository;
     }
 
     @Override
     public Optional<Customer> findById(Long id) {
-        return customerRepository.findById(id);
+        return CUSTOMER_REPOSITORY.findById(id);
     }
 
     @Override
     public boolean existsById(Long id) {
-        return customerRepository.existsById(id);
+        return CUSTOMER_REPOSITORY.existsById(id);
     }
 }

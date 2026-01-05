@@ -12,46 +12,46 @@ import java.util.Optional;
 
 public class ProductService implements ReadOnlyService<Product, Long> {
     //TODO averiguar nombre constante
-    private final ProductRepository productRepository;
-    private final CategoryService categoryService;
-    private final InventoryService inventoryService;
+    private final ProductRepository PRODUCT_REPOSITORY;
+    private final CategoryService CATEGORY_SERVICE;
+    private final InventoryService INVENTORY_SERVICE;
 
     public ProductService(ProductRepository productRepository, CategoryService categoryService, InventoryService inventoryService) {
-        this.productRepository = productRepository;
-        this.categoryService = categoryService;
-        this.inventoryService = inventoryService;
+        this.PRODUCT_REPOSITORY = productRepository;
+        this.CATEGORY_SERVICE = categoryService;
+        this.INVENTORY_SERVICE = inventoryService;
     }
 
     @Override
     public Optional<Product> findById(Long id) {
-        return productRepository.findById(id);
+        return PRODUCT_REPOSITORY.findById(id);
     }
 
     @Override
     public boolean existsById(Long id) {
-        return productRepository.existsById(id);
+        return PRODUCT_REPOSITORY.existsById(id);
     }
 
     public Product create(Product product, int quantity) {
-        if (!categoryService.existsById(product.getCategoryId())) {
+        if (!CATEGORY_SERVICE.existsById(product.getCategoryId())) {
             throw new IllegalArgumentException("La categoría con id = " + product.getCategoryId() + " no existe");
         }
         //TODO Validación nombre nulo, vacío, y lo mismo para precio
-        Product createdProduct = productRepository.save(product);
+        Product createdProduct = PRODUCT_REPOSITORY.save(product);
 
         Inventory inventory = new Inventory(createdProduct.getId(), quantity);
-        inventoryService.create(inventory);
+        INVENTORY_SERVICE.create(inventory);
         return createdProduct;
     }
 
     public List<ProductSummaryDto> findAllSummary() {
-        List<Product> products = productRepository.findAll();
+        List<Product> products = PRODUCT_REPOSITORY.findAll();
         List<ProductSummaryDto> res = new ArrayList<>();
 
         //NOTA no es la forma más óptima, sin embargo, el rendimiento no es un requisito
         for (Product product : products) {
-            var category = categoryService.getById(product.getCategoryId());
-            var inventory = inventoryService.getByProductId(product.getId());
+            var category = CATEGORY_SERVICE.getById(product.getCategoryId());
+            var inventory = INVENTORY_SERVICE.getByProductId(product.getId());
             res.add(new ProductSummaryDto(product.getId(), product.getName(), category.getName(), product.getPrice(),
                     inventory.getQuantity(), product.getCategoryId()));
         }
@@ -61,8 +61,8 @@ public class ProductService implements ReadOnlyService<Product, Long> {
 
     public ProductSummaryDto getSummaryById(Long id) {
         Product product = getById(id);
-        Inventory inventory = inventoryService.getById(product.getId());
-        Category category = categoryService.getById(product.getCategoryId());
+        Inventory inventory = INVENTORY_SERVICE.getById(product.getId());
+        Category category = CATEGORY_SERVICE.getById(product.getCategoryId());
         return new ProductSummaryDto(product.getId(), product.getName(), category.getName(), product.getPrice(),
                 inventory.getQuantity(), product.getCategoryId());
     }
@@ -70,29 +70,29 @@ public class ProductService implements ReadOnlyService<Product, Long> {
 
     public void deleteById(Long id) {
         Product product = getById(id);
-        productRepository.deleteById(id);
-        inventoryService.deleteById(product.getCategoryId());
+        PRODUCT_REPOSITORY.deleteById(id);
+        INVENTORY_SERVICE.deleteById(product.getCategoryId());
     }
 
     public Product update(Long id, Product product, int stock) {
-        if (!categoryService.existsById(product.getCategoryId())) {
+        if (!CATEGORY_SERVICE.existsById(product.getCategoryId())) {
             throw new IllegalArgumentException("No existe una categoría con la id = " + product.getCategoryId());
         }
         Product existing = getById(id);
-        inventoryService.updateByProductId(id, stock);
+        INVENTORY_SERVICE.updateByProductId(id, stock);
 //TODO validaciones
         existing.setName(product.getName());
         existing.setCategoryId(product.getCategoryId());
         existing.setPrice(product.getPrice());
 
-        return productRepository.save(existing);
+        return PRODUCT_REPOSITORY.save(existing);
     }
 
     public List<ProductSummaryDto> search(String searchText) {
         String searchLower = searchText.toLowerCase();
 
-        List<Long> matchingCategoryIds = categoryService.findIdsByName(searchText);
-        List<Product> matches = productRepository.findAll().stream()
+        List<Long> matchingCategoryIds = CATEGORY_SERVICE.findIdsByName(searchText);
+        List<Product> matches = PRODUCT_REPOSITORY.findAll().stream()
                 .filter(p -> {
                     boolean nameMatches = p.getName().toLowerCase().contains(searchLower);
                     boolean categoryMatches = matchingCategoryIds.contains(p.getCategoryId());
@@ -105,8 +105,8 @@ public class ProductService implements ReadOnlyService<Product, Long> {
 
     private ProductSummaryDto convertToDto(Product p) {
         //prácticamente es como un mapper
-        String catName = categoryService.getById(p.getCategoryId()).getName();
-        int stock = inventoryService.getByProductId(p.getId()).getQuantity();
+        String catName = CATEGORY_SERVICE.getById(p.getCategoryId()).getName();
+        int stock = INVENTORY_SERVICE.getByProductId(p.getId()).getQuantity();
         return new ProductSummaryDto(
                 p.getId(),
                 p.getName(),

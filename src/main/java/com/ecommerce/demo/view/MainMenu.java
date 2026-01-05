@@ -4,13 +4,11 @@ import com.ecommerce.demo.DependencyContainer;
 import com.ecommerce.demo.view.admin.ProductManagerMenu;
 import com.ecommerce.demo.view.user.UserMenu;
 
-import java.util.Scanner;
-
 public class MainMenu extends AbstractMenu {
     private final DependencyContainer dependencyContainer;
 
     public MainMenu(DependencyContainer dependencyContainer) {
-        super(dependencyContainer.getInputHandler());
+        super(dependencyContainer.getINPUT_HANDLER());
         this.dependencyContainer = dependencyContainer;
     }
 
@@ -36,11 +34,11 @@ public class MainMenu extends AbstractMenu {
             // por el momento es innecesario tener una clase intermedia como admin debido a los requerimientos
             // así que ingreso directamente a la administración de productos
             case 1 -> MenuRunner.run(new ProductManagerMenu(
-                    dependencyContainer.getInputHandler(),
+                    dependencyContainer.getINPUT_HANDLER(),
                     dependencyContainer.getProductService(),
                     dependencyContainer.getCategoryService()));
             //TODO menu usuario
-            case 2 -> MenuRunner.run((new UserMenu(dependencyContainer.getInputHandler())));
+            case 2 -> MenuRunner.run((new UserMenu(dependencyContainer.getINPUT_HANDLER())));
             default -> System.out.println("Opción inválida");
         }
         return true;

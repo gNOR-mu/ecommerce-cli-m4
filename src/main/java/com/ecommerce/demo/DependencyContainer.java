@@ -25,8 +25,8 @@ public class DependencyContainer {
     private final OrderItemService ORDER_ITEM_SERVICE;
     private final InventoryService INVENTORY_SERVICE;
 
-    private final Scanner scanner;
-    private final InputHandler inputHandler;
+    private final Scanner SCANNER;
+    private final InputHandler INPUT_HANDLER;
 
     public DependencyContainer() {
         // creación de repositorios
@@ -47,8 +47,8 @@ public class DependencyContainer {
         this.ORDER_SERVICE = new OrderService(ORDER_REPOSITORY, CUSTOMER_SERVICE, PAYMENT_SERVICE);
         this.ORDER_ITEM_SERVICE = new OrderItemService(ORDER_ITEM_REPOSITORY, ORDER_SERVICE, PRODUCT_SERVICE);
 
-        this.scanner = new Scanner(System.in);
-        this.inputHandler = new InputHandler(scanner);
+        this.SCANNER = new Scanner(System.in);
+        this.INPUT_HANDLER = new InputHandler(SCANNER);
 
         //inicialización de datos
         DataSeeder seeder = new DataSeeder(PRODUCT_SERVICE, CATEGORY_SERVICE);
@@ -107,11 +107,11 @@ public class DependencyContainer {
         return ORDER_ITEM_SERVICE;
     }
 
-    public Scanner getScanner() {
-        return scanner;
+    public Scanner getSCANNER() {
+        return SCANNER;
     }
 
-    public InputHandler getInputHandler() {
-        return inputHandler;
+    public InputHandler getINPUT_HANDLER() {
+        return INPUT_HANDLER;
     }
 }

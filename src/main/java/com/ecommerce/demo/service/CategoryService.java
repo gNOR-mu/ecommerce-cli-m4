@@ -8,31 +8,31 @@ import java.util.Optional;
 
 public class CategoryService implements ReadOnlyService<Category, Long> {
     //TODO averiguar nombre constante
-    private final CategoryRepository categoryRepository;
+    private final CategoryRepository CATEGORY_REPOSITORY;
 
     public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+        this.CATEGORY_REPOSITORY = categoryRepository;
     }
 
     @Override
     public Optional<Category> findById(Long id) {
-        return categoryRepository.findById(id);
+        return CATEGORY_REPOSITORY.findById(id);
     }
 
     @Override
     public boolean existsById(Long id) {
-        return categoryRepository.existsById(id);
+        return CATEGORY_REPOSITORY.existsById(id);
     }
 
     public List<Category> findAll() {
-        return categoryRepository.findAll();
+        return CATEGORY_REPOSITORY.findAll();
     }
 
     public Category create(Category category) {
-        return categoryRepository.save(category);
+        return CATEGORY_REPOSITORY.save(category);
     }
 
     public List<Long> findIdsByName(String name) {
-        return categoryRepository.findIdsByName(name);
+        return CATEGORY_REPOSITORY.findIdsByName(name);
     }
 }

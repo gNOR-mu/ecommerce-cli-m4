@@ -5,16 +5,16 @@ import java.util.Scanner;
 import java.util.function.Function;
 
 public class InputHandler {
-    private final Scanner scanner;
+    private final Scanner SCANNER;
 
     public InputHandler(Scanner scanner) {
-        this.scanner = scanner;
+        this.SCANNER = scanner;
     }
 
     private <T> T readInput(String msg, Function<String, T> parser) {
         while (true) {
             System.out.print(msg);
-            String input = scanner.nextLine().trim();
+            String input = SCANNER.nextLine().trim();
             try {
                 return parser.apply(input);
             } catch (Exception e) {
@@ -76,7 +76,7 @@ public class InputHandler {
     public String editString(String msg, String actualValue) {
         System.out.printf("%s [%s]: ", msg, actualValue);
 
-        String input = scanner.nextLine().trim();
+        String input = SCANNER.nextLine().trim();
 
         // Si está vacío, devuelve el valor viejo. Si no, el nuevo.
         if (input.isEmpty()) {
@@ -88,7 +88,7 @@ public class InputHandler {
     public long editLong(String mensaje, Long valorActual) {
         while (true) {
             System.out.printf("%s [%d]: ", mensaje, valorActual);
-            String input = scanner.nextLine().trim();
+            String input = SCANNER.nextLine().trim();
 
             if (input.isEmpty()) {
                 return valorActual;
@@ -106,7 +106,7 @@ public class InputHandler {
     public int editInt(String mensaje, int valorActual) {
         while (true) {
             System.out.printf("%s [%d]: ", mensaje, valorActual);
-            String input = scanner.nextLine().trim();
+            String input = SCANNER.nextLine().trim();
 
             if (input.isEmpty()) {
                 return valorActual;
@@ -129,7 +129,7 @@ public class InputHandler {
     public BigDecimal editBigDecimal(String mensaje, BigDecimal valorActual) {
         while (true) {
             System.out.printf("%s [%s]: ", mensaje, valorActual);
-            String input = scanner.nextLine().trim();
+            String input = SCANNER.nextLine().trim();
 
             if (input.isEmpty()) {
                 return valorActual;

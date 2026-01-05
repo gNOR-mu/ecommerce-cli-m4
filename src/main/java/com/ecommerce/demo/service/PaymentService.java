@@ -7,19 +7,19 @@ import java.util.Optional;
 
 public class PaymentService implements ReadOnlyService<Payment, Long> {
     //TODO averiguar nombre constante
-    private final PaymentRepository paymentRepository;
+    private final PaymentRepository PAYMENT_REPOSITORY;
 
     public PaymentService(PaymentRepository paymentRepository) {
-        this.paymentRepository = paymentRepository;
+        this.PAYMENT_REPOSITORY = paymentRepository;
     }
 
     @Override
     public Optional<Payment> findById(Long id) {
-        return paymentRepository.findById(id);
+        return PAYMENT_REPOSITORY.findById(id);
     }
 
     @Override
     public boolean existsById(Long id) {
-        return paymentRepository.existsById(id);
+        return PAYMENT_REPOSITORY.existsById(id);
     }
 }

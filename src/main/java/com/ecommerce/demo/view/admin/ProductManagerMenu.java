@@ -13,13 +13,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductManagerMenu extends AbstractMenu {
-    private final ProductService productService;
-    private final CategoryService categoryService;
+    private final ProductService PRODUCT_SERVICE;
+    private final CategoryService CATEGORY_SERVICE;
 
     public ProductManagerMenu(InputHandler inputHandler, ProductService productService, CategoryService categoryService) {
         super(inputHandler);
-        this.productService = productService;
-        this.categoryService = categoryService;
+        this.PRODUCT_SERVICE = productService;
+        this.CATEGORY_SERVICE = categoryService;
     }
 
     @Override
@@ -56,18 +56,18 @@ public class ProductManagerMenu extends AbstractMenu {
     }
 
     private void findAll() {
-        List<ProductSummaryDto> products = productService.findAllSummary();
+        List<ProductSummaryDto> products = PRODUCT_SERVICE.findAllSummary();
         FormatUtil.printProductSummary(products);
     }
 
     private void search() {
         String searchText = inputHandler.readText("Texto a buscar nombre/categoría: ");
-        List<ProductSummaryDto> res = productService.search(searchText);
+        List<ProductSummaryDto> res = PRODUCT_SERVICE.search(searchText);
         FormatUtil.printProductSummary(res);
     }
 
     public void create() {
-        List<Category> categories = categoryService.findAll();
+        List<Category> categories = CATEGORY_SERVICE.findAll();
 
         String name = inputHandler.readText("Ingresa el nombre del producto: ");
 
@@ -78,7 +78,7 @@ public class ProductManagerMenu extends AbstractMenu {
         int stock = inputHandler.readInt("Cantidad de stock: ");
 
         try {
-            productService.create(product, stock);
+            PRODUCT_SERVICE.create(product, stock);
         } catch (Exception e) {
             System.out.println("No se ha creado el producto debido a que: " + e.getMessage());
         }
@@ -90,8 +90,8 @@ public class ProductManagerMenu extends AbstractMenu {
         //búsqueda del producto actual
         try {
 
-            ProductSummaryDto product = productService.getSummaryById(id);
-            List<Category> categories = categoryService.findAll();
+            ProductSummaryDto product = PRODUCT_SERVICE.getSummaryById(id);
+            List<Category> categories = CATEGORY_SERVICE.findAll();
             FormatUtil.printProductSummary(product);
 
             //modificaciones
@@ -105,7 +105,7 @@ public class ProductManagerMenu extends AbstractMenu {
 
             //actualización
             Product updatedProduct = new Product(categoryId, price, name);
-            productService.update(id, updatedProduct, stock);
+            PRODUCT_SERVICE.update(id, updatedProduct, stock);
             System.out.println("Producto actualizado");
         } catch (Exception e) {
             System.out.println("No se ha actualizado el producto debido a que: " + e.getMessage());
@@ -117,7 +117,7 @@ public class ProductManagerMenu extends AbstractMenu {
         try {
             String confirmDelete = inputHandler.readText("¿Seguro que quieres eliminar el producto con id = " + id + "? (Sí/No): ");
             if (confirm(confirmDelete)) {
-                productService.deleteById(id);
+                PRODUCT_SERVICE.deleteById(id);
                 System.out.println("Producto eliminado");
             } else {
                 //prácticamente el "No" del texto está de adorno

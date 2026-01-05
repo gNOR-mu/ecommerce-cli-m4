@@ -11,13 +11,13 @@ public abstract class InMemoryAbstractRepository<T extends Identifiable<Long>> i
     protected final Map<Long, T> DB = new HashMap<>();
 
     // simulación del incrementado de índice automático al crear un registro en la base de datos
-    private final AtomicLong idGenerator = new AtomicLong(0);
+    private final AtomicLong ID_GENERATOR = new AtomicLong(0);
 
     @Override
     public T save(T entity) {
         if(entity.getId() == null){
             // no existe el registro, por lo tanto, debo asignarle una nueva id
-            long newId = idGenerator.incrementAndGet();
+            long newId = ID_GENERATOR.incrementAndGet();
             entity.setId(newId);
             DB.put(entity.getId(), entity);
         }else{
