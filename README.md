@@ -36,12 +36,12 @@ USUARIO (carrito, descuento y compra)
 - Quitar del carrito (id)
 - Ver carrito (ítems, subtotales, TOTAL base)
 - Ver descuentos activos (mostrar reglas y su condición)
-- Confirmar compra
+- Confirmar compra:
 
-* Calcular TOTAL base y aplicar automáticamente todas las reglas de descuento que
-  correspondan.
-* Mostrar detalle de descuentos aplicados y TOTAL final.
-* Crear la Orden en memoria y vaciar el carrito.
+  * Calcular TOTAL base y aplicar automáticamente todas las reglas de descuento que
+    correspondan.
+  * Mostrar detalle de descuentos aplicados y TOTAL final.
+  * Crear la Orden en memoria y vaciar el carrito.
 
 **Validaciones obligatorias:** id existente; cantidad entera > 0; no confirmar con carrito vacío.
 
