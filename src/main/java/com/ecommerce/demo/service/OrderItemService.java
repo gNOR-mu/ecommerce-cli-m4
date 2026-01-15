@@ -6,7 +6,6 @@ import com.ecommerce.demo.repository.OrderItemRepository;
 import java.util.Optional;
 
 public class OrderItemService implements ReadOnlyService<OrderItem, Long> {
-    //TODO averiguar nombre constante
     private final OrderItemRepository ORDER_ITEM_REPOSITORY;
     private final OrderService ORDER_SERVICE;
     private final ProductService PRODUCT_SERVICE;

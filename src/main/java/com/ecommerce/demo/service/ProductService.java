@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProductService implements ReadOnlyService<Product, Long> {
-    //TODO averiguar nombre constante
     private final ProductRepository PRODUCT_REPOSITORY;
     private final CategoryService CATEGORY_SERVICE;
     private final InventoryService INVENTORY_SERVICE;

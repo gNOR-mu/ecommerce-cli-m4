@@ -6,15 +6,10 @@ import com.ecommerce.demo.repository.OrderRepository;
 import java.util.Optional;
 
 public class OrderService implements ReadOnlyService<Order,Long> {
-    //TODO averiguar nombre constante
     private final OrderRepository ORDER_REPOSITORY;
-    private final CustomerService CUSTOMER_SERVICE;
-    private final PaymentService PAYMENT_SERVICE;
 
-    public OrderService(OrderRepository orderRepository, CustomerService customerService, PaymentService paymentService) {
+    public OrderService(OrderRepository orderRepository) {
         this.ORDER_REPOSITORY = orderRepository;
-        this.CUSTOMER_SERVICE = customerService;
-        this.PAYMENT_SERVICE = paymentService;
     }
 
     @Override
@@ -25,5 +20,14 @@ public class OrderService implements ReadOnlyService<Order,Long> {
     @Override
     public boolean existsById(Long id) {
         return ORDER_REPOSITORY.existsById(id);
+    }
+
+
+    /**
+     * Crea una nueva orden.
+     * @return ID de la orden generada
+     */
+    public Long createORder(){
+        return ORDER_REPOSITORY.save(new Order()).getId();
     }
 }

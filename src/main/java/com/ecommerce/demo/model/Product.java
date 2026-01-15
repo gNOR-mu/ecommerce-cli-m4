@@ -11,8 +11,6 @@ public class Product implements Identifiable<Long> {
 
     private BigDecimal price;
     private String name;
-    //marca??
-    //descripción??
 
     public Product(Long categoryId, BigDecimal price, String name) {
         this.categoryId = categoryId;

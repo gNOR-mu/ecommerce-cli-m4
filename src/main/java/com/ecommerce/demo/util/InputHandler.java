@@ -147,4 +147,13 @@ public class InputHandler {
             }
         }
     }
+
+    /**
+     * Muestra el mensaje "Presiona enter para continuar..."
+     * y espera a que se presione enter para continuar
+     */
+    public void awaitInput(){
+        System.out.println("Presiona enter para continuar...");
+        SCANNER.nextLine();
+    }
 }

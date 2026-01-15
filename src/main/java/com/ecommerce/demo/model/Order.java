@@ -7,17 +7,12 @@ import java.time.LocalDateTime;
 
 public class Order implements Identifiable<Long> {
     private Long id;
-    private Long customerId;
-    private Long paymentId;
 
-    LocalDateTime creationDate;
-    BigDecimal total;
+    private LocalDateTime creationDate;
+    private BigDecimal total;
 
-    public Order(Long customerId, Long paymentId, LocalDateTime creationDate, BigDecimal total) {
-        this.customerId = customerId;
-        this.paymentId = paymentId;
-        this.creationDate = creationDate;
-        this.total = total;
+    public Order() {
+        this.creationDate = LocalDateTime.now();
     }
 
     @Override
@@ -28,22 +23,6 @@ public class Order implements Identifiable<Long> {
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
-
-    public Long getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(Long paymentId) {
-        this.paymentId = paymentId;
     }
 
     public LocalDateTime getCreationDate() {

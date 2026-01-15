@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class CategoryService implements ReadOnlyService<Category, Long> {
-    //TODO averiguar nombre constante
     private final CategoryRepository CATEGORY_REPOSITORY;
 
     public CategoryService(CategoryRepository categoryRepository) {

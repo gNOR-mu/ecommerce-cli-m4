@@ -6,7 +6,6 @@ import com.ecommerce.demo.repository.InventoryRepository;
 import java.util.Optional;
 
 public class InventoryService implements ReadOnlyService<Inventory, Long> {
-    //TODO averiguar nombre constante
     private final InventoryRepository INVENTORY_REPOSITORY;
 
     public InventoryService(InventoryRepository inventoryRepository) {
