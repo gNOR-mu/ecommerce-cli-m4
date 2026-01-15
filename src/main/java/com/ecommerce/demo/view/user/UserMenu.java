@@ -6,7 +6,7 @@ import com.ecommerce.demo.model.CartItem;
 import com.ecommerce.demo.service.CartService;
 import com.ecommerce.demo.service.InventoryService;
 import com.ecommerce.demo.service.ProductService;
-import com.ecommerce.demo.util.FormatUtil;
+import com.ecommerce.demo.util.PrintUtil;
 import com.ecommerce.demo.util.InputHandler;
 import com.ecommerce.demo.view.AbstractMenu;
 
@@ -24,7 +24,7 @@ public class UserMenu extends AbstractMenu {
 
     @Override
     protected void printMenuOptions() {
-        FormatUtil.printUserMenu();
+        PrintUtil.printUserMenu();
     }
 
     @Override
@@ -46,13 +46,13 @@ public class UserMenu extends AbstractMenu {
 
     private void listProducts() {
         List<ProductSummaryDto> products = PRODUCT_SERVICE.findAllSummary();
-        FormatUtil.printProductSummary(products);
+        PrintUtil.printProductSummary(products);
     }
 
     private void searchProduct() {
         String searchText = inputHandler.readText("Texto a buscar nombre/categoría: ");
         List<ProductSummaryDto> res = PRODUCT_SERVICE.search(searchText);
-        FormatUtil.printProductSummary(res);
+        PrintUtil.printProductSummary(res);
     }
 
     private void addToCart() {

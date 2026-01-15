@@ -5,7 +5,7 @@ import com.ecommerce.demo.model.Category;
 import com.ecommerce.demo.model.Product;
 import com.ecommerce.demo.service.CategoryService;
 import com.ecommerce.demo.service.ProductService;
-import com.ecommerce.demo.util.FormatUtil;
+import com.ecommerce.demo.util.PrintUtil;
 import com.ecommerce.demo.util.InputHandler;
 import com.ecommerce.demo.view.AbstractMenu;
 
@@ -24,7 +24,7 @@ public class AdminMenu extends AbstractMenu {
 
     @Override
     protected void printMenuOptions() {
-        FormatUtil.printAdminMenu();
+        PrintUtil.printAdminMenu();
     }
 
     @Override
@@ -46,13 +46,13 @@ public class AdminMenu extends AbstractMenu {
 
     private void listProducts() {
         List<ProductSummaryDto> products = PRODUCT_SERVICE.findAllSummary();
-        FormatUtil.printProductSummary(products);
+        PrintUtil.printProductSummary(products);
     }
 
     private void searchProduct() {
         String searchText = inputHandler.readText("Texto a buscar nombre/categoría: ");
         List<ProductSummaryDto> res = PRODUCT_SERVICE.search(searchText);
-        FormatUtil.printProductSummary(res);
+        PrintUtil.printProductSummary(res);
     }
 
     public void createProduct() {
@@ -60,7 +60,7 @@ public class AdminMenu extends AbstractMenu {
 
         String name = inputHandler.readText("Ingresa el nombre del producto: ");
 
-        FormatUtil.printCategories(categories);
+        PrintUtil.printCategories(categories);
         Long categoryId = inputHandler.readLong("Ingresa la id de la categoría: ");
         BigDecimal price = inputHandler.readBigDecimal("Ingresa el precio del producto: ");
         Product product = new Product(categoryId, price, name);
@@ -80,13 +80,13 @@ public class AdminMenu extends AbstractMenu {
         try {
             ProductSummaryDto product = PRODUCT_SERVICE.getSummaryById(id);
             List<Category> categories = CATEGORY_SERVICE.findAll();
-            FormatUtil.printProductSummary(product);
+            PrintUtil.printProductSummary(product);
 
             //modificaciones
             System.out.println("Presiona enter para dejar el campo sin modificar");
             String name = inputHandler.editString("Producto", product.name());
 
-            FormatUtil.printCategories(categories);
+            PrintUtil.printCategories(categories);
             Long categoryId = inputHandler.editLong("Categoría", product.categoryId());
             BigDecimal price = inputHandler.editBigDecimal("Precio", product.price());
             int stock = inputHandler.editInt("Stock", product.stock());

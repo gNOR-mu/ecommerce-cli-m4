@@ -5,7 +5,11 @@ import com.ecommerce.demo.model.Category;
 
 import java.util.List;
 
-public class FormatUtil {
+/**
+ * Clase de utilidad para imprimir mensajes formateados en la consola
+ * @author Gabriel Norambuena
+ */
+public class PrintUtil {
     public record MenuOption(String key, String description) {
     }
 

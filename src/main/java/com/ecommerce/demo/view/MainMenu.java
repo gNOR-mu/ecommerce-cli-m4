@@ -1,7 +1,7 @@
 package com.ecommerce.demo.view;
 
 import com.ecommerce.demo.DependencyContainer;
-import com.ecommerce.demo.util.FormatUtil;
+import com.ecommerce.demo.util.PrintUtil;
 import com.ecommerce.demo.view.admin.AdminMenu;
 import com.ecommerce.demo.view.user.UserMenu;
 
@@ -15,7 +15,7 @@ public class MainMenu extends AbstractMenu {
 
     @Override
     protected void printMenuOptions() {
-        FormatUtil.printMainMenu();
+        PrintUtil.printMainMenu();
     }
 
     @Override
