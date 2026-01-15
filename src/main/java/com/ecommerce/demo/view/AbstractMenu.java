@@ -2,11 +2,9 @@ package com.ecommerce.demo.view;
 
 import com.ecommerce.demo.util.InputHandler;
 
-import java.util.List;
-import java.util.Scanner;
+import static com.ecommerce.demo.util.Constants.CONFIRMATION;
 
 public abstract class AbstractMenu implements Menu {
-    private static final List<String> CONFIRMATION = List.of("sí", "si");
     protected final InputHandler inputHandler;
 
     protected AbstractMenu(InputHandler inputHandler) {
@@ -17,8 +15,13 @@ public abstract class AbstractMenu implements Menu {
     public void show() {
         boolean running = true;
         while (running) {
+            //imprimo el menú de la clase que lo implementa
             printMenuOptions();
+
+            //pido que ingrese una opción
             int option = inputHandler.readInt("Ingrese una opción: ");
+
+            // basado en la opción que ingreso, la implementación de handleOPtion decide si salir.
             running = handleOption(option);
         }
     }
@@ -26,10 +29,6 @@ public abstract class AbstractMenu implements Menu {
     protected abstract void printMenuOptions();
 
     protected abstract boolean handleOption(int option);
-
-
-    // métodos de utilidad para leer sobre el teclado
-
 
     protected boolean confirm(String msg) {
         return CONFIRMATION.contains(msg.toLowerCase());
