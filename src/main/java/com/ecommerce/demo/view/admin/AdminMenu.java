@@ -12,11 +12,11 @@ import com.ecommerce.demo.view.AbstractMenu;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ProductManagerMenu extends AbstractMenu {
+public class AdminMenu extends AbstractMenu {
     private final ProductService PRODUCT_SERVICE;
     private final CategoryService CATEGORY_SERVICE;
 
-    public ProductManagerMenu(InputHandler inputHandler, ProductService productService, CategoryService categoryService) {
+    public AdminMenu(InputHandler inputHandler, ProductService productService, CategoryService categoryService) {
         super(inputHandler);
         this.PRODUCT_SERVICE = productService;
         this.CATEGORY_SERVICE = categoryService;
@@ -24,19 +24,7 @@ public class ProductManagerMenu extends AbstractMenu {
 
     @Override
     protected void printMenuOptions() {
-        //TODO averiguar a que se refiere con: Buscar (nombre/categoría)
-        System.out.println("""
-                +-----------------------------------+
-                |   Admin - Menú Producto           |
-                +-----------------------------------+
-                |   1) Listar productos             |
-                |   2) Buscar                       |
-                |   3) Crear producto               |
-                |   4) Editar producto              |
-                |   5) Eliminar producto            |
-                |   0) Salir                        |
-                +-----------------------------------+
-                """);
+        FormatUtil.printAdminMenu();
     }
 
     @Override
@@ -45,28 +33,29 @@ public class ProductManagerMenu extends AbstractMenu {
             case 0 -> {
                 return false;
             }
-            case 1 -> findAll();
-            case 2 -> search();
-            case 3 -> create();
-            case 4 -> update();
+            case 1 -> listProducts();
+            case 2 -> searchProduct();
+            case 3 -> createProduct();
+            case 4 -> updateProduct();
             case 5 -> delete();
             default -> System.out.println("Opción inválida");
         }
+            inputHandler.awaitInput();
         return true;
     }
 
-    private void findAll() {
+    private void listProducts() {
         List<ProductSummaryDto> products = PRODUCT_SERVICE.findAllSummary();
         FormatUtil.printProductSummary(products);
     }
 
-    private void search() {
+    private void searchProduct() {
         String searchText = inputHandler.readText("Texto a buscar nombre/categoría: ");
         List<ProductSummaryDto> res = PRODUCT_SERVICE.search(searchText);
         FormatUtil.printProductSummary(res);
     }
 
-    public void create() {
+    public void createProduct() {
         List<Category> categories = CATEGORY_SERVICE.findAll();
 
         String name = inputHandler.readText("Ingresa el nombre del producto: ");
@@ -79,17 +68,16 @@ public class ProductManagerMenu extends AbstractMenu {
 
         try {
             PRODUCT_SERVICE.create(product, stock);
+            System.out.println("Producto creado exitosamente.");
         } catch (Exception e) {
             System.out.println("No se ha creado el producto debido a que: " + e.getMessage());
         }
     }
 
-    private void update() {
+    private void updateProduct() {
         long id = inputHandler.readLong("Ingresa la id del producto a editar: ");
 
-        //búsqueda del producto actual
         try {
-
             ProductSummaryDto product = PRODUCT_SERVICE.getSummaryById(id);
             List<Category> categories = CATEGORY_SERVICE.findAll();
             FormatUtil.printProductSummary(product);
@@ -106,6 +94,7 @@ public class ProductManagerMenu extends AbstractMenu {
             //actualización
             Product updatedProduct = new Product(categoryId, price, name);
             PRODUCT_SERVICE.update(id, updatedProduct, stock);
+
             System.out.println("Producto actualizado");
         } catch (Exception e) {
             System.out.println("No se ha actualizado el producto debido a que: " + e.getMessage());

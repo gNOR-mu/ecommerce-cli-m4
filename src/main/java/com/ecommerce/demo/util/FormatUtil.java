@@ -6,80 +6,112 @@ import com.ecommerce.demo.model.Category;
 import java.util.List;
 
 public class FormatUtil {
-    private static final String PRODUCT_SUMMARY_FORMAT = "| %-4s | %-20s | %-15s | %10s | %5s |%n";
-    private static final String PRODUCT_BORDER = "+------+----------------------+-----------------+------------+-------+";
-
-    private static final String CATEGORY_FORMAT = "| %-4s | %-30s |%n";
-    private static final String CATEGORY_BORDER = "+------+--------------------------------+";
-
-    public static String truncateText(String text, int maxSize) {
-        //así evito que se rompa la tabla
-        if (text == null) return "";
-        if (text.length() <= maxSize) return text;
-        return text.substring(0, maxSize - 3) + "...";
+    public record MenuOption(String key, String description) {
     }
 
+    /**
+     * Función de utilidad para imprimir los productos de forma formateada
+     * <p> Muestra: ID, PRODUCTO, CATEGORÍA, PRECIO y STOCK </ṕ>
+     *
+     * @param products Lista con los productos a imprimir
+     * @see ConsoleTable
+     */
     public static void printProductSummary(List<ProductSummaryDto> products) {
-        if (products.isEmpty()) {
-            System.out.println("""
-                    +-------------------------------------+
-                    |  ️  No hay productos registrados.     |
-                    +-------------------------------------+
-                    """);
-            return;
-        }
-
-        System.out.println(PRODUCT_BORDER);
-        System.out.printf(PRODUCT_SUMMARY_FORMAT, "ID", "PRODUCTO", "CATEGORÍA", "PRECIO", "STOCK");
-        System.out.println(PRODUCT_BORDER);
-
-        // Imprimir Filas
-        for (ProductSummaryDto product : products) {
-            System.out.printf(PRODUCT_SUMMARY_FORMAT,
-                    product.id(),
-                    truncateText(product.name(), 20),
-                    truncateText(product.category(), 15),
-                    product.price(),
-                    product.stock());
-        }
-
-        System.out.println(PRODUCT_BORDER);
+        new ConsoleTable<ProductSummaryDto>()
+                .setTitle("PRODUCTO")
+                .addColumn("ID", 4, ProductSummaryDto::id)
+                .addColumn("PRODUCTO", 20, ProductSummaryDto::name)
+                .addColumn("CATEGORÍA", 15, ProductSummaryDto::category)
+                .addColumn("PRECIO", 10, ProductSummaryDto::price)
+                .addColumn("STOCK", 5, ProductSummaryDto::stock)
+                .print(products);
     }
 
+    /**
+     * Función de utilidad para imprimir un producto determinado.
+     * Utiliza la implementación de {@link #printProductSummary(List)}
+     *
+     * @param product Producto a imprimir
+     * @see ConsoleTable
+     */
     public static void printProductSummary(ProductSummaryDto product) {
         printProductSummary(List.of(product));
     }
 
+    /**
+     * Función de utilidad para imprimir las categorías de forma formateada
+     * <p> Muestra: ID, CATEGORÍA </ṕ>
+     *
+     * @param categories Lista con las Categorías a mnostrar
+     * @see ConsoleTable
+     */
     public static void printCategories(List<Category> categories) {
-        if (categories.isEmpty()) {
-            System.out.println("""
-                    +-------------------------------------+
-                    |  ️  No hay categorías registradas.    |
-                    +-------------------------------------+
-                    """);
-            System.out.println(CATEGORY_BORDER);
-            System.out.println("|  ️  No hay categorías registradas.   |");
-            System.out.println(CATEGORY_BORDER);
-            return;
-        }
+        new ConsoleTable<Category>()
+                .setTitle("CATEGORÍA")
+                .addColumn("ID", 3, Category::getId)
+                .addColumn("CATEGORÍA", 30, Category::getName)
+                .print(categories);
 
-        System.out.println(CATEGORY_BORDER);
-        System.out.printf(CATEGORY_FORMAT, "ID", "CATEGORÍA");
-        System.out.println(CATEGORY_BORDER);
-
-        for (Category c : categories) {
-            System.out.printf(CATEGORY_FORMAT,
-                    c.getId(),
-                    truncateText(c.getName(), 30)
-            );
-        }
-
-        // Cierre
-        System.out.println(CATEGORY_BORDER);
     }
 
+    /**
+     * Imprime el menú principal
+     * @see ConsoleTable
+     */
+    public static void printMainMenu() {
+        List<MenuOption> options = List.of(
+                new MenuOption("1", "Administrador"),
+                new MenuOption("2", "Usuario"),
+                new MenuOption("0", "Salir")
+        );
 
-    public static void printCategory(Category category) {
-        printCategories(List.of(category));
+        new ConsoleTable<MenuOption>()
+                .setTitle("MENÚ PRINCIPAL")
+                .addColumn("OPCIÓN",8, MenuOption::key)
+                .addColumn("DESCRIPCIÓN",25, MenuOption::description)
+                .print(options);
+    }
+
+    /**
+     * Imprime el menú de administrador
+     * @see ConsoleTable
+     */
+    public static void printAdminMenu(){
+        List<MenuOption> options = List.of(
+                new MenuOption("1","Listar productos"),
+                new MenuOption("2","Buscar (nombre/categoría)"),
+                new MenuOption("3","Crear producto"),
+                new MenuOption("4","Editar producto"),
+                new MenuOption("5","Eliminar producto"),
+                new MenuOption("0","Salir")
+        );
+
+        new ConsoleTable<MenuOption>()
+                .setTitle("MENÚ ADMINISTRADOR")
+                .addColumn("OPCIÓN",8, MenuOption::key)
+                .addColumn("DESCRIPCIÓN",25, MenuOption::description)
+                .print(options);
+    }
+
+    /**
+     * Imprime el menú de usuario
+     * @see ConsoleTable
+     */
+    public static void printUserMenu(){
+        List<MenuOption> options = List.of(
+                new MenuOption("1","Listar productos"),
+                new MenuOption("2","Buscar productos"),
+                new MenuOption("3","Agregar al carrito"),
+                new MenuOption("4","Quitar del carro"),
+                new MenuOption("5","Ver carrito"),
+                new MenuOption("6","Ver descuentos activos"),
+                new MenuOption("0","Salir")
+        );
+
+        new ConsoleTable<MenuOption>()
+                .setTitle("MENÚ USUARIO")
+                .addColumn("OPCIÓN",8, MenuOption::key)
+                .addColumn("DESCRIPCIÓN",25, MenuOption::description)
+                .print(options);
     }
 }
