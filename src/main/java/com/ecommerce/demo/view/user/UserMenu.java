@@ -1,8 +1,8 @@
 package com.ecommerce.demo.view.user;
 
+import com.ecommerce.demo.dto.CartSummaryDto;
 import com.ecommerce.demo.dto.ProductSummaryDto;
 import com.ecommerce.demo.model.Cart;
-import com.ecommerce.demo.model.CartItem;
 import com.ecommerce.demo.service.CartService;
 import com.ecommerce.demo.service.InventoryService;
 import com.ecommerce.demo.service.ProductService;
@@ -61,6 +61,7 @@ public class UserMenu extends AbstractMenu {
 
         try {
             CART_SERVICE.addToCart(id, quantity);
+            System.out.println("Producto añadido al carro");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -70,12 +71,14 @@ public class UserMenu extends AbstractMenu {
         long id = inputHandler.readLong("Ingresa la id del producto a remover del carro: ");
         try {
             CART_SERVICE.removeFromCart(id);
+            System.out.println("Producto removido del carro.");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
     private void printCart(){
-        List<CartItem> cartItems = CART_SERVICE.getAll();
+        List<CartSummaryDto> cartItems = CART_SERVICE.getAll();
+        PrintUtil.printCartItems(cartItems);
     }
 }
