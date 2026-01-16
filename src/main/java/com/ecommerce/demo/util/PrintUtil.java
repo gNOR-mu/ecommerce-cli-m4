@@ -1,12 +1,16 @@
 package com.ecommerce.demo.util;
 
+import com.ecommerce.demo.dto.CartSummaryDto;
 import com.ecommerce.demo.dto.ProductSummaryDto;
 import com.ecommerce.demo.model.Category;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Clase de utilidad para imprimir mensajes formateados en la consola
+ *
  * @author Gabriel Norambuena
  */
 public class PrintUtil {
@@ -60,6 +64,7 @@ public class PrintUtil {
 
     /**
      * Imprime el menú principal
+     *
      * @see ConsoleTable
      */
     public static void printMainMenu() {
@@ -71,51 +76,70 @@ public class PrintUtil {
 
         new ConsoleTable<MenuOption>()
                 .setTitle("MENÚ PRINCIPAL")
-                .addColumn("OPCIÓN",8, MenuOption::key)
-                .addColumn("DESCRIPCIÓN",25, MenuOption::description)
+                .addColumn("OPCIÓN", 8, MenuOption::key)
+                .addColumn("DESCRIPCIÓN", 25, MenuOption::description)
                 .print(options);
     }
 
     /**
      * Imprime el menú de administrador
+     *
      * @see ConsoleTable
      */
-    public static void printAdminMenu(){
+    public static void printAdminMenu() {
         List<MenuOption> options = List.of(
-                new MenuOption("1","Listar productos"),
-                new MenuOption("2","Buscar (nombre/categoría)"),
-                new MenuOption("3","Crear producto"),
-                new MenuOption("4","Editar producto"),
-                new MenuOption("5","Eliminar producto"),
-                new MenuOption("0","Salir")
+                new MenuOption("1", "Listar productos"),
+                new MenuOption("2", "Buscar (nombre/categoría)"),
+                new MenuOption("3", "Crear producto"),
+                new MenuOption("4", "Editar producto"),
+                new MenuOption("5", "Eliminar producto"),
+                new MenuOption("0", "Salir")
         );
 
         new ConsoleTable<MenuOption>()
                 .setTitle("MENÚ ADMINISTRADOR")
-                .addColumn("OPCIÓN",8, MenuOption::key)
-                .addColumn("DESCRIPCIÓN",25, MenuOption::description)
+                .addColumn("OPCIÓN", 8, MenuOption::key)
+                .addColumn("DESCRIPCIÓN", 25, MenuOption::description)
                 .print(options);
     }
 
     /**
      * Imprime el menú de usuario
+     *
      * @see ConsoleTable
      */
-    public static void printUserMenu(){
+    public static void printUserMenu() {
         List<MenuOption> options = List.of(
-                new MenuOption("1","Listar productos"),
-                new MenuOption("2","Buscar productos"),
-                new MenuOption("3","Agregar al carrito"),
-                new MenuOption("4","Quitar del carro"),
-                new MenuOption("5","Ver carrito"),
-                new MenuOption("6","Ver descuentos activos"),
-                new MenuOption("0","Salir")
+                new MenuOption("1", "Listar productos"),
+                new MenuOption("2", "Buscar productos"),
+                new MenuOption("3", "Agregar al carrito"),
+                new MenuOption("4", "Quitar del carro"),
+                new MenuOption("5", "Ver carrito"),
+                new MenuOption("6", "Ver descuentos activos"),
+                new MenuOption("0", "Salir")
         );
 
         new ConsoleTable<MenuOption>()
                 .setTitle("MENÚ USUARIO")
-                .addColumn("OPCIÓN",8, MenuOption::key)
-                .addColumn("DESCRIPCIÓN",25, MenuOption::description)
+                .addColumn("OPCIÓN", 8, MenuOption::key)
+                .addColumn("DESCRIPCIÓN", 25, MenuOption::description)
                 .print(options);
+    }
+
+    public static void printCartItems(List<CartSummaryDto> cartItems) {
+        BigDecimal subtotal = cartItems.stream()
+                .map(CartSummaryDto::subTotal)
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        new ConsoleTable<CartSummaryDto>()
+                .setTitle("CARRITO")
+                .addColumn("ID", 4, CartSummaryDto::ID)
+                .addColumn("PRODUCTO", 20, CartSummaryDto::name)
+                .addColumn("PRECIO UNITARIO", 17, CartSummaryDto::unitPrice)
+                .addColumn("CANTIDAD", 10, CartSummaryDto::quantity)
+                .addColumn("SUBTOTAL", 10, CartSummaryDto::subTotal)
+                .setFooter("SUBTOTAL: " + subtotal)
+                .print(cartItems);
     }
 }
