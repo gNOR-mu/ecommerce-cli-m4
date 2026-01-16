@@ -1,7 +1,6 @@
 package com.ecommerce.demo.util;
 
-import com.ecommerce.demo.dto.CartSummaryDto;
-import com.ecommerce.demo.dto.ProductSummaryDto;
+import com.ecommerce.demo.dto.*;
 import com.ecommerce.demo.model.Category;
 
 import java.math.BigDecimal;
@@ -126,20 +125,37 @@ public class PrintUtil {
                 .print(options);
     }
 
-    public static void printCartItems(List<CartSummaryDto> cartItems) {
-        BigDecimal subtotal = cartItems.stream()
-                .map(CartSummaryDto::subTotal)
-                .filter(Objects::nonNull)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        new ConsoleTable<CartSummaryDto>()
+    /**
+     * Imprime el resumen del carro
+     *
+     * @param cartSummary Resumen del carro
+     * @see ConsoleTable
+     */
+    public static void printCartItems(CartSummary cartSummary) {
+        new ConsoleTable<CartProductsDto>()
                 .setTitle("CARRITO")
-                .addColumn("ID", 4, CartSummaryDto::ID)
-                .addColumn("PRODUCTO", 20, CartSummaryDto::name)
-                .addColumn("PRECIO UNITARIO", 17, CartSummaryDto::unitPrice)
-                .addColumn("CANTIDAD", 10, CartSummaryDto::quantity)
-                .addColumn("SUBTOTAL", 10, CartSummaryDto::subTotal)
-                .setFooter("SUBTOTAL: " + subtotal)
-                .print(cartItems);
+                .addColumn("ID", 4, CartProductsDto::ID)
+                .addColumn("PRODUCTO", 20, CartProductsDto::name)
+                .addColumn("PRECIO UNITARIO", 17, CartProductsDto::unitPrice)
+                .addColumn("CANTIDAD", 10, CartProductsDto::quantity)
+                .addColumn("SUBTOTAL", 10, CartProductsDto::subTotal)
+                .setFooter("TOTAL BASE: " + cartSummary.total())
+                .print(cartSummary.products());
+    }
+
+    /**
+     * Imprime los descuentos activos
+     *
+     * @param discounts Descuentos activos
+     * @see ConsoleTable
+     */
+    public static void printDiscounts(DiscountSummary discounts) {
+        new ConsoleTable<AppliedDiscount>()
+                .setTitle("DESCUENTOS")
+                .addColumn("NOMBRE", 50, AppliedDiscount::ruleName)
+                .addColumn("PORCENTAJE", 12, AppliedDiscount::amount)
+                .setFooter("DESCUENTOS TOTALES (%): " + discounts.totalDiscount())
+                .print(discounts.discounts());
+
     }
 }

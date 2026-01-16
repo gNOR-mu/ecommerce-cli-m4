@@ -34,7 +34,8 @@ public class MainMenu extends AbstractMenu {
             case 2 -> MenuRunner.run((new UserMenu(
                     DEPENDENCY_CONTAINER.getInputHandler(),
                     DEPENDENCY_CONTAINER.getProductService(),
-                    DEPENDENCY_CONTAINER.getInventoryService()
+                    DEPENDENCY_CONTAINER.getInventoryService(),
+                    DEPENDENCY_CONTAINER.getDiscountCalculatorService()
             )));
             default -> System.out.println("Opción inválida");
         }

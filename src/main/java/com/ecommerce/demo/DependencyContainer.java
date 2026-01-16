@@ -19,6 +19,7 @@ public class DependencyContainer {
     private final OrderService ORDER_SERVICE;
     private final OrderItemService ORDER_ITEM_SERVICE;
     private final InventoryService INVENTORY_SERVICE;
+    private final DiscountCalculatorService DISCOUNT_CALCULATOR_SERVICE;
 
     private final Scanner SCANNER;
     private final InputHandler INPUT_HANDLER;
@@ -37,6 +38,7 @@ public class DependencyContainer {
         this.PRODUCT_SERVICE = new ProductService(PRODUCT_REPOSITORY, CATEGORY_SERVICE, INVENTORY_SERVICE);
         this.ORDER_SERVICE = new OrderService(ORDER_REPOSITORY);
         this.ORDER_ITEM_SERVICE = new OrderItemService(ORDER_ITEM_REPOSITORY, ORDER_SERVICE, PRODUCT_SERVICE);
+        this.DISCOUNT_CALCULATOR_SERVICE = new DiscountCalculatorService();
 
         this.SCANNER = new Scanner(System.in);
         this.INPUT_HANDLER = new InputHandler(SCANNER);
@@ -94,5 +96,9 @@ public class DependencyContainer {
 
     public InventoryService getInventoryService() {
         return INVENTORY_SERVICE;
+    }
+
+    public DiscountCalculatorService getDiscountCalculatorService() {
+        return DISCOUNT_CALCULATOR_SERVICE;
     }
 }
