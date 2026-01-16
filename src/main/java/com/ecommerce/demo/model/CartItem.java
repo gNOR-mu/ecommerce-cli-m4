@@ -5,7 +5,8 @@ public class CartItem {
     private int quantity;
 
     public CartItem(Product product, int quantity) {
-        PRODUCT = product;
+        this.PRODUCT = product;
+        this.quantity = quantity;
     }
 
     public Product getProduct() {
