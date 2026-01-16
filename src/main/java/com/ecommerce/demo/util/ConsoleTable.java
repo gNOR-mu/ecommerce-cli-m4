@@ -23,6 +23,7 @@ public class ConsoleTable<T> {
     private record Column<T>(String header, int width, Function<T, Object> extractor) {}
 
     private String title;
+    private String footer;
     private final List<Column<T>> columns = new ArrayList<>();
 
     /**
@@ -39,22 +40,21 @@ public class ConsoleTable<T> {
 
     /**
      * Estable el título  de la tabla
-     *<p>
-     *     Las columnas se imprimirán en el mismo orden en que son añadidas.
-     *</p>
-     * <h3>Ejemplo de uso:</h3>
-     * <pre>
-     table
-         .addColumn("ID", 4, ProductSummaryDto::id)
-         .addColumn("PRODUCTO", 20, ProductSummaryDto::name)
-         .addColumn("CATEGORÍA", 15, ProductSummaryDto::category)
-     * </pre>
-     *
      * @param title Título de la tabla
      * @return La misma instancia de {@see ConsoleTable} para permitir el encadenamiento.
      */
     public ConsoleTable<T> setTitle(String title) {
         this.title = title;
+        return this;
+    }
+
+    /**
+     * Estable el pie de la tabla
+     * @param footer Pie de tabla
+     * @return La misma instancia de {@see ConsoleTable} para permitir el encadenamiento.
+     */
+    public ConsoleTable<T> setFooter(String footer) {
+        this.footer = footer;
         return this;
     }
 
@@ -109,6 +109,7 @@ public class ConsoleTable<T> {
                 .map(c -> "+" + "-".repeat(c.width() + 2))
                 .collect(Collectors.joining()) + "+";
 
+        //titulo
         if (title != null) {
             // techo del título
             System.out.println("+" + "-".repeat(border.length() - 2) + "+");
@@ -125,7 +126,7 @@ public class ConsoleTable<T> {
         System.out.printf(format, headers);
         System.out.println(border);
 
-        // 4. Imprimir Filas
+        // Imprimir Filas
         for (T item : data) {
             Object[] values = columns.stream()
                     .map(c -> truncate(String.valueOf(c.extractor().apply(item)), c.width()))
@@ -134,6 +135,17 @@ public class ConsoleTable<T> {
         }
 
         System.out.println(border);
+
+        //footer
+        if (footer != null) {
+            // cuanto espacio libre queda
+            int padding = border.length() - 2 - footer.length();
+
+            String spaces = " ".repeat(Math.max(0, padding));
+            System.out.println("|" + spaces + footer + "|");
+
+            System.out.println(border);
+        }
     }
 
     /**
