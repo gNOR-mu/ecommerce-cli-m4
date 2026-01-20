@@ -4,15 +4,11 @@ import com.ecommerce.demo.model.Product;
 import com.ecommerce.demo.repository.ProductRepository;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * Implementación en memoria del repositorio de productos.
- * <p>
- * Utiliza un {@link java.util.HashMap} para simular la persistencia de datos.
- * Esta implementación no es persistente: los datos se perderán al reiniciar la aplicación.
- * </p>
- *
+ * Implementación en memoria de {@link ProductRepository}
+ * @author Gabriel Norambuena
+ * @version 1.0
  */
 public class InMemoryProductRepository extends InMemoryAbstractRepository<Product> implements ProductRepository {
 

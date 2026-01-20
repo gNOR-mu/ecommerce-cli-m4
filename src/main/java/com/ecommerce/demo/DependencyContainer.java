@@ -7,6 +7,9 @@ import com.ecommerce.demo.util.InputHandler;
 
 import java.util.Scanner;
 
+/**
+ * Contenedor con las dependencias manejadas en memoria
+ */
 public class DependencyContainer {
     private final CategoryRepository CATEGORY_REPOSITORY;
     private final InventoryRepository INVENTORY_REPOSITORY;
@@ -24,6 +27,9 @@ public class DependencyContainer {
     private final Scanner SCANNER;
     private final InputHandler INPUT_HANDLER;
 
+    /**
+     * Constructor de la clase
+     */
     public DependencyContainer() {
         // creación de repositorios
         this.CATEGORY_REPOSITORY = new InMemoryCategoryRepository();

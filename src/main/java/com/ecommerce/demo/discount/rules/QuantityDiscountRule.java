@@ -8,6 +8,9 @@ import com.ecommerce.demo.util.Constants;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+/**
+ * Regla para los descuentos por cantidad de productos
+ */
 public class QuantityDiscountRule implements DiscountRule {
 
     /**
@@ -32,6 +35,9 @@ public class QuantityDiscountRule implements DiscountRule {
         return Constants.QUANTITY_DISCOUNT_AMMOUNT;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName() {
         return "Descuento sobre " + Constants.QUANTITY_TRESHHOLD + " productos: " + Constants.QUANTITY_DISCOUNT_AMMOUNT + "%";

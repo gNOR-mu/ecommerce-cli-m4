@@ -1,33 +1,40 @@
 package com.ecommerce.demo.service;
 
+import com.ecommerce.demo.exceptions.ResourceNotFoundException;
 import com.ecommerce.demo.model.Order;
 import com.ecommerce.demo.repository.OrderRepository;
 
-import java.util.Optional;
-
-public class OrderService implements ReadOnlyService<Order,Long> {
+/**
+ * Servicio para la gestión de órdenes
+ * @author Gabriel Norambuena
+ * @version 1.0
+ */
+public class OrderService implements IdentifiableService<Order,Long> {
     private final OrderRepository ORDER_REPOSITORY;
 
+    /**
+     * Constructor de la clase
+     * @param orderRepository Repositorio de las órdenes
+     */
     public OrderService(OrderRepository orderRepository) {
         this.ORDER_REPOSITORY = orderRepository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Optional<Order> findById(Long id) {
-        return ORDER_REPOSITORY.findById(id);
+    public Order getById(Long id) {
+        return ORDER_REPOSITORY.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Orden", id));
     }
-
-    @Override
-    public boolean existsById(Long id) {
-        return ORDER_REPOSITORY.existsById(id);
-    }
-
 
     /**
-     * Crea una nueva orden.
-     * @return ID de la orden generada
+     * {@inheritDoc}
      */
-    public Long createORder(){
-        return ORDER_REPOSITORY.save(new Order()).getId();
+    @Override
+    public boolean notExistsById(Long id) {
+        return !ORDER_REPOSITORY.existsById(id);
     }
+
 }

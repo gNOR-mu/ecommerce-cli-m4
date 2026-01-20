@@ -3,9 +3,7 @@ package com.ecommerce.demo.util;
 import com.ecommerce.demo.dto.*;
 import com.ecommerce.demo.model.Category;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Clase de utilidad para imprimir mensajes formateados en la consola
@@ -13,6 +11,11 @@ import java.util.Objects;
  * @author Gabriel Norambuena
  */
 public class PrintUtil {
+    /**
+     * Registro con las opciones de un menú
+     * @param key Opción
+     * @param description Descripción
+     */
     public record MenuOption(String key, String description) {
     }
 
@@ -49,7 +52,7 @@ public class PrintUtil {
      * Función de utilidad para imprimir las categorías de forma formateada
      * <p> Muestra: ID, CATEGORÍA </ṕ>
      *
-     * @param categories Lista con las Categorías a mnostrar
+     * @param categories Lista con las Categorías a mostrar
      * @see ConsoleTable
      */
     public static void printCategories(List<Category> categories) {
@@ -134,7 +137,7 @@ public class PrintUtil {
     public static void printCartItems(CartSummary cartSummary) {
         new ConsoleTable<CartProductsDto>()
                 .setTitle("CARRITO")
-                .addColumn("ID", 4, CartProductsDto::ID)
+                .addColumn("ID", 4, CartProductsDto::Id)
                 .addColumn("PRODUCTO", 20, CartProductsDto::name)
                 .addColumn("PRECIO UNITARIO", 17, CartProductsDto::unitPrice)
                 .addColumn("CANTIDAD", 10, CartProductsDto::quantity)

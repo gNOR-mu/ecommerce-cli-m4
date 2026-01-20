@@ -7,7 +7,10 @@ import com.ecommerce.demo.discount.rules.QuantityDiscountRule;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class Constants {
+/**
+ * Clase de utilidad que contiene constantes
+ */
+public final class Constants {
     private Constants(){}
 
     /* Opciones de confirmación*/

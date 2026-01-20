@@ -12,10 +12,18 @@ import com.ecommerce.demo.view.AbstractMenu;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Menú de administrador
+ */
 public class AdminMenu extends AbstractMenu {
     private final ProductService PRODUCT_SERVICE;
     private final CategoryService CATEGORY_SERVICE;
 
+    /**
+
+     * @param productService Servicio de productos
+     * @param categoryService
+     */
     public AdminMenu(InputHandler inputHandler, ProductService productService, CategoryService categoryService) {
         super(inputHandler);
         this.PRODUCT_SERVICE = productService;

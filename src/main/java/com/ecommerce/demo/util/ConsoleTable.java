@@ -6,8 +6,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Clase de utilidad para imprimir tablas, utiliza el patrón fuelnt design para la creación de las mismas.
+ * Clase de utilidad para imprimir tablas, utiliza el patrón fluent design para la creación de las mismas.
  *
+ * @param <T> Tipo de la clase
  * @author Gabriel Norambuena
  * @version 1.0
  */
@@ -17,7 +18,7 @@ public class ConsoleTable<T> {
      *
      * @param header Nombre de la columna
      * @param width Ancho de la columna
-     * @param extractor Extractor de la columna (ej: getNombre)
+     * @param extractor Extractor de la columna (Ej: getNombre)
      * @param <T> Tipo de la tabla
      */
     private record Column<T>(String header, int width, Function<T, Object> extractor) {}
@@ -30,7 +31,7 @@ public class ConsoleTable<T> {
      * Añade una nueva columna a la tabla
      * @param header Cabecera de la tabla
      * @param width Ancho de la tabla
-     * @param extractor Extractor de la columna (ej: getNombre)
+     * @param extractor Extractor de la columna (Ej: getNombre)
      * @return La misma instancia de {@see ConsoleTable} para permitir el encadenamiento.
      */
     public ConsoleTable<T> addColumn(String header, int width, Function<T, Object> extractor) {

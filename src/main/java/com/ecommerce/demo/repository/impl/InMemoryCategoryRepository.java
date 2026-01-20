@@ -5,7 +5,16 @@ import com.ecommerce.demo.repository.CategoryRepository;
 
 import java.util.List;
 
+/**
+ * Implementación en memoria de {@link CategoryRepository}
+ * @author Gabriel Norambuena
+ * @version 1.0
+ */
 public class InMemoryCategoryRepository extends InMemoryAbstractRepository<Category> implements CategoryRepository {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Long> findIdsByName(String searchText) {
         String searchLower = searchText.toLowerCase();
         return DB.values().stream()

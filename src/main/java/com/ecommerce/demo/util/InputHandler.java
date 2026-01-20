@@ -4,13 +4,28 @@ import java.math.BigDecimal;
 import java.util.Scanner;
 import java.util.function.Function;
 
+/**
+ * Clase de utilidad que manipula las entradas de teclado
+ */
 public class InputHandler {
     private final Scanner SCANNER;
 
+    /**
+     * Constructor de la clase
+     * @param scanner Scanner
+     */
     public InputHandler(Scanner scanner) {
         this.SCANNER = scanner;
     }
 
+    /**
+     * Lee una entrada.
+     * Aplica un parser para validar la entrada.
+     * @param msg Mensaje a imprimir
+     * @param parser Parser a aplicar
+     * @return Entrada de teclado
+     * @param <T> Tipo de dato
+     */
     private <T> T readInput(String msg, Function<String, T> parser) {
         while (true) {
             System.out.print(msg);
@@ -23,6 +38,11 @@ public class InputHandler {
         }
     }
 
+    /**
+     * Lee un texto por consola
+     * @param msg Mensaje a mostrar por consola
+     * @return Texto ingresado en consola
+     */
     public String readText(String msg) {
         return readInput(msg, str -> {
             if (str.isEmpty()) throw new IllegalArgumentException();
@@ -30,6 +50,11 @@ public class InputHandler {
         });
     }
 
+    /**
+     * Lee un entero por consola
+     * @param msg Mensaje a mostrar por consola
+     * @return Entero ingresado en consola
+     */
     public int readInt(String msg) {
         return readInput(msg, str -> {
             try {
@@ -44,6 +69,11 @@ public class InputHandler {
         });
     }
 
+    /**
+     * Lee un long por consola
+     * @param msg Mensaje a mostrar por consola
+     * @return Long ingresado en consola
+     */
     public Long readLong(String msg) {
         return readInput(msg, str -> {
             try {
@@ -58,6 +88,11 @@ public class InputHandler {
         });
     }
 
+    /**
+     * Lee un BigDecimal por consola
+     * @param msg Mensaje a mostrar por consola
+     * @return BigDecimal ingresado en consola
+     */
     public BigDecimal readBigDecimal(String msg) {
         return readInput(msg, str -> {
             try {
@@ -73,6 +108,12 @@ public class InputHandler {
         });
     }
 
+    /**
+     * Lee un valor por consola, en caso de que la entrada esté vacía retorna el valor original.
+     * @param msg Mensaje a mostrar por consola
+     * @param actualValue Valor actual
+     * @return Nuevo valor.
+     */
     public String editString(String msg, String actualValue) {
         System.out.printf("%s [%s]: ", msg, actualValue);
 
@@ -85,13 +126,19 @@ public class InputHandler {
         return input;
     }
 
-    public long editLong(String mensaje, Long valorActual) {
+    /**
+     * Lee un valor por consola, en caso de que la entrada esté vacía retorna el valor original.
+     * @param msg Mensaje a mostrar por consola
+     * @param actualValue Valor actual
+     * @return Nuevo valor.
+     */
+    public long editLong(String msg, Long actualValue) {
         while (true) {
-            System.out.printf("%s [%d]: ", mensaje, valorActual);
+            System.out.printf("%s [%d]: ", msg, actualValue);
             String input = SCANNER.nextLine().trim();
 
             if (input.isEmpty()) {
-                return valorActual;
+                return actualValue;
             }
 
             try {
@@ -103,13 +150,19 @@ public class InputHandler {
         }
     }
 
-    public int editInt(String mensaje, int valorActual) {
+    /**
+     * Lee un valor por consola, en caso de que la entrada esté vacía retorna el valor original.
+     * @param msg Mensaje a mostrar por consola
+     * @param actualValue Valor actual
+     * @return Nuevo valor.
+     */
+    public int editInt(String msg, int actualValue) {
         while (true) {
-            System.out.printf("%s [%d]: ", mensaje, valorActual);
+            System.out.printf("%s [%d]: ", msg, actualValue);
             String input = SCANNER.nextLine().trim();
 
             if (input.isEmpty()) {
-                return valorActual;
+                return actualValue;
             }
 
             try {
@@ -126,13 +179,19 @@ public class InputHandler {
         }
     }
 
-    public BigDecimal editBigDecimal(String mensaje, BigDecimal valorActual) {
+    /**
+     * Lee un valor por consola, en caso de que la entrada esté vacía retorna el valor original.
+     * @param msg Mensaje a mostrar por consola
+     * @param actualValue Valor actual
+     * @return Nuevo valor.
+     */
+    public BigDecimal editBigDecimal(String msg, BigDecimal actualValue) {
         while (true) {
-            System.out.printf("%s [%s]: ", mensaje, valorActual);
+            System.out.printf("%s [%s]: ", msg, actualValue);
             String input = SCANNER.nextLine().trim();
 
             if (input.isEmpty()) {
-                return valorActual;
+                return actualValue;
             }
 
             try {

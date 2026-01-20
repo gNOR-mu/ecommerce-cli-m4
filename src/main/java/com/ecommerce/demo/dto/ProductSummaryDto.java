@@ -2,6 +2,15 @@ package com.ecommerce.demo.dto;
 
 import java.math.BigDecimal;
 
+/**
+ * DTO para mostrar el resumen de un producto
+ * @param id Identificación
+ * @param name Nombre del producto
+ * @param category Nombre de la categoría
+ * @param price Precio del producto
+ * @param stock Cantidad del producto
+ * @param categoryId Identificación de la categoría
+ */
 public record ProductSummaryDto(
         Long id,
         String name,

@@ -18,7 +18,6 @@ public interface DiscountRule {
 
     /**
      * Descuento correspondiente a un carrito.
-     * @param cart carrito a calcular el descuento
      * @return Descuento
      */
     BigDecimal calculateDiscount();

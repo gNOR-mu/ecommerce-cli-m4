@@ -4,8 +4,9 @@ package com.ecommerce.demo;
 import com.ecommerce.demo.view.MainMenu;
 import com.ecommerce.demo.view.Menu;
 
-import java.util.Scanner;
-
+/**
+ * Clase principal
+ */
 public class Main {
 
     public static void main(String[] args) {
