@@ -42,6 +42,14 @@ public class QuantityDiscountRule implements DiscountRule {
      */
     @Override
     public String getName() {
-        return "Descuento sobre " + Constants.QUANTITY_THRESHOLD + " productos: " + Constants.QUANTITY_DISCOUNT_AMOUNT + "%";
+        return "Descuento por cantidad de productos";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getCondition() {
+        return "Descuento sobre %d productos".formatted(Constants.QUANTITY_THRESHOLD);
     }
 }

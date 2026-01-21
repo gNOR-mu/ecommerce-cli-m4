@@ -43,6 +43,14 @@ public class CategoryDiscountRule implements DiscountRule {
      */
     @Override
     public String getName() {
-        return "Descuento por llevar "+ Constants.CATEGORIES_THRESHOLD +" categorías distintas";
+        return "Descuento por llevar varias categorías";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public  String getCondition(){
+        return "Lleva %d categorías distintas".formatted(Constants.CATEGORIES_THRESHOLD);
     }
 }

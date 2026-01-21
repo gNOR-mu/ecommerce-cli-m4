@@ -1,6 +1,7 @@
 package com.ecommerce.demo.util;
 
 import com.ecommerce.demo.discount.DiscountRule;
+import com.ecommerce.demo.discount.rules.AmountDiscountRule;
 import com.ecommerce.demo.discount.rules.CategoryDiscountRule;
 import com.ecommerce.demo.discount.rules.QuantityDiscountRule;
 
@@ -45,11 +46,22 @@ public final class Constants {
     public static final BigDecimal CATEGORIES_DISCOUNT_AMOUNT = new BigDecimal("20");
 
     /**
+     * Descuento que se aplica al tener la cantidad indicada como valor total del carrito pre descuentos.
+     */
+    public static final BigDecimal TOTAL_AMOUNT_THRESHOLD = new BigDecimal("99990");
+
+    /**
+     * Descuento que aplica a la regla de monto total
+     */
+    public static final BigDecimal TOTAL_COST_AMOUNT = new BigDecimal("5");
+
+    /**
      * Reglas activas de descuento.
      */
     public static final List<DiscountRule> ACTIVE_RULES = List.of(
             new QuantityDiscountRule(),
-            new CategoryDiscountRule()
+            new CategoryDiscountRule(),
+            new AmountDiscountRule()
     );
 
 

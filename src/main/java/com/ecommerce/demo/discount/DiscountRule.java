@@ -28,4 +28,10 @@ public interface DiscountRule {
      * @return Nombre del descuento
      */
     String getName();
+
+    /**
+     * Obtiene la condición de descuento
+     * @return Condición de descuento
+     */
+    String getCondition();
 }
