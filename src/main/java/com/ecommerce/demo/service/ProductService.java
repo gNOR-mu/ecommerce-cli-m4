@@ -123,7 +123,7 @@ public class ProductService implements IdentifiableService<Product, Long> {
      * @param id Identificación del producto
      *
      * @throws ResourceNotFoundException Viene de {@link #getById(Long)}
-     * @throws com.ecommerce.demo.exceptions.InventoryException Viene de {@link InventoryService#deleteById(Long)}
+     * @throws com.ecommerce.demo.exceptions.InventoryException Viene de {@link InventoryService#deleteByProductId(Long)}}
 
      */
     public void deleteById(Long id) {
