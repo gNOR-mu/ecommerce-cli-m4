@@ -1,6 +1,7 @@
 package com.ecommerce.demo.view.admin;
 
 import com.ecommerce.demo.dto.ProductSummaryDto;
+import com.ecommerce.demo.exceptions.ResourceNotFoundException;
 import com.ecommerce.demo.model.Category;
 import com.ecommerce.demo.model.Product;
 import com.ecommerce.demo.service.CategoryService;
@@ -94,8 +95,8 @@ public class AdminMenu extends AbstractMenu {
         try {
             productService.create(product, stock);
             System.out.println("Producto creado exitosamente.");
-        } catch (Exception e) {
-            System.out.println("No se ha creado el producto debido a que: " + e.getMessage());
+        } catch (IllegalArgumentException | ResourceNotFoundException e) {
+            System.out.println("Datos inválidos: " + e.getMessage());
         }
     }
 
@@ -135,7 +136,10 @@ public class AdminMenu extends AbstractMenu {
     private void delete() {
         long id = inputHandler.readLong("Ingresa la id del producto a eliminar: ");
         try {
-            String confirmDelete = inputHandler.readText("¿Seguro que quieres eliminar el producto con id = " + id + "? (Sí/No): ");
+            ProductSummaryDto product = productService.getSummaryById(id);
+            PrintUtil.printProductSummary(product);
+            String confirmDelete = inputHandler.readText("¿Seguro que quieres eliminar el producto? (Sí/No): ");
+
             if (confirm(confirmDelete)) {
                 productService.deleteById(id);
                 System.out.println("Producto eliminado");

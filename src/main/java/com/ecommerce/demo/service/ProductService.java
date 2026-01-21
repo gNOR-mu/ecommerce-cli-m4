@@ -127,9 +127,8 @@ public class ProductService implements IdentifiableService<Product, Long> {
 
      */
     public void deleteById(Long id) {
-        Product product = getById(id);
+        inventoryService.deleteByProductId(id);
         productRepository.deleteById(id);
-        inventoryService.deleteById(product.getCategoryId());
     }
 
     /**

@@ -58,14 +58,14 @@ public class InventoryService implements IdentifiableService<Inventory, Long> {
 
     /**
      * Elimina el inventario de un producto.
-     * @param id Identificación del inventario
+     * @param productId Identificación del producto
      *
      * @throws ResourceNotFoundException Cuando no se encuentra un inventario (viene de getById).
      * @throws InventoryException Cuando el inventario aún presenta productos. (quantity > 0).
      *
      */
-    public void deleteById(Long id) {
-        Inventory inventory = getById(id);
+    public void deleteByProductId(Long productId) {
+        Inventory inventory = getByProductId(productId);
 
         if(inventory.getQuantity() > 0){
             throw new InventoryException("No se puede eliminar un inventario con cantidad de productos > 0");
