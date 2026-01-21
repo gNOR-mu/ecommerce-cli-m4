@@ -103,6 +103,14 @@ public class ProductService implements IdentifiableService<Product, Long> {
     }
 
     /**
+     * Obtiene todos los productos con stock
+     * @return Una lista con los productos con stock
+     */
+    public List<ProductSummaryDto> findAllWithStock(){
+        return  findAllSummary().stream().filter(p -> p.stock() > 0).toList();
+    }
+
+    /**
      * Obtiene el resumen de un producto determinado
      * @param id Identificación del producto
      * @return Resumen del producto

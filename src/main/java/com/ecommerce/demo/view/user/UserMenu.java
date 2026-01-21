@@ -14,12 +14,24 @@ import com.ecommerce.demo.view.AbstractMenu;
 
 import java.util.List;
 
+/**
+ * Menú de usuario
+ * @author Gabriel Norambuena
+ * @version 1.0
+ */
 public class UserMenu extends AbstractMenu {
     private final ProductService productService;
     private final CartService cartService;
     private final DiscountCalculatorService discountCalculatorService;
     private final Cart cart;
 
+    /**
+     * Constructor de la clase.
+     * @param inputHandler Clase de utilidad para manejar las entradas.
+     * @param productService Servicio de productos
+     * @param discountCalculatorService Servicio de descuentos
+     * @param inventoryService Servicio de inventario
+     */
     public UserMenu(InputHandler inputHandler,
                     ProductService productService,
                     InventoryService inventoryService,
@@ -31,11 +43,17 @@ public class UserMenu extends AbstractMenu {
         this.cartService = new CartService(productService, inventoryService, new Cart());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void printMenuOptions() {
         PrintUtil.printUserMenu();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean handleOption(int option) {
         switch (option) {
@@ -54,10 +72,14 @@ public class UserMenu extends AbstractMenu {
         return true;
     }
 
+    /**
+     * Muestra todos los productos con stock
+     */
     private void listProducts() {
-        List<ProductSummaryDto> products = productService.findAllSummary();
+        List<ProductSummaryDto> products = productService.findAllWithStock();
         PrintUtil.printProductSummary(products);
     }
+
 
     private void searchProduct() {
         String searchText = inputHandler.readText("Texto a buscar nombre/categoría: ");
