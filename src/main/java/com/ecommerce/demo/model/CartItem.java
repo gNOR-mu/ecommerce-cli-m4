@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  * @version 1.0
  */
 public class CartItem {
-    private final Product PRODUCT;
+    private final Product product;
     private int quantity;
 
     /**
@@ -17,7 +17,7 @@ public class CartItem {
      * @param quantity Cantidad del producto.
      */
     public CartItem(Product product, int quantity) {
-        this.PRODUCT = product;
+        this.product = product;
         this.quantity = quantity;
     }
 
@@ -27,7 +27,7 @@ public class CartItem {
      * @return Producto
      */
     public Product getProduct() {
-        return PRODUCT;
+        return product;
     }
 
     /**
@@ -51,6 +51,6 @@ public class CartItem {
      * @return Subtotal del producto
      */
     public BigDecimal getSubTotal(){
-        return PRODUCT.getPrice().multiply(new BigDecimal(quantity));
+        return product.getPrice().multiply(new BigDecimal(quantity));
     }
 }

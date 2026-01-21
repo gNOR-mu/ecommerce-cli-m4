@@ -25,7 +25,7 @@ public class InMemoryProductRepository extends InMemoryAbstractRepository<Produc
         if (name == null || name.isBlank()){
             return List.of();
         }
-        return DB.values().stream()
+        return database.values().stream()
                 .filter(product -> product.getName().equalsIgnoreCase(name))
                 .toList();
     }
@@ -43,7 +43,7 @@ public class InMemoryProductRepository extends InMemoryAbstractRepository<Produc
         if (categoryId == null){
             return List.of();
         }
-        return DB.values().stream()
+        return database.values().stream()
                 .filter(product -> product.getCategoryId().equals(categoryId))
                 .toList();
     }

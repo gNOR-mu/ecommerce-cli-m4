@@ -10,14 +10,14 @@ import com.ecommerce.demo.repository.OrderRepository;
  * @version 1.0
  */
 public class OrderService implements IdentifiableService<Order,Long> {
-    private final OrderRepository ORDER_REPOSITORY;
+    private final OrderRepository orderRepository;
 
     /**
      * Constructor de la clase
      * @param orderRepository Repositorio de las órdenes
      */
     public OrderService(OrderRepository orderRepository) {
-        this.ORDER_REPOSITORY = orderRepository;
+        this.orderRepository = orderRepository;
     }
 
     /**
@@ -25,7 +25,7 @@ public class OrderService implements IdentifiableService<Order,Long> {
      */
     @Override
     public Order getById(Long id) {
-        return ORDER_REPOSITORY.findById(id)
+        return orderRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Orden", id));
     }
 
@@ -34,7 +34,7 @@ public class OrderService implements IdentifiableService<Order,Long> {
      */
     @Override
     public boolean notExistsById(Long id) {
-        return !ORDER_REPOSITORY.existsById(id);
+        return !orderRepository.existsById(id);
     }
 
 }

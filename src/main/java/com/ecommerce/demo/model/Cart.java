@@ -9,7 +9,7 @@ import java.util.*;
  * @version 1.0
  */
 public class Cart {
-    private Map<Long, CartItem> items = new HashMap<>();
+    private final Map<Long, CartItem> items = new HashMap<>();
 
     /**
      * Añade un producto al carro.

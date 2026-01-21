@@ -17,7 +17,7 @@ public class InMemoryCategoryRepository extends InMemoryAbstractRepository<Categ
     @Override
     public List<Long> findIdsByName(String searchText) {
         String searchLower = searchText.toLowerCase();
-        return DB.values().stream()
+        return database.values().stream()
                 .filter(c -> c.getName().toLowerCase().contains(searchLower))
                 .map(Category::getId)
                 .toList();

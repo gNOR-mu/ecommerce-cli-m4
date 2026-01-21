@@ -17,9 +17,9 @@ import java.util.List;
  * @version 1.0
  */
 public class ProductService implements IdentifiableService<Product, Long> {
-    private final ProductRepository PRODUCT_REPOSITORY;
-    private final CategoryService CATEGORY_SERVICE;
-    private final InventoryService INVENTORY_SERVICE;
+    private final ProductRepository productRepository;
+    private final CategoryService categoryService;
+    private final InventoryService inventoryService;
 
     /**
      * Constructor de la clase
@@ -28,9 +28,9 @@ public class ProductService implements IdentifiableService<Product, Long> {
      * @param inventoryService Servicio de inventario
      */
     public ProductService(ProductRepository productRepository, CategoryService categoryService, InventoryService inventoryService) {
-        this.PRODUCT_REPOSITORY = productRepository;
-        this.CATEGORY_SERVICE = categoryService;
-        this.INVENTORY_SERVICE = inventoryService;
+        this.productRepository = productRepository;
+        this.categoryService = categoryService;
+        this.inventoryService = inventoryService;
     }
 
     /**
@@ -38,7 +38,7 @@ public class ProductService implements IdentifiableService<Product, Long> {
      */
     @Override
     public Product getById(Long id) {
-        return PRODUCT_REPOSITORY.findById(id)
+        return productRepository.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Producto", id));
     }
 
@@ -47,7 +47,7 @@ public class ProductService implements IdentifiableService<Product, Long> {
      */
     @Override
     public boolean notExistsById(Long id) {
-        return !PRODUCT_REPOSITORY.existsById(id);
+        return !productRepository.existsById(id);
     }
 
     /**
@@ -61,7 +61,7 @@ public class ProductService implements IdentifiableService<Product, Long> {
      * @throws IllegalArgumentException Cuando el precio es <= 0
      */
     public Product create(Product product, int quantity) {
-        if (CATEGORY_SERVICE.notExistsById(product.getCategoryId())) {
+        if (categoryService.notExistsById(product.getCategoryId())) {
             throw new ResourceNotFoundException("Categoría", product.getCategoryId());
         }
         if(product.getName() == null || product.getName().isBlank()){
@@ -71,10 +71,10 @@ public class ProductService implements IdentifiableService<Product, Long> {
         if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0){
             throw new IllegalArgumentException("El precio no puede ser <= 0");
         }
-        Product createdProduct = PRODUCT_REPOSITORY.save(product);
+        Product createdProduct = productRepository.save(product);
 
         Inventory inventory = new Inventory(createdProduct.getId(), quantity);
-        INVENTORY_SERVICE.create(inventory);
+        inventoryService.create(inventory);
         return createdProduct;
     }
 
@@ -83,13 +83,13 @@ public class ProductService implements IdentifiableService<Product, Long> {
      * @return Listado con resumen de todos los productos
      */
     public List<ProductSummaryDto> findAllSummary() {
-        List<Product> products = PRODUCT_REPOSITORY.findAll();
+        List<Product> products = productRepository.findAll();
         List<ProductSummaryDto> res = new ArrayList<>();
 
         //NOTA no es la forma más óptima, sin embargo, el rendimiento no es un requisito
         for (Product product : products) {
-            var category = CATEGORY_SERVICE.getById(product.getCategoryId());
-            var inventory = INVENTORY_SERVICE.getByProductId(product.getId());
+            var category = categoryService.getById(product.getCategoryId());
+            var inventory = inventoryService.getByProductId(product.getId());
             res.add(new ProductSummaryDto(
                     product.getId(),
                     product.getName(),
@@ -111,8 +111,8 @@ public class ProductService implements IdentifiableService<Product, Long> {
      */
     public ProductSummaryDto getSummaryById(Long id) {
         Product product = getById(id);
-        Inventory inventory = INVENTORY_SERVICE.getById(product.getId());
-        Category category = CATEGORY_SERVICE.getById(product.getCategoryId());
+        Inventory inventory = inventoryService.getById(product.getId());
+        Category category = categoryService.getById(product.getCategoryId());
         return new ProductSummaryDto(product.getId(), product.getName(), category.getName(), product.getPrice(),
                 inventory.getQuantity(), product.getCategoryId());
     }
@@ -128,8 +128,8 @@ public class ProductService implements IdentifiableService<Product, Long> {
      */
     public void deleteById(Long id) {
         Product product = getById(id);
-        PRODUCT_REPOSITORY.deleteById(id);
-        INVENTORY_SERVICE.deleteById(product.getCategoryId());
+        productRepository.deleteById(id);
+        inventoryService.deleteById(product.getCategoryId());
     }
 
     /**
@@ -144,7 +144,7 @@ public class ProductService implements IdentifiableService<Product, Long> {
      * @throws IllegalArgumentException Cuando el inventario es inferior a 0, viene de {@link InventoryService#updateByProductId(Long, int)}
      */
     public Product update(Long id, Product product, int stock) {
-        if (CATEGORY_SERVICE.notExistsById(product.getCategoryId())) {
+        if (categoryService.notExistsById(product.getCategoryId())) {
             throw new ResourceNotFoundException("Categoría", product.getCategoryId());
         }
 
@@ -157,12 +157,12 @@ public class ProductService implements IdentifiableService<Product, Long> {
         }
         Product existing = getById(id);
 
-        INVENTORY_SERVICE.updateByProductId(id, stock);
+        inventoryService.updateByProductId(id, stock);
         existing.setName(product.getName());
         existing.setCategoryId(product.getCategoryId());
         existing.setPrice(product.getPrice());
 
-        return PRODUCT_REPOSITORY.save(existing);
+        return productRepository.save(existing);
     }
 
     /**
@@ -173,8 +173,8 @@ public class ProductService implements IdentifiableService<Product, Long> {
     public List<ProductSummaryDto> search(String searchText) {
         String searchLower = searchText.toLowerCase();
 
-        List<Long> matchingCategoryIds = CATEGORY_SERVICE.findIdsByName(searchText);
-        List<Product> matches = PRODUCT_REPOSITORY.findAll().stream()
+        List<Long> matchingCategoryIds = categoryService.findIdsByName(searchText);
+        List<Product> matches = productRepository.findAll().stream()
                 .filter(p -> {
                     boolean nameMatches = p.getName().toLowerCase().contains(searchLower);
                     boolean categoryMatches = matchingCategoryIds.contains(p.getCategoryId());
@@ -192,8 +192,8 @@ public class ProductService implements IdentifiableService<Product, Long> {
      */
     private ProductSummaryDto convertToDto(Product p) {
         //prácticamente es como un mapper
-        String catName = CATEGORY_SERVICE.getById(p.getCategoryId()).getName();
-        int stock = INVENTORY_SERVICE.getById(p.getId()).getQuantity();
+        String catName = categoryService.getById(p.getCategoryId()).getName();
+        int stock = inventoryService.getById(p.getId()).getQuantity();
         return new ProductSummaryDto(
                 p.getId(),
                 p.getName(),

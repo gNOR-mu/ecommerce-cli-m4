@@ -1,6 +1,6 @@
 package com.ecommerce.demo.view;
 
-import com.ecommerce.demo.DependencyContainer;
+import com.ecommerce.demo.config.DependencyContainer;
 import com.ecommerce.demo.util.PrintUtil;
 import com.ecommerce.demo.view.admin.AdminMenu;
 import com.ecommerce.demo.view.user.UserMenu;
@@ -9,14 +9,8 @@ import com.ecommerce.demo.view.user.UserMenu;
  * Menú principal
  */
 public class MainMenu extends AbstractMenu {
-    /**
-     * Nota: Constructor con las dependencias, en caso de que un menú necesite utilizar alguna dependencia en específico
-     * se le pasa solo la dependencia que necesita y no el contenedor completo
-     */
-    private final DependencyContainer DEPENDENCY_CONTAINER;
-
-    private Menu userMenu;
-    private Menu adminMenu;
+    private final Menu userMenu;
+    private final Menu adminMenu;
 
     /**
      * Constructor de la clase
@@ -27,18 +21,17 @@ public class MainMenu extends AbstractMenu {
      */
     public MainMenu(DependencyContainer dependencyContainer) {
         super(dependencyContainer.getInputHandler());
-        this.DEPENDENCY_CONTAINER = dependencyContainer;
 
         this.adminMenu = new AdminMenu(
-                DEPENDENCY_CONTAINER.getInputHandler(),
-                DEPENDENCY_CONTAINER.getProductService(),
-                DEPENDENCY_CONTAINER.getCategoryService());
+                dependencyContainer.getInputHandler(),
+                dependencyContainer.getProductService(),
+                dependencyContainer.getCategoryService());
 
         this.userMenu = new UserMenu(
-                DEPENDENCY_CONTAINER.getInputHandler(),
-                DEPENDENCY_CONTAINER.getProductService(),
-                DEPENDENCY_CONTAINER.getInventoryService(),
-                DEPENDENCY_CONTAINER.getDiscountCalculatorService()
+                dependencyContainer.getInputHandler(),
+                dependencyContainer.getProductService(),
+                dependencyContainer.getInventoryService(),
+                dependencyContainer.getDiscountCalculatorService()
         );
     }
 

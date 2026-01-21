@@ -17,6 +17,6 @@ public class InMemoryInventoryRepository extends InMemoryAbstractRepository<Inve
      */
     @Override
     public Optional<Inventory> findByProductId(Long productId) {
-        return DB.values().stream().filter(inventory -> inventory.getProductId().equals(productId)).findFirst();
+        return database.values().stream().filter(inventory -> inventory.getProductId().equals(productId)).findFirst();
     }
 }

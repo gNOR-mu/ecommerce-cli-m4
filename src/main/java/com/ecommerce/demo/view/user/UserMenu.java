@@ -1,6 +1,5 @@
 package com.ecommerce.demo.view.user;
 
-import com.ecommerce.demo.dto.CartProductsDto;
 import com.ecommerce.demo.dto.CartSummary;
 import com.ecommerce.demo.dto.DiscountSummary;
 import com.ecommerce.demo.dto.ProductSummaryDto;
@@ -16,20 +15,20 @@ import com.ecommerce.demo.view.AbstractMenu;
 import java.util.List;
 
 public class UserMenu extends AbstractMenu {
-    private final ProductService PRODUCT_SERVICE;
-    private final CartService CART_SERVICE;
-    private final DiscountCalculatorService DISCOUNT_CALCULATOR_SERVICE;
-    private final Cart CART;
+    private final ProductService productService;
+    private final CartService cartService;
+    private final DiscountCalculatorService discountCalculatorService;
+    private final Cart cart;
 
     public UserMenu(InputHandler inputHandler,
                     ProductService productService,
                     InventoryService inventoryService,
                     DiscountCalculatorService discountCalculatorService) {
         super(inputHandler);
-        CART = new Cart();
-        PRODUCT_SERVICE = productService;
-        DISCOUNT_CALCULATOR_SERVICE = discountCalculatorService;
-        CART_SERVICE = new CartService(productService, inventoryService, CART);
+        this.productService = productService;
+        this.discountCalculatorService = discountCalculatorService;
+        this.cart = new Cart();
+        this.cartService = new CartService(productService, inventoryService, new Cart());
     }
 
     @Override
@@ -56,13 +55,13 @@ public class UserMenu extends AbstractMenu {
     }
 
     private void listProducts() {
-        List<ProductSummaryDto> products = PRODUCT_SERVICE.findAllSummary();
+        List<ProductSummaryDto> products = productService.findAllSummary();
         PrintUtil.printProductSummary(products);
     }
 
     private void searchProduct() {
         String searchText = inputHandler.readText("Texto a buscar nombre/categoría: ");
-        List<ProductSummaryDto> res = PRODUCT_SERVICE.search(searchText);
+        List<ProductSummaryDto> res = productService.search(searchText);
         PrintUtil.printProductSummary(res);
     }
 
@@ -71,7 +70,7 @@ public class UserMenu extends AbstractMenu {
         int quantity = inputHandler.readInt("Cantidad a agregar: ");
 
         try {
-            CART_SERVICE.addToCart(id, quantity);
+            cartService.addToCart(id, quantity);
             System.out.println("Producto añadido al carro");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -82,7 +81,7 @@ public class UserMenu extends AbstractMenu {
     private void removeFromCart() {
         long id = inputHandler.readLong("Ingresa la id del producto a remover del carro: ");
         try {
-            CART_SERVICE.removeFromCart(id);
+            cartService.removeFromCart(id);
             System.out.println("Producto removido del carro.");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -90,12 +89,12 @@ public class UserMenu extends AbstractMenu {
     }
 
     private void printCart() {
-        CartSummary cartSummary = CART_SERVICE.getAll();
+        CartSummary cartSummary = cartService.getAll();
         PrintUtil.printCartItems(cartSummary);
     }
 
     private void printDiscounts() {
-        DiscountSummary discounts = DISCOUNT_CALCULATOR_SERVICE.applyDiscount(CART);
+        DiscountSummary discounts = discountCalculatorService.applyDiscount(cart);
         PrintUtil.printDiscounts(discounts);
     }
 }

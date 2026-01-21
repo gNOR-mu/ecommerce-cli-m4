@@ -17,10 +17,10 @@ import java.util.List;
  */
 public class CartService {
 
-    private final ProductService PRODUCT_SERVICE;
-    private final InventoryService INVENTORY_SERVICE;
+    private final ProductService productService;
+    private final InventoryService inventoryService;
 
-    private final Cart CART;
+    private final Cart cart;
 
     /**
      * Constructor de la clase.
@@ -29,9 +29,9 @@ public class CartService {
      * @param cart Carrito de compras.
      */
     public CartService(ProductService productService, InventoryService inventoryService, Cart cart) {
-        this.PRODUCT_SERVICE = productService;
-        this.INVENTORY_SERVICE = inventoryService;
-        this.CART = cart;
+        this.productService = productService;
+        this.inventoryService = inventoryService;
+        this.cart = cart;
     }
 
     /**
@@ -47,9 +47,9 @@ public class CartService {
             throw new IllegalArgumentException("No se puede añadir una cantidad negativa.");
         }
 
-        Product product = PRODUCT_SERVICE.getById(productId);
-        int inventory = INVENTORY_SERVICE.getByProductId(productId).getQuantity();
-        int cartQuantity = CART.getCartItem(productId).map(CartItem::getQuantity).orElse(0);
+        Product product = productService.getById(productId);
+        int inventory = inventoryService.getByProductId(productId).getQuantity();
+        int cartQuantity = cart.getCartItem(productId).map(CartItem::getQuantity).orElse(0);
 
         if (inventory == 0) {
             throw new InventoryException("No hay stock disponible");
@@ -58,7 +58,7 @@ public class CartService {
         if (inventory < (cartQuantity + quantity)) {
             throw new InventoryException("No puedes añadir más productos de los que hay disponibles");
         }
-        CART.addProduct(product, quantity);
+        cart.addProduct(product, quantity);
     }
 
     /**
@@ -68,7 +68,7 @@ public class CartService {
      * @throws ResourceNotFoundException Cuando el producto no se encuentra en el carro.
      */
     public void removeFromCart(Long productId) {
-        CART.removeItem(productId).orElseThrow(() ->
+        cart.removeItem(productId).orElseThrow(() ->
                 new ResourceNotFoundException("No existe un producto con la id : %d en el carro.".formatted(productId))
         );
     }
@@ -78,7 +78,7 @@ public class CartService {
      * @return Un resumen con todos los elementos del carro.
      */
     public CartSummary getAll() {
-        List<CartProductsDto> productsDto = CART.getAllItems().stream()
+        List<CartProductsDto> productsDto = cart.getAllItems().stream()
                 .map(item -> new CartProductsDto(
                         item.getProduct().getId(),
                         item.getProduct().getName(),
@@ -87,13 +87,13 @@ public class CartService {
                         item.getSubTotal()
                 )).toList();
 
-        return new CartSummary(productsDto, CART.getTotal());
+        return new CartSummary(productsDto, cart.getTotal());
     }
 
     /**
      * Vacía el carro.
      */
     public void clear() {
-        CART.clear();
+        cart.clear();
     }
 }
