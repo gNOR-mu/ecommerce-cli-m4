@@ -44,7 +44,7 @@ public class CartService {
      */
     public void addToCart(Long productId, int quantity) {
         if (quantity <= 0) {
-            throw new IllegalArgumentException("No se puede añadir una cantidad negativa.");
+            throw new IllegalArgumentException("No se puede añadir una cantidad <= 0.");
         }
 
         Product product = productService.getById(productId);
