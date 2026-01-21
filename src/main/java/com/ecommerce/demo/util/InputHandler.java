@@ -6,6 +6,8 @@ import java.util.function.Function;
 
 /**
  * Clase de utilidad que manipula las entradas de teclado
+ * @author Gabriel Norambuena
+ * @version 1.0
  */
 public class InputHandler {
     private final Scanner SCANNER;

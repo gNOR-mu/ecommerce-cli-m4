@@ -6,6 +6,8 @@ import java.math.BigDecimal;
  * Registro con los descuentos aplicados
  * @param ruleName Nombre de la regla
  * @param amount Monto de descuento
+ * @author Gabriel Norambuena
+ * @version 1.0
  */
 public record AppliedDiscount(
         String ruleName,

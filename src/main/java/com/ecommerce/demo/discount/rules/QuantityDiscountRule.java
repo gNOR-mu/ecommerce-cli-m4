@@ -10,13 +10,15 @@ import java.util.Objects;
 
 /**
  * Regla para los descuentos por cantidad de productos
+ * @author Gabriel Norambuena
+ * @version 1.0
  */
 public class QuantityDiscountRule implements DiscountRule {
 
     /**
      * {@inheritDoc}
      * Implementación específica que comprueba que la cantidad total de productos sea mayor o igual
-     * a {@value Constants#QUANTITY_TRESHHOLD}
+     * a {@value Constants#QUANTITY_THRESHOLD}
      */
     @Override
     public boolean isApplicable(Cart cart) {
@@ -24,7 +26,7 @@ public class QuantityDiscountRule implements DiscountRule {
                 .mapToInt(CartItem::getQuantity)
                 .filter(Objects::nonNull)
                 .sum();
-        return quantity >= Constants.QUANTITY_TRESHHOLD;
+        return quantity >= Constants.QUANTITY_THRESHOLD;
     }
 
     /**
@@ -32,7 +34,7 @@ public class QuantityDiscountRule implements DiscountRule {
      */
     @Override
     public BigDecimal calculateDiscount() {
-        return Constants.QUANTITY_DISCOUNT_AMMOUNT;
+        return Constants.QUANTITY_DISCOUNT_AMOUNT;
     }
 
     /**
@@ -40,6 +42,6 @@ public class QuantityDiscountRule implements DiscountRule {
      */
     @Override
     public String getName() {
-        return "Descuento sobre " + Constants.QUANTITY_TRESHHOLD + " productos: " + Constants.QUANTITY_DISCOUNT_AMMOUNT + "%";
+        return "Descuento sobre " + Constants.QUANTITY_THRESHOLD + " productos: " + Constants.QUANTITY_DISCOUNT_AMOUNT + "%";
     }
 }

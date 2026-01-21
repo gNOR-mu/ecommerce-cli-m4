@@ -10,6 +10,8 @@ import java.math.BigDecimal;
  * @param price Precio del producto
  * @param stock Cantidad del producto
  * @param categoryId Identificación de la categoría
+ * @author Gabriel Norambuena
+ * @version 1.0
  */
 public record ProductSummaryDto(
         Long id,

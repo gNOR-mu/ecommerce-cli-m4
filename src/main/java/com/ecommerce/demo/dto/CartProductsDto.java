@@ -9,6 +9,8 @@ import java.math.BigDecimal;
  * @param unitPrice Precio unitario
  * @param quantity Cantidad
  * @param subTotal Subtotal
+ * @author Gabriel Norambuena
+ * @version 1.0
  */
 public record CartProductsDto(
         Long Id,

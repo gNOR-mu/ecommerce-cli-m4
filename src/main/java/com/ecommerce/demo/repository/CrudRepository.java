@@ -32,7 +32,7 @@ public interface CrudRepository<T, ID> {
     /**
      * Busca una entidad en la base de datos
      * @param id Identificación de la entidad a buscar
-     * @return Un optional con el entidad.
+     * @return Un optional con la entidad.
      */
     Optional<T> findById(ID id);
 

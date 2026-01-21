@@ -68,7 +68,7 @@ public class ConsoleTable<T> {
      * <p>
      *     Ejemplo: si previamente se ha utilizado para construir la tabla
      * <pre>
-     *     new ConsoleTable<ProductSummaryDto>()
+     *     new ConsoleTable<{@link com.ecommerce.demo.dto.ProductSummaryDto}>()
      *                 .setTitle("PRODUCTO")
      *                 .addColumn("ID", 4, ProductSummaryDto::id)
      *                 .addColumn("PRODUCTO", 20, ProductSummaryDto::name)

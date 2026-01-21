@@ -33,7 +33,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     List<Product> findByNameIgnoreCase(String name);
 
     /**
-     * Recupera una lista de productos cuya id de la categoría coincide con la id de categoría proporcionada.
+     * Recupera una lista de productos cuya id de la categoría coincide con la identificación de categoría proporcionada.
      * <p>
      * La búsqueda debe ser exacta con la id de categoría.
      * </p>

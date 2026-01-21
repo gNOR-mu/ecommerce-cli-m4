@@ -9,13 +9,15 @@ import java.util.Objects;
 
 /**
  * Regla para los descuentos por categorías distintas
+ * @author Gabriel Norambuena
+ * @version 1.0
  */
 public class CategoryDiscountRule implements DiscountRule {
 
     /**
      * {@inheritDoc}
      * Implementación específica que comprueba que la cantidad total de categorías sea mayor o igual
-     * a {@value Constants#CATEGORIES_TRESHHOLD}
+     * a {@value Constants#CATEGORIES_THRESHOLD}
      */
     @Override
     public boolean isApplicable(Cart cart) {
@@ -25,7 +27,7 @@ public class CategoryDiscountRule implements DiscountRule {
                 .distinct()
                 .count();
         System.out.println(differentCategories);
-        return differentCategories >= Constants.CATEGORIES_TRESHHOLD;
+        return differentCategories >= Constants.CATEGORIES_THRESHOLD;
     }
 
     /**
@@ -33,7 +35,7 @@ public class CategoryDiscountRule implements DiscountRule {
      */
     @Override
     public BigDecimal calculateDiscount() {
-        return Constants.CATEGORIES_DISCOUNT_AMMOUNT;
+        return Constants.CATEGORIES_DISCOUNT_AMOUNT;
     }
 
     /**
@@ -41,6 +43,6 @@ public class CategoryDiscountRule implements DiscountRule {
      */
     @Override
     public String getName() {
-        return "Descuento por llevar "+ Constants.CATEGORIES_TRESHHOLD+" categorías distintas";
+        return "Descuento por llevar "+ Constants.CATEGORIES_THRESHOLD +" categorías distintas";
     }
 }

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Order implements Identifiable<Long> {
     private Long id;
 
-    private LocalDateTime creationDate;
+    private final LocalDateTime creationDate;
     private BigDecimal total;
 
     /**

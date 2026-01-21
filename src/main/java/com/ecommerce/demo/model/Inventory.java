@@ -9,13 +9,13 @@ import com.ecommerce.demo.model.base.Identifiable;
  */
 public class Inventory implements Identifiable<Long> {
     private Long id;
-    private Long productId;
+    private final Long productId;
 
     private int quantity;
 
     /**
      * Constructor de la clase.
-     * @param productId Identificación del producto a relacionado con el inventario
+     * @param productId Identificación del producto relacionado con el inventario
      * @param quantity Cantidad de inventario
      */
     public Inventory(Long productId, int quantity) {

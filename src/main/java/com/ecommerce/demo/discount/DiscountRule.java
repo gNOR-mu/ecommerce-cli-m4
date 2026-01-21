@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 /**
  * Interfaz para definir las reglas de descuento que aplican a los productos.
  * @author Gabriel Norambuena
+ * @version 1.0
  */
 public interface DiscountRule {
     /**

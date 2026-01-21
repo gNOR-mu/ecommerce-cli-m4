@@ -7,8 +7,8 @@ import java.util.List;
 
 /**
  * Clase de utilidad para imprimir mensajes formateados en la consola
- *
  * @author Gabriel Norambuena
+ * @version 1.0
  */
 public class PrintUtil {
     /**

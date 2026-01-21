@@ -6,6 +6,8 @@ import static com.ecommerce.demo.util.Constants.CONFIRMATION;
 
 /**
  * Clase abstracta para la manipulación de los menús
+ * @author Gabriel Norambuena
+ * @version 1.0
  */
 public abstract class AbstractMenu implements Menu {
     protected final InputHandler inputHandler;
@@ -43,7 +45,7 @@ public abstract class AbstractMenu implements Menu {
 
     /**
      * Manipula la opción ingresada del usuario.
-     * @param option Número de opción
+     * @param option Número de la opción
      * @return Verdadero si continua la ejecución, falso si decide cancelarla.
      */
     protected abstract boolean handleOption(int option);

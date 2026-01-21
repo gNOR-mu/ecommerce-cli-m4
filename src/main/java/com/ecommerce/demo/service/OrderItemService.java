@@ -10,9 +10,9 @@ import com.ecommerce.demo.repository.OrderItemRepository;
  * @version 1.0
  */
 public class OrderItemService implements IdentifiableService<OrderItem, Long> {
-    private final OrderItemRepository ORDER_ITEM_REPOSITORY;
-    private final OrderService ORDER_SERVICE;
-    private final ProductService PRODUCT_SERVICE;
+    private final OrderItemRepository orderItemRepository;
+    private final OrderService orderService;
+    private final ProductService productService;
 
     /**
      * Constructor de la clase
@@ -21,9 +21,9 @@ public class OrderItemService implements IdentifiableService<OrderItem, Long> {
      * @param productService Servicio de los productos
      */
     public OrderItemService(OrderItemRepository orderItemRepository, OrderService orderService, ProductService productService) {
-        this.ORDER_ITEM_REPOSITORY = orderItemRepository;
-        this.ORDER_SERVICE = orderService;
-        this.PRODUCT_SERVICE = productService;
+        this.orderItemRepository = orderItemRepository;
+        this.orderService = orderService;
+        this.productService = productService;
     }
 
     /**
@@ -31,7 +31,7 @@ public class OrderItemService implements IdentifiableService<OrderItem, Long> {
      */
     @Override
     public OrderItem getById(Long id) throws ResourceNotFoundException {
-        return ORDER_ITEM_REPOSITORY.findById(id)
+        return orderItemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Orden Item",id));
     }
 
@@ -40,6 +40,6 @@ public class OrderItemService implements IdentifiableService<OrderItem, Long> {
      */
     @Override
     public boolean notExistsById(Long id) {
-        return !ORDER_ITEM_REPOSITORY.existsById(id);
+        return !orderItemRepository.existsById(id);
     }
 }
