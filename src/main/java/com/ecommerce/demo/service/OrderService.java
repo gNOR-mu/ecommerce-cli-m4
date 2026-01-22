@@ -37,4 +37,12 @@ public class OrderService implements IdentifiableService<Order,Long> {
         return !orderRepository.existsById(id);
     }
 
+    /**
+     * Crea una nueva orden
+     * @param order Orden a crear
+     * @return Ordenc reada
+     */
+    public Order create(Order order){
+        return orderRepository.save(order);
+    }
 }

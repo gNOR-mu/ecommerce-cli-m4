@@ -26,7 +26,6 @@ public class CategoryDiscountRule implements DiscountRule {
                 .filter(Objects::nonNull)
                 .distinct()
                 .count();
-        System.out.println(differentCategories);
         return differentCategories >= Constants.CATEGORIES_THRESHOLD;
     }
 

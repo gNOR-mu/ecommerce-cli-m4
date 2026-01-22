@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 /**
  * Contenedor con las dependencias manejadas en memoria
+ *
  * @author Gabriel Norambuena
  * @version 1.0
  */
@@ -26,6 +27,9 @@ public class DependencyContainer {
     private final OrderItemService orderItemService;
     private final InventoryService inventoryService;
     private final DiscountCalculatorService discountCalculatorService;
+
+    private final CartService cartService;
+    private final CheckoutService checkoutService;
 
     private final Scanner scanner;
     private final InputHandler inputHandler;
@@ -46,8 +50,11 @@ public class DependencyContainer {
         this.inventoryService = new InventoryService(inventoryRepository);
         this.productService = new ProductService(productRepository, categoryService, inventoryService);
         this.orderService = new OrderService(orderRepository);
-        this.orderItemService = new OrderItemService(orderItemRepository, orderService, productService);
+        this.orderItemService = new OrderItemService(orderItemRepository);
         this.discountCalculatorService = new DiscountCalculatorService();
+
+        this.cartService = new CartService(productService, inventoryService);
+        this.checkoutService = new CheckoutService(orderService, orderItemService, discountCalculatorService, cartService, inventoryService);
 
         this.scanner = new Scanner(System.in);
         this.inputHandler = new InputHandler(scanner);
@@ -109,5 +116,13 @@ public class DependencyContainer {
 
     public DiscountCalculatorService getDiscountCalculatorService() {
         return discountCalculatorService;
+    }
+
+    public CartService getCartService() {
+        return cartService;
+    }
+
+    public CheckoutService getCheckoutService() {
+        return checkoutService;
     }
 }

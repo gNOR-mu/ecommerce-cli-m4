@@ -11,4 +11,5 @@ import java.math.BigDecimal;
  */
 public record AppliedDiscount(
         String ruleName,
+        String condition,
         BigDecimal amount) {}

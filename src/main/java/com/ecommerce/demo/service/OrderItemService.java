@@ -11,19 +11,13 @@ import com.ecommerce.demo.repository.OrderItemRepository;
  */
 public class OrderItemService implements IdentifiableService<OrderItem, Long> {
     private final OrderItemRepository orderItemRepository;
-    private final OrderService orderService;
-    private final ProductService productService;
 
     /**
      * Constructor de la clase
      * @param orderItemRepository Repositorio de orders item
-     * @param orderService Servicio de las órdenes
-     * @param productService Servicio de los productos
      */
-    public OrderItemService(OrderItemRepository orderItemRepository, OrderService orderService, ProductService productService) {
+    public OrderItemService(OrderItemRepository orderItemRepository) {
         this.orderItemRepository = orderItemRepository;
-        this.orderService = orderService;
-        this.productService = productService;
     }
 
     /**
@@ -41,5 +35,12 @@ public class OrderItemService implements IdentifiableService<OrderItem, Long> {
     @Override
     public boolean notExistsById(Long id) {
         return !orderItemRepository.existsById(id);
+    }
+
+    /**
+     * Crea un nuevo Order Item
+     */
+    public OrderItem create(OrderItem orderItem){
+        return orderItemRepository.save(orderItem);
     }
 }

@@ -16,21 +16,23 @@ public class ConsoleTable<T> {
 
     /**
      *
-     * @param header Nombre de la columna
-     * @param width Ancho de la columna
+     * @param header    Nombre de la columna
+     * @param width     Ancho de la columna
      * @param extractor Extractor de la columna (Ej: getNombre)
-     * @param <T> Tipo de la tabla
+     * @param <T>       Tipo de la tabla
      */
-    private record Column<T>(String header, int width, Function<T, Object> extractor) {}
+    private record Column<T>(String header, int width, Function<T, Object> extractor) {
+    }
 
     private String title;
-    private String footer;
+    private final List<String> footers = new ArrayList<>();
     private final List<Column<T>> columns = new ArrayList<>();
 
     /**
      * Añade una nueva columna a la tabla
-     * @param header Cabecera de la tabla
-     * @param width Ancho de la tabla
+     *
+     * @param header    Cabecera de la tabla
+     * @param width     Ancho de la tabla
      * @param extractor Extractor de la columna (Ej: getNombre)
      * @return La misma instancia de {@see ConsoleTable} para permitir el encadenamiento.
      */
@@ -41,6 +43,7 @@ public class ConsoleTable<T> {
 
     /**
      * Estable el título  de la tabla
+     *
      * @param title Título de la tabla
      * @return La misma instancia de {@see ConsoleTable} para permitir el encadenamiento.
      */
@@ -51,11 +54,12 @@ public class ConsoleTable<T> {
 
     /**
      * Estable el pie de la tabla
-     * @param footer Pie de tabla
+     *
+     * @param footers Pie de tabla
      * @return La misma instancia de {@see ConsoleTable} para permitir el encadenamiento.
      */
-    public ConsoleTable<T> setFooter(String footer) {
-        this.footer = footer;
+    public ConsoleTable<T> addFooter(String footers) {
+        this.footers.add(footers);
         return this;
     }
 
@@ -63,10 +67,9 @@ public class ConsoleTable<T> {
      * Imprime la tabla con el título y las columnas previamente establecidas.
      * El formato de los datos se construye con las columnas que se haya añadido previamente.
      * <p>
-     *     En caso de que no haya datos, se imprime un mensaje de sin datos.
-     *     Si no se ha establecido el título, no se muestra.
+     * Si no se ha establecido el título, no se muestra.
      * <p>
-     *     Ejemplo: si previamente se ha utilizado para construir la tabla
+     * Ejemplo: si previamente se ha utilizado para construir la tabla
      * <pre>
      *     new ConsoleTable<{@link com.ecommerce.demo.dto.ProductSummaryDto}>()
      *                 .setTitle("PRODUCTO")
@@ -88,18 +91,10 @@ public class ConsoleTable<T> {
      *      | 4    | Polera térmica       | Vestimenta      | 50000      | 25    |
      *      +------+----------------------+-----------------+------------+-------+
      * </pre>
+     *
      * @param data Datos a mostrar
      */
     public void print(List<T> data) {
-        if (data.isEmpty()) {
-            System.out.println("""
-                    +------------------+
-                    |   Sin datos      |
-                    +------------------+
-                    """);
-            return;
-        }
-
 
         String format = columns.stream()
                 .map(c -> "| %-" + c.width() + "s ")
@@ -111,16 +106,7 @@ public class ConsoleTable<T> {
                 .collect(Collectors.joining()) + "+";
 
         //titulo
-        if (title != null) {
-            // techo del título
-            System.out.println("+" + "-".repeat(border.length() - 2) + "+");
-
-            //centrar el texto implica añadir más métodos, lo dejo simple por el momento
-            //podría pasar que necesite truncar el título, mejor intento evitarlo
-            String pre = "| " + title;
-            String end = " ".repeat(border.length() - 1 - pre.length()) + "|";
-            System.out.println(pre + end);
-        }
+        printTitle(border);
 
         System.out.println(border);
         var headers = columns.stream().map(Column::header).toArray();
@@ -137,16 +123,9 @@ public class ConsoleTable<T> {
 
         System.out.println(border);
 
-        //footer
-        if (footer != null) {
-            // cuanto espacio libre queda
-            int padding = border.length() - 2 - footer.length();
+        // footer
+        printFooter(border);
 
-            String spaces = " ".repeat(Math.max(0, padding));
-            System.out.println("|" + spaces + footer + "|");
-
-            System.out.println(border);
-        }
     }
 
     /**
@@ -159,5 +138,40 @@ public class ConsoleTable<T> {
     private String truncate(String text, int width) {
         if (text == null) return "";
         return text.length() > width ? text.substring(0, width - 3) + "..." : text;
+    }
+
+    /**
+     * Imprime el título de la tabla
+     * @param border Borde de la tabla
+     */
+    private void printTitle(String border) {
+        if (title == null) {
+            return;
+        }
+        // techo del título
+        System.out.println("+" + "-".repeat(border.length() - 2) + "+");
+
+        //centrar el texto implica añadir más métodos, lo dejo simple por el momento
+        //podría pasar que necesite truncar el título, mejor intento evitarlo
+        String pre = "| " + title;
+        String end = " ".repeat(border.length() - 1 - pre.length()) + "|";
+        System.out.println(pre + end);
+    }
+
+    /**
+     * Imprime el pie de tabla
+     * @param border Borde de la tabla
+     */
+    private void printFooter(String border) {
+        if (footers.isEmpty()) {
+            return;
+        }
+
+        for (String footer : footers) {
+            int padding = border.length() - 2 - footer.length();
+            String spaces = " ".repeat(Math.max(0, padding));
+            System.out.println("|" + spaces + footer + "|");
+        }
+        System.out.println(border);
     }
 }

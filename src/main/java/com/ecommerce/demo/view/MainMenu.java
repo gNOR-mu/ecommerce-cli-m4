@@ -31,7 +31,9 @@ public class MainMenu extends AbstractMenu {
                 dependencyContainer.getInputHandler(),
                 dependencyContainer.getProductService(),
                 dependencyContainer.getInventoryService(),
-                dependencyContainer.getDiscountCalculatorService()
+                dependencyContainer.getDiscountCalculatorService(),
+                dependencyContainer.getCartService(),
+                dependencyContainer.getCheckoutService()
         );
     }
 

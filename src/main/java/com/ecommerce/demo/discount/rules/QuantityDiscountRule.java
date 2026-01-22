@@ -50,6 +50,6 @@ public class QuantityDiscountRule implements DiscountRule {
      */
     @Override
     public String getCondition() {
-        return "Descuento sobre %d productos".formatted(Constants.QUANTITY_THRESHOLD);
+        return "LLeva %d productos".formatted(Constants.QUANTITY_THRESHOLD);
     }
 }

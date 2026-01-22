@@ -11,14 +11,14 @@ import com.ecommerce.demo.repository.InventoryRepository;
  * @version 1.0
  */
 public class InventoryService implements IdentifiableService<Inventory, Long> {
-    private final InventoryRepository INVENTORY_REPOSITORY;
+    private final InventoryRepository inventoryRepository;
 
     /**
      * Constructor de la clase
      * @param inventoryRepository Repositorio del inventario.
      */
     public InventoryService(InventoryRepository inventoryRepository) {
-        this.INVENTORY_REPOSITORY = inventoryRepository;
+        this.inventoryRepository = inventoryRepository;
     }
 
     /**
@@ -26,7 +26,7 @@ public class InventoryService implements IdentifiableService<Inventory, Long> {
      */
     @Override
     public Inventory getById(Long id) {
-        return INVENTORY_REPOSITORY.findById(id)
+        return inventoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Inventario", id));
     }
 
@@ -35,7 +35,7 @@ public class InventoryService implements IdentifiableService<Inventory, Long> {
      */
     @Override
     public boolean notExistsById(Long id) {
-        return !INVENTORY_REPOSITORY.existsById(id);
+        return !inventoryRepository.existsById(id);
     }
 
     /**
@@ -50,10 +50,10 @@ public class InventoryService implements IdentifiableService<Inventory, Long> {
         if (inventory.getQuantity() < 0) {
             throw new IllegalArgumentException("El inventario no puede ser inferior a 0");
         }
-        if(INVENTORY_REPOSITORY.existsById(inventory.getProductId())){
+        if(inventoryRepository.existsById(inventory.getProductId())){
             throw new InventoryException("Ya existe un inventario para el producto con id : " + inventory.getProductId());
         }
-        return INVENTORY_REPOSITORY.save(inventory);
+        return inventoryRepository.save(inventory);
     }
 
     /**
@@ -70,7 +70,7 @@ public class InventoryService implements IdentifiableService<Inventory, Long> {
         if(inventory.getQuantity() > 0){
             throw new InventoryException("No se puede eliminar un inventario con cantidad de productos > 0");
         }
-        INVENTORY_REPOSITORY.deleteById(inventory.getId());
+        inventoryRepository.deleteById(inventory.getId());
     }
 
     /**
@@ -87,7 +87,7 @@ public class InventoryService implements IdentifiableService<Inventory, Long> {
         }
         Inventory existing = getByProductId(productId);
         existing.setQuantity(quantity);
-        return INVENTORY_REPOSITORY.save(existing);
+        return inventoryRepository.save(existing);
     }
 
     /**
@@ -96,8 +96,38 @@ public class InventoryService implements IdentifiableService<Inventory, Long> {
      * @return Inventario del producto.
      */
     public Inventory getByProductId(Long productId) {
-        return INVENTORY_REPOSITORY.findByProductId(productId).orElseThrow(
+        return inventoryRepository.findByProductId(productId).orElseThrow(
                 () -> new ResourceNotFoundException("No se ha encontrado un inventario correspondiente a un producto con id : "+productId));
+    }
+
+    /**
+     * Reduce el inventario de un producto
+     * @param productId Identificación del producto
+     * @param quantity Cantidad a reducir
+     *
+     * @throws IllegalArgumentException Cuando se intenta reducir más productos del stock disponible
+     */
+    public void subtractInventory(Long productId, int quantity){
+        Inventory inventory = getByProductId(productId);
+        int newQuantity = inventory.getQuantity() - quantity;
+        if(newQuantity < 0){
+            throw  new IllegalArgumentException("No puede haber un stock negativo");
+        }
+        inventory.setQuantity(newQuantity);
+        inventoryRepository.save(inventory);
+    }
+
+    /**
+     * Comprueba que sea posible reducir el inventario de un producto determinado.
+     * @apiNote Se considera que se puede reducir cuando el inventario resultante es >= 0
+     *
+     * @param productId Identificación del producto
+     * @param quantity Cantidad a reducir
+     * @return Verdadero si se puede reducir el inventario, falso en caso contrario
+     */
+    public boolean isPossibleSubtract(Long productId, int quantity){
+        Inventory inventory = getByProductId(productId);
+        return inventory.getQuantity() - quantity >= 0;
     }
 
 }

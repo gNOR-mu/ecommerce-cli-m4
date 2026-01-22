@@ -2,6 +2,7 @@ package com.ecommerce.demo.dto;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * DTO para mostrar el resumen de un descuento
@@ -14,4 +15,21 @@ public record DiscountSummary(
         List<AppliedDiscount> discounts,
         BigDecimal totalDiscount
 ) {
+
+    /**
+     * Retorna un String con los descuentos de forma formateada.
+     * @return Descuentos
+     */
+    public String formattedDiscounts(){
+        if(discounts.isEmpty()){
+            return "N/A";
+        }
+        return discounts().stream()
+                .map(d -> String.format("- %s (%s): %s%%",
+                        d.ruleName(),
+                        d.condition(),
+                        d.amount()))
+                .collect(Collectors.joining("\n"));
+
+    }
 }

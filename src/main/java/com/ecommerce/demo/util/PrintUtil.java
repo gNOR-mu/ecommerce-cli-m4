@@ -1,5 +1,6 @@
 package com.ecommerce.demo.util;
 
+import com.ecommerce.demo.discount.DiscountRule;
 import com.ecommerce.demo.dto.*;
 import com.ecommerce.demo.model.Category;
 
@@ -16,7 +17,7 @@ public class PrintUtil {
      * @param key Opción
      * @param description Descripción
      */
-    public record MenuOption(String key, String description) {
+    private record MenuOption(String key, String description) {
     }
 
     /**
@@ -118,6 +119,7 @@ public class PrintUtil {
                 new MenuOption("4", "Quitar del carro"),
                 new MenuOption("5", "Ver carrito"),
                 new MenuOption("6", "Ver descuentos activos"),
+                new MenuOption("7", "Confirmar compra"),
                 new MenuOption("0", "Salir")
         );
 
@@ -142,7 +144,7 @@ public class PrintUtil {
                 .addColumn("PRECIO UNITARIO", 17, CartProductsDto::unitPrice)
                 .addColumn("CANTIDAD", 10, CartProductsDto::quantity)
                 .addColumn("SUBTOTAL", 10, CartProductsDto::subTotal)
-                .setFooter("TOTAL BASE: " + cartSummary.total())
+                .addFooter("TOTAL BASE: " + cartSummary.total())
                 .print(cartSummary.products());
     }
 
@@ -156,9 +158,46 @@ public class PrintUtil {
         new ConsoleTable<AppliedDiscount>()
                 .setTitle("DESCUENTOS")
                 .addColumn("NOMBRE", 50, AppliedDiscount::ruleName)
-                .addColumn("PORCENTAJE", 12, AppliedDiscount::amount)
-                .setFooter("DESCUENTOS TOTALES (%): " + discounts.totalDiscount())
+                .addColumn("PORCENTAJE (%)", 16, AppliedDiscount::amount)
+                .addFooter("DESCUENTOS TOTALES (%): " + discounts.totalDiscount())
                 .print(discounts.discounts());
+
+    }
+
+    /**
+     * Imprime los descuentos activos
+     *
+     * @param discounts Descuentos activos
+     * @see ConsoleTable
+     */
+    public static void printDiscounts(List<DiscountRule> discounts) {
+        new ConsoleTable<DiscountRule>()
+                .setTitle("DESCUENTOS")
+                .addColumn("NOMBRE", 50, DiscountRule::getName)
+                .addColumn("CONDICIÓN",50, DiscountRule::getCondition)
+                .addColumn("PORCENTAJE", 12, DiscountRule::calculateDiscount)
+                .print(discounts);
+
+    }
+
+    public static void printCheckoutSummary(CheckoutSummaryDto checkoutSummaryDto){
+        var summary = new ConsoleTable<CartProductsDto>()
+                .setTitle("CARRITO A PAGAR")
+                .addColumn("ID", 4, CartProductsDto::Id)
+                .addColumn("PRODUCTO", 25, CartProductsDto::name)
+                .addColumn("PRECIO UNITARIO", 25, CartProductsDto::unitPrice)
+                .addColumn("CANTIDAD", 10, CartProductsDto::quantity)
+                .addColumn("SUBTOTAL", 10, CartProductsDto::subTotal);
+
+        for(AppliedDiscount discount: checkoutSummaryDto.discountSummary().discounts()){
+            summary.addFooter("%s: %s (%s%%)".formatted(discount.ruleName(), discount.condition(), discount.amount()));
+        }
+        summary.addFooter("DESCUENTOS TOTALES: %s%%".formatted(checkoutSummaryDto.discountSummary().totalDiscount()));
+        summary.addFooter("TOTAL BASE: " + checkoutSummaryDto.cartSummary().total());
+        summary.addFooter("TOTAL FINAL: "+ checkoutSummaryDto.finalPrice());
+
+        summary.print(checkoutSummaryDto.cartSummary().products());
+
 
     }
 }

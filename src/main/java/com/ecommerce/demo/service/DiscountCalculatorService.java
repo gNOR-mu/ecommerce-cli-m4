@@ -1,5 +1,6 @@
 package com.ecommerce.demo.service;
 
+import com.ecommerce.demo.discount.DiscountRule;
 import com.ecommerce.demo.dto.AppliedDiscount;
 import com.ecommerce.demo.dto.DiscountSummary;
 import com.ecommerce.demo.model.Cart;
@@ -27,7 +28,7 @@ public class DiscountCalculatorService {
     public DiscountSummary applyDiscount(Cart cart) {
         List<AppliedDiscount> discounts = Constants.ACTIVE_RULES.stream()
                 .filter(rule -> rule.isApplicable(cart))
-                .map(rule -> new AppliedDiscount(rule.getName(),rule.calculateDiscount()))
+                .map(rule -> new AppliedDiscount(rule.getName(), rule.getCondition(), rule.calculateDiscount()))
                 .toList();
 
         //total de descuentos
@@ -38,7 +39,14 @@ public class DiscountCalculatorService {
         if (totalOff.compareTo(cart.getTotal()) > 0) {
             totalOff = cart.getTotal();
         }
-        System.out.println(discounts);
         return new DiscountSummary(discounts,totalOff);
+    }
+
+    /**
+     * Obtiene todos los descuentos del sistema
+     * @return Lista con los descuentos
+     */
+    public List<DiscountRule> getActiveDiscounts(){
+        return Constants.ACTIVE_RULES;
     }
 }
