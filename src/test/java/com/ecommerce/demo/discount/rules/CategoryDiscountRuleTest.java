@@ -1,6 +1,5 @@
-package discount;
+package com.ecommerce.demo.discount.rules;
 
-import com.ecommerce.demo.discount.rules.CategoryDiscountRule;
 import com.ecommerce.demo.model.Cart;
 import com.ecommerce.demo.model.Product;
 import com.ecommerce.demo.util.Constants;
