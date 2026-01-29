@@ -46,11 +46,21 @@ public class AmountDiscountRuleTest {
 
     @Test
     @DisplayName("Regla de Descuento: No debe aplicar si el monto es menor al umbral")
-    void isApplicable_amountEqualsThreshold_returnsFalse(){
+    void isApplicable_amountLowerThreshold_returnsFalse(){
         BigDecimal amount = Constants.TOTAL_AMOUNT_THRESHOLD.subtract(new BigDecimal("10"));
         cart.addProduct(new Product(1L, amount,"P1"), 1);
 
         boolean result = rule.isApplicable(cart);
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("Regla de Descuento: No Debe aplicar si el carro está vacío")
+    void isApplicable_emptyCart_returnsFalse() {
+        // Act
+        boolean result = rule.isApplicable(cart);
+
+        // Assert
         assertFalse(result);
     }
 
