@@ -1,8 +1,8 @@
 package com.ecommerce.demo.discount;
 
-import com.ecommerce.demo.discount.rules.AmountDiscountRule;
-import com.ecommerce.demo.discount.rules.CategoryDiscountRule;
-import com.ecommerce.demo.discount.rules.QuantityDiscountRule;
+import com.ecommerce.demo.discount.rules.TotalAmountDiscountRule;
+import com.ecommerce.demo.discount.rules.ProductCategoryDiscountRule;
+import com.ecommerce.demo.discount.rules.ProductQuantityDiscountRule;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,9 +20,9 @@ class DiscountRuleTest {
      */
     static Stream<Named<DiscountRule>> provideAllRules() {
         return Stream.of(
-                Named.of("Descuento por Monto", new AmountDiscountRule()),
-                Named.of("Descuento por Cantidad de categorías", new CategoryDiscountRule()),
-                Named.of("Descuento por Cantidad de productos", new QuantityDiscountRule())
+                Named.of("Descuento por Monto total", new TotalAmountDiscountRule()),
+                Named.of("Descuento por Cantidad de categorías", new ProductCategoryDiscountRule()),
+                Named.of("Descuento por Cantidad de productos", new ProductQuantityDiscountRule())
         );
     }
 

@@ -11,14 +11,10 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Pruebas unitarias para la regla de descuento por monto {@link CategoryDiscountRuleTest}
- */
-public class CategoryDiscountRuleTest {
+class ProductQuantityDiscountRuleTest {
 
+    private final ProductQuantityDiscountRule rule = new ProductQuantityDiscountRule();
     private Cart cart;
-
-    private final CategoryDiscountRule rule = new CategoryDiscountRule();
 
     @BeforeEach
     void setUp() {
@@ -26,22 +22,25 @@ public class CategoryDiscountRuleTest {
     }
 
     @Test
-    @DisplayName("Regla de Descuento: Debe aplicar si la cantidad de categorías es igual al umbral")
+    @DisplayName("Regla de Descuento: Debe aplicar si la cantidad de productos es igual al umbral")
     void isApplicable_categoriesEqualsThreshold_returnsTrue() {
         // Arrange
-        addDifferentProductsToCart(Constants.CATEGORIES_THRESHOLD);
+        int exactThreshold = Constants.QUANTITY_THRESHOLD;
+        cart.addProduct(new Product(1L, new BigDecimal("100"), "P"), exactThreshold);
 
         // Act
         boolean result = rule.isApplicable(cart);
+
         //Assert
         assertTrue(result);
     }
 
     @Test
-    @DisplayName("Regla de Descuento: Debe aplicar si la cantidad de categorías es mayor al umbral")
+    @DisplayName("Regla de Descuento: Debe aplicar si la cantidad de productos es mayor al umbral")
     void isApplicable_categoriesGreaterThreshold_returnsTrue() {
         // Arrange
-        addDifferentProductsToCart(Constants.CATEGORIES_THRESHOLD + 1);
+        int overThreshold = Constants.QUANTITY_THRESHOLD + 1;
+        cart.addProduct(new Product(1L, new BigDecimal("100"), "P"), overThreshold);
 
         // Act
         boolean result = rule.isApplicable(cart);
@@ -51,10 +50,28 @@ public class CategoryDiscountRuleTest {
     }
 
     @Test
-    @DisplayName("Regla de Descuento: No Debe aplicar si la cantidad de categorías es inferior al umbral")
+    @DisplayName("Regla de Descuento: Debe aplicar si la cantidad de varios productos es mayor al umbral")
+    void isApplicable_variousCategoriesGreaterThreshold_returnsTrue() {
+        // Arrange
+        int belowThreshold = Constants.QUANTITY_THRESHOLD - 1;
+        int amountToCrossThreshold = 2;
+
+        cart.addProduct(new Product(1L, new BigDecimal("100"), "P"), belowThreshold);
+        cart.addProduct(new Product(2L, new BigDecimal("100"), "P2"), amountToCrossThreshold);
+
+        // Act
+        boolean result = rule.isApplicable(cart);
+
+        // Assert
+        assertTrue(result);
+    }
+
+    @Test
+    @DisplayName("Regla de Descuento: No Debe aplicar si la cantidad de productos es inferior al umbral")
     void isApplicable_categoriesLowerThreshold_returnsFalse() {
         // Arrange
-        addDifferentProductsToCart(Constants.CATEGORIES_THRESHOLD - 1);
+        int belowThreshold = Constants.QUANTITY_THRESHOLD - 1;
+        cart.addProduct(new Product(1L, new BigDecimal("100"), "P"), belowThreshold);
 
         // Act
         boolean result = rule.isApplicable(cart);
@@ -80,21 +97,7 @@ public class CategoryDiscountRuleTest {
         BigDecimal discount = rule.calculateDiscount();
 
         // Assert
-        assertEquals(Constants.CATEGORIES_DISCOUNT_AMOUNT, discount);
+        assertEquals(Constants.QUANTITY_DISCOUNT_AMOUNT, discount);
     }
 
-    /**
-     * Utilidad para la creación de distintos productos
-     * @param productsQuantity Cantidad de productos a crear
-     */
-    private void addDifferentProductsToCart(long productsQuantity) {
-        for (long i = 0; i < productsQuantity; i++) {
-            String name = "category_" + i;
-            //el precio es irrelevante para esta regla
-            Product product = new Product(i, new BigDecimal("1"), name);
-            product.setId(i);
-
-            cart.addProduct(product, 1);
-        }
-    }
 }

@@ -13,7 +13,7 @@ import java.util.Objects;
  * @author Gabriel Norambuena
  * @version 1.0
  */
-public class QuantityDiscountRule implements DiscountRule {
+public class ProductQuantityDiscountRule implements DiscountRule {
 
     /**
      * {@inheritDoc}

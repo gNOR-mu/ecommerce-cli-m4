@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * @author Gabriel Norambuena
  * @version 1.0
  */
-public class AmountDiscountRule implements DiscountRule {
+public class TotalAmountDiscountRule implements DiscountRule {
     /**
      * {@inheritDoc}
      * Implementación específica que comprueba que el costo total del carro, pre descuentos, sea mayor o igual

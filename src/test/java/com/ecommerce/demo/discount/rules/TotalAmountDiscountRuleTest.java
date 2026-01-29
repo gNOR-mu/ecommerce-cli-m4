@@ -12,13 +12,13 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Pruebas unitarias para la regla de descuento por monto {@link AmountDiscountRule}
+ * Pruebas unitarias para la regla de descuento por monto {@link TotalAmountDiscountRule}
  */
-public class AmountDiscountRuleTest {
+public class TotalAmountDiscountRuleTest {
 
     private Cart cart;
 
-    private final AmountDiscountRule rule = new AmountDiscountRule();
+    private final TotalAmountDiscountRule rule = new TotalAmountDiscountRule();
 
     @BeforeEach
     void setUp(){

@@ -1,9 +1,9 @@
 package com.ecommerce.demo.util;
 
 import com.ecommerce.demo.discount.DiscountRule;
-import com.ecommerce.demo.discount.rules.AmountDiscountRule;
-import com.ecommerce.demo.discount.rules.CategoryDiscountRule;
-import com.ecommerce.demo.discount.rules.QuantityDiscountRule;
+import com.ecommerce.demo.discount.rules.TotalAmountDiscountRule;
+import com.ecommerce.demo.discount.rules.ProductCategoryDiscountRule;
+import com.ecommerce.demo.discount.rules.ProductQuantityDiscountRule;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -59,9 +59,9 @@ public final class Constants {
      * Reglas activas de descuento.
      */
     public static final List<DiscountRule> ACTIVE_RULES = List.of(
-            new QuantityDiscountRule(),
-            new CategoryDiscountRule(),
-            new AmountDiscountRule()
+            new ProductQuantityDiscountRule(),
+            new ProductCategoryDiscountRule(),
+            new TotalAmountDiscountRule()
     );
 
 
