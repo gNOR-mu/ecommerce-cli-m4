@@ -26,7 +26,7 @@ class DiscountRuleTest {
         );
     }
 
-    @ParameterizedTest(name = "Regla: {0} no debe retornar un descuento <= 0>")
+    @ParameterizedTest(name = "Regla: {0} no debe retornar un descuento <= 0")
     @MethodSource("provideAllRules")
     void rule_calculateDiscount_returnsAboveZero(DiscountRule rule) {
         assertTrue(BigDecimal.ZERO.compareTo(rule.calculateDiscount()) <= 0);
