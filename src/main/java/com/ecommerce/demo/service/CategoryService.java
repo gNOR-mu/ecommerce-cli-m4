@@ -5,6 +5,7 @@ import com.ecommerce.demo.model.Category;
 import com.ecommerce.demo.repository.CategoryRepository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Servicio para la gestión de categorías
@@ -12,14 +13,14 @@ import java.util.List;
  * @version 1.0
  */
 public class CategoryService implements IdentifiableService<Category, Long> {
-    private final CategoryRepository CATEGORY_REPOSITORY;
+    private final CategoryRepository categoryRepository;
 
     /**
      * Constructor de la clase
      * @param categoryRepository Repositorio de las categorías
      */
     public CategoryService(CategoryRepository categoryRepository) {
-        this.CATEGORY_REPOSITORY = categoryRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     /**
@@ -27,7 +28,7 @@ public class CategoryService implements IdentifiableService<Category, Long> {
      */
     @Override
     public Category getById(Long id) throws ResourceNotFoundException {
-        return CATEGORY_REPOSITORY.findById(id)
+        return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Categoría", id));
     }
 
@@ -36,7 +37,7 @@ public class CategoryService implements IdentifiableService<Category, Long> {
      */
     @Override
     public boolean notExistsById(Long id) {
-        return !CATEGORY_REPOSITORY.existsById(id);
+        return !categoryRepository.existsById(id);
     }
 
     /**
@@ -44,7 +45,7 @@ public class CategoryService implements IdentifiableService<Category, Long> {
      * @return Una lista con todas las categorías.
      */
     public List<Category> findAll() {
-        return CATEGORY_REPOSITORY.findAll();
+        return categoryRepository.findAll();
     }
 
     /**
@@ -54,7 +55,7 @@ public class CategoryService implements IdentifiableService<Category, Long> {
      */
     public Category create(Category category) {
         //TODO debería lanzar una excepción si ya existe
-        return CATEGORY_REPOSITORY.save(category);
+        return categoryRepository.save(category);
     }
 
     /**
@@ -63,6 +64,7 @@ public class CategoryService implements IdentifiableService<Category, Long> {
      * @return Listado con las ids de las categorías coincidentes.
      */
     public List<Long> findIdsByName(String name) {
-        return CATEGORY_REPOSITORY.findIdsByName(name);
+        return categoryRepository.findIdsByName(name);
     }
+
 }
