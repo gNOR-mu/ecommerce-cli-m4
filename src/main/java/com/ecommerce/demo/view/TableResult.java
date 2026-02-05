@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 /**
  * Resultado del build de {@link TableBuilder}
+ *
  * @param <T> Tipo de la tabla
  */
 public class TableResult<T> {
@@ -25,9 +26,9 @@ public class TableResult<T> {
      */
     public TableResult(String title, List<String> footers, List<TableBuilder.Column<T>> columns, List<T> data) {
         this.title = title;
-        this.footers = List.copyOf(footers);
         this.columns = List.copyOf(columns);
         this.data = List.copyOf(data);
+        this.footers = (footers.isEmpty() && data.isEmpty()) ? List.of("Nada encontrado...") : List.copyOf(footers);
         this.format = buildFormat(this.columns);
         this.border = buildBorder(this.columns);
     }
@@ -36,10 +37,11 @@ public class TableResult<T> {
      * Construye un string con el formato para dibujar el borde según el ancho establecido para las columnas.
      * <p>
      * Ejemplo: | %-4s | %-20s | %-17s | %-10s | %-10s |%n
+     *
      * @param columns Columnas sobre las que construir el formato
      * @return String con el formato de las columnas
      */
-    private String buildFormat(List<TableBuilder.Column<T>> columns){
+    private String buildFormat(List<TableBuilder.Column<T>> columns) {
         return columns.stream()
                 .map(c -> "| %-" + c.width() + "s ")
                 .collect(Collectors.joining()) + "|%n";
@@ -47,10 +49,11 @@ public class TableResult<T> {
 
     /**
      * Construye el borde de la tabla a partir de las columnas
+     *
      * @param columns Columnas sobre las que construir el borde
      * @return String representando el borde
      */
-    private String buildBorder(List<TableBuilder.Column<T>> columns){
+    private String buildBorder(List<TableBuilder.Column<T>> columns) {
         /* Construcción del borde de la tabla (ej: +--+--+)  */
         return columns.stream()
                 .map(c -> "+" + "-".repeat(c.width() + 2))
