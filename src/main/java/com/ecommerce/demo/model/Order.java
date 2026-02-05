@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * Modelo orden de la base de datos
+ *
  * @author Gabriel Norambuena
  * @version 1.0
  */
@@ -20,9 +21,15 @@ public class Order implements Identifiable<Long> {
     private BigDecimal discounts;
     private String discountsDetail;
 
+
     /**
      * Constructor de la clase.
      * Establece automáticamente la fecha de creación al momento de crearlo.
+     *
+     * @param totalBase subtotal del precio
+     * @param totalFinal Precio final
+     * @param discounts Descuentos aplicados
+     * @param discountsDetail Detalle de descuento
      */
     public Order(BigDecimal totalBase, BigDecimal totalFinal, BigDecimal discounts, String discountsDetail) {
         this.creationDate = LocalDateTime.now();

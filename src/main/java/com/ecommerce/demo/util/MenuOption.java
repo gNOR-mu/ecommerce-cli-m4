@@ -3,6 +3,9 @@ package com.ecommerce.demo.util;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * Interfaz para las opciones de un menú
+ */
 public interface MenuOption {
     /**
      * Obtiene el código de la opción

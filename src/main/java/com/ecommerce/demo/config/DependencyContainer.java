@@ -64,64 +64,58 @@ public class DependencyContainer {
         seeder.loadData();
     }
 
-    public CategoryRepository getCategoryRepository() {
-        return categoryRepository;
-    }
-
-
-    public InventoryRepository getInventoryRepository() {
-        return inventoryRepository;
-    }
-
-    public OrderItemRepository getOrderItemRepository() {
-        return orderItemRepository;
-    }
-
-    public OrderRepository getOrderRepository() {
-        return orderRepository;
-    }
-
-
-    public ProductRepository getProductRepository() {
-        return productRepository;
-    }
-
+    /**
+     * Obtiene el servicio de categorías
+     * @return Servicio de categorías
+     */
     public CategoryService getCategoryService() {
         return categoryService;
     }
 
+    /**
+     * Obtiene el servicio de productos
+     * @return Servicio de productos
+     */
     public ProductService getProductService() {
         return productService;
     }
 
-    public OrderService getOrderService() {
-        return orderService;
-    }
-
-    public OrderItemService getOrderItemService() {
-        return orderItemService;
-    }
-
-    public Scanner getScanner() {
-        return scanner;
-    }
-
+    /**
+     * Obtiene el input handler
+     * @return input handler
+     */
     public InputHandler getInputHandler() {
         return inputHandler;
     }
 
+    /**
+     * Obtiene el servicio de inventario
+     * @return Servicio de inventario
+     */
     public InventoryService getInventoryService() {
         return inventoryService;
     }
 
+    /**
+     * Obtiene el servicio calculador de descuentos
+     * @return Servicio calculador de descuentos
+     */
     public DiscountCalculatorService getDiscountCalculatorService() {
         return discountCalculatorService;
     }
 
+    /**
+     * Obtiene el servicio del carrito
+     * @return Servicio del carrito
+     */
     public CartService getCartService() {
         return cartService;
     }
 
+    /**
+     * Obtiene el servicio del pago
+     * @return Servicio del pago
+     */
     public CheckoutService getCheckoutService() {
         return checkoutService;
     }

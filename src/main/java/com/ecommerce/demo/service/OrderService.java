@@ -40,7 +40,7 @@ public class OrderService implements IdentifiableService<Order,Long> {
     /**
      * Crea una nueva orden
      * @param order Orden a crear
-     * @return Ordenc reada
+     * @return Orden creada
      */
     public Order create(Order order){
         return orderRepository.save(order);
