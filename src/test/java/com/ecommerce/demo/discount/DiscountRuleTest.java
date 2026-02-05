@@ -3,6 +3,7 @@ package com.ecommerce.demo.discount;
 import com.ecommerce.demo.discount.rules.TotalAmountDiscountRule;
 import com.ecommerce.demo.discount.rules.ProductCategoryDiscountRule;
 import com.ecommerce.demo.discount.rules.ProductQuantityDiscountRule;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -28,6 +29,7 @@ class DiscountRuleTest {
 
     @ParameterizedTest(name = "Regla: {0} no debe retornar un descuento <= 0")
     @MethodSource("provideAllRules")
+    @DisplayName("Los descuentos deben ser mayor a 0")
     void rule_calculateDiscount_returnsAboveZero(DiscountRule rule) {
         assertTrue(BigDecimal.ZERO.compareTo(rule.calculateDiscount()) <= 0);
     }
