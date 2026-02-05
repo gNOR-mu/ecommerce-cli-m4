@@ -6,6 +6,45 @@ Enlace del repositorio de GitHub: https://github.com/gNOR-mu/ecommerce-cli-m4
 
 # Instrucciones de ejecución
 
+1. Compilar con maven:
+
+```bash
+  mvn compile
+```
+
+2. Ejecutar con maven:
+
+```bash
+  mvn exec:java
+```
+
+# Ejemplo de compra
+
+1. Ingresar como usuario
+
+![menú principal](ejemplos/1.png)
+
+2. Listar productos disponibles
+
+![menú principal](ejemplos/2.png)
+
+3. Agregar un producto al carrito
+
+![menú principal](ejemplos/3.png)
+
+4. Ver carrito
+
+![menú principal](ejemplos/4.png)
+
+5. Ver descuentos aplicados
+
+![menú principal](ejemplos/5.png)
+
+6. Confirmo la compra con un "si"
+
+![menú principal](ejemplos/6.png)
+
+
 # Propósito
 
 Desarrollar una aplicación de consola en Java con dos flujos (Administrador y Usuario) para gestionar
@@ -38,10 +77,10 @@ USUARIO (carrito, descuento y compra)
 - Ver descuentos activos (mostrar reglas y su condición)
 - Confirmar compra:
 
-  * Calcular TOTAL base y aplicar automáticamente todas las reglas de descuento que
-    correspondan.
-  * Mostrar detalle de descuentos aplicados y TOTAL final.
-  * Crear la Orden en memoria y vaciar el carrito.
+    * Calcular TOTAL base y aplicar automáticamente todas las reglas de descuento que
+      correspondan.
+    * Mostrar detalle de descuentos aplicados y TOTAL final.
+    * Crear la Orden en memoria y vaciar el carrito.
 
 **Validaciones obligatorias:** id existente; cantidad entera > 0; no confirmar con carrito vacío.
 
@@ -52,7 +91,8 @@ USUARIO (carrito, descuento y compra)
 **Excepción personalizada:** por ejemplo, CantidadInvalidaException.
 
 # Descuentos automáticos
-   Definir al menos 2 reglas y evaluarlas sin intervención del usuario al confirmar, por ejemplo:
+
+Definir al menos 2 reglas y evaluarlas sin intervención del usuario al confirmar, por ejemplo:
 
 - **DescuentoPorMonto(min, porcentaje)** → si totalBase >= min, descuenta %.
 - **DescuentoPorCategoria(categoria, porcentaje)** → si el carrito contiene esa categoría,
@@ -61,6 +101,7 @@ USUARIO (carrito, descuento y compra)
 El usuario debe poder listar los descuentos vigentes por consola.
 
 # Requisitos técnicos mínimos
+
 - Clases sugeridas: Producto, Carrito, Orden, Catalogo (gestión de productos),
   TiendaService (lógica), Consola (UI).
 - Colecciones: List/Map; ordenamientos con Comparator (por nombre/precio).
@@ -69,8 +110,9 @@ El usuario debe poder listar los descuentos vigentes por consola.
 - Git/GitHub: repo público ecommerce-cli-m4, mínimo 3 commits con mensajes descriptivos.
 
 # Notas
-- En windows, si se ejecuta el programa desde cmd es posible que no se interpreten correctamente los caracteres 
-mostrando un texto similar a <<Men├║>>, se soluciona especificando UTF-8 con:
+
+- En windows, si se ejecuta el programa desde cmd es posible que no se interpreten correctamente los caracteres
+  mostrando un texto similar a <<Men├║>>, se soluciona especificando UTF-8 con:
 
 ```BASH
   chcp 65001
