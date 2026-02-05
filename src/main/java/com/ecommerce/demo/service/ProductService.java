@@ -8,24 +8,29 @@ import com.ecommerce.demo.model.Product;
 import com.ecommerce.demo.repository.ProductRepository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Servicio para la gestión de productos
+ *
  * @author Gabriel Norambuena
  * @version 1.0
  */
 public class ProductService implements IdentifiableService<Product, Long> {
+
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
     private final InventoryService inventoryService;
 
+    //ordenamiento por precio asc
+    private final Comparator<ProductSummaryDto> comparatorPrice = Comparator.comparing(ProductSummaryDto::price);
+
     /**
      * Constructor de la clase
+     *
      * @param productRepository Repositorio de los productos
-     * @param categoryService Servicio de las categorías
-     * @param inventoryService Servicio de inventario
+     * @param categoryService   Servicio de las categorías
+     * @param inventoryService  Servicio de inventario
      */
     public ProductService(ProductRepository productRepository, CategoryService categoryService, InventoryService inventoryService) {
         this.productRepository = productRepository;
@@ -38,8 +43,7 @@ public class ProductService implements IdentifiableService<Product, Long> {
      */
     @Override
     public Product getById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(()->new ResourceNotFoundException("Producto", id));
+        return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Producto", id));
     }
 
     /**
@@ -52,69 +56,72 @@ public class ProductService implements IdentifiableService<Product, Long> {
 
     /**
      * Crea un nuevo producto
-     * @param product Producto a crear
+     *
+     * @param product  Producto a crear
      * @param quantity Cantidad del producto
      * @return Nuevo producto
-     *
      * @throws ResourceNotFoundException Cuando la categoría no existe
-     * @throws IllegalArgumentException Cuando el nombre es inválido
-     * @throws IllegalArgumentException Cuando el precio es <= 0
+     * @throws IllegalArgumentException  Cuando el nombre es inválido
+     * @throws IllegalArgumentException  Cuando el precio es <= 0
      */
     public Product create(Product product, int quantity) {
+        // verifico que exista la categoría
         if (categoryService.notExistsById(product.getCategoryId())) {
             throw new ResourceNotFoundException("Categoría", product.getCategoryId());
         }
-        if(product.getName() == null || product.getName().isBlank()){
-            throw new IllegalArgumentException("El nombre del producto es inválido");
+
+        // verifico que el nombre no sea inválido
+        if (product.getName() == null || product.getName().isBlank()) {
+            throw new IllegalArgumentException("El nombre del producto no puede estar vacío");
         }
-        //si es <= 0 significa que el precio es menor o igual a 0
-        if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0){
+
+        // verifico que el precio no sea menor o igual a 0
+        // si es <= 0 significa que el precio es menor o igual a 0
+        if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("El precio no puede ser <= 0");
         }
+
+        // 1. crea el producto
         Product createdProduct = productRepository.save(product);
 
+        // 2. creo su inventario
         Inventory inventory = new Inventory(createdProduct.getId(), quantity);
         inventoryService.create(inventory);
+
         return createdProduct;
     }
 
     /**
      * Obtiene un resumen de todos los productos
+     *
      * @return Listado con resumen de todos los productos
      */
     public List<ProductSummaryDto> findAllSummary() {
         List<Product> products = productRepository.findAll();
-        List<ProductSummaryDto> res = new ArrayList<>();
 
-        //NOTA no es la forma más óptima, sin embargo, el rendimiento no es un requisito
-        for (Product product : products) {
-            var category = categoryService.getById(product.getCategoryId());
-            var inventory = inventoryService.getByProductId(product.getId());
-            res.add(new ProductSummaryDto(
-                    product.getId(),
-                    product.getName(),
-                    category.getName(),
-                    product.getPrice(),
-                    inventory.getQuantity(),
-                    product.getCategoryId()));
-        }
+        // NOTA no es la forma más óptima, sin embargo, el rendimiento no es un requisito
+        // problema n + 1 al convertir varios productos con categorías repetidas
 
-        return res;
+        return convertToDto(products);
     }
 
     /**
      * Obtiene todos los productos con stock
+     *
      * @return Una lista con los productos con stock
      */
-    public List<ProductSummaryDto> findAllWithStock(){
-        return  findAllSummary().stream().filter(p -> p.stock() > 0).toList();
+    public List<ProductSummaryDto> findAllWithStock() {
+        return findAllSummary().stream()
+                .filter(p -> p.stock() > 0)
+                .sorted(Comparator.comparing(ProductSummaryDto::price))
+                .toList();
     }
 
     /**
      * Obtiene el resumen de un producto determinado
+     *
      * @param id Identificación del producto
      * @return Resumen del producto
-     *
      * @throws ResourceNotFoundException Viene de {@link #getById(Long)}
      */
     public ProductSummaryDto getSummaryById(Long id) {
@@ -128,11 +135,10 @@ public class ProductService implements IdentifiableService<Product, Long> {
 
     /**
      * Elimina un producto
-     * @param id Identificación del producto
      *
-     * @throws ResourceNotFoundException Viene de {@link #getById(Long)}
+     * @param id Identificación del producto
+     * @throws ResourceNotFoundException                        Viene de {@link #getById(Long)}
      * @throws com.ecommerce.demo.exceptions.InventoryException Viene de {@link InventoryService#deleteByProductId(Long)}}
-
      */
     public void deleteById(Long id) {
         inventoryService.deleteByProductId(id);
@@ -141,25 +147,25 @@ public class ProductService implements IdentifiableService<Product, Long> {
 
     /**
      * Actualiza un producto
-     * @param id Identificación del producto
-     * @param product Producto
-     * @param stock Nuevo stock
-     * @return Producto actualizado
      *
+     * @param id      Identificación del producto
+     * @param product Producto
+     * @param stock   Nuevo stock
+     * @return Producto actualizado
      * @throws ResourceNotFoundException Viene de {@link #getById(Long)}
      * @throws ResourceNotFoundException Cuando no encuentra la categoría.
-     * @throws IllegalArgumentException Cuando el inventario es inferior a 0, viene de {@link InventoryService#updateByProductId(Long, int)}
+     * @throws IllegalArgumentException  Cuando el inventario es inferior a 0, viene de {@link InventoryService#updateByProductId(Long, int)}
      */
     public Product update(Long id, Product product, int stock) {
         if (categoryService.notExistsById(product.getCategoryId())) {
             throw new ResourceNotFoundException("Categoría", product.getCategoryId());
         }
 
-        if(product.getName() == null || product.getName().isBlank()){
+        if (product.getName() == null || product.getName().isBlank()) {
             throw new IllegalArgumentException("El nombre del producto es inválido");
         }
 
-        if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0){
+        if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("El precio no puede ser <= 0");
         }
         Product existing = getById(id);
@@ -174,6 +180,7 @@ public class ProductService implements IdentifiableService<Product, Long> {
 
     /**
      * Busca productos por medio de la palabra clave, buscando en su nombre y categoría.
+     *
      * @param searchText Texto a buscar
      * @return Listado de productos coincidentes
      */
@@ -189,25 +196,29 @@ public class ProductService implements IdentifiableService<Product, Long> {
                 })
                 .toList();
 
-        return matches.stream().map(this::convertToDto).toList();
+        return convertToDto(matches);
     }
 
     /**
-     * Convierte un producto a {@link ProductSummaryDto}
-     * @param p Producto a convertir
+     * Convierte los productos a una lista ordenada de {@link ProductSummaryDto}
+     *
+     * @param products Listado de productos
      * @return Un resumen del producto
      */
-    private ProductSummaryDto convertToDto(Product p) {
-        //prácticamente es como un mapper
-        String catName = categoryService.getById(p.getCategoryId()).getName();
-        int stock = inventoryService.getById(p.getId()).getQuantity();
-        return new ProductSummaryDto(
-                p.getId(),
-                p.getName(),
-                catName,
-                p.getPrice(),
-                stock,
-                p.getCategoryId()
-        );
+    private List<ProductSummaryDto> convertToDto(List<Product> products) {
+        return products.stream().map(p -> {
+                    String categoryName = categoryService.getById(p.getCategoryId()).getName();
+                    int stock = inventoryService.getById(p.getId()).getQuantity();
+
+                    return new ProductSummaryDto(
+                            p.getId(),
+                            p.getName(),
+                            categoryName,
+                            p.getPrice(),
+                            stock,
+                            p.getCategoryId()
+                    );
+                }).sorted(comparatorPrice)
+                .toList();
     }
 }

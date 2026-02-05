@@ -8,6 +8,7 @@ import com.ecommerce.demo.model.Cart;
 import com.ecommerce.demo.model.CartItem;
 import com.ecommerce.demo.model.Product;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -62,7 +63,7 @@ public class CartService {
     /**
      * Elimina un producto del carro, independientemente de la cantidad del mismo.
      * @param productId Identificación del producto a eliminar
-     *
+     * @param cart Carrito sobre el cual eliminar el producto
      * @throws ResourceNotFoundException Cuando el producto no se encuentra en el carro.
      */
     public void removeFromCart(Long productId, Cart cart) {
@@ -84,7 +85,9 @@ public class CartService {
                         item.getProduct().getPrice(),
                         item.getQuantity(),
                         item.getSubTotal()
-                )).toList();
+                ))
+                .sorted(Comparator.comparing(CartProductsDto::subTotal))
+                .toList();
 
         return new CartSummary(productsDto, cart.getTotal());
     }
