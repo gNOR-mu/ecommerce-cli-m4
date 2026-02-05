@@ -41,12 +41,4 @@ public class DiscountCalculatorService {
         }
         return new DiscountSummary(discounts,totalOff);
     }
-
-    /**
-     * Obtiene todos los descuentos del sistema
-     * @return Lista con los descuentos
-     */
-    public List<DiscountRule> getActiveDiscounts(){
-        return Constants.ACTIVE_RULES;
-    }
 }

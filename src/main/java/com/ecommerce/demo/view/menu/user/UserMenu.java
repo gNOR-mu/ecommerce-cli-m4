@@ -3,6 +3,7 @@ package com.ecommerce.demo.view.menu.user;
 import com.ecommerce.demo.discount.DiscountRule;
 import com.ecommerce.demo.dto.CartSummary;
 import com.ecommerce.demo.dto.CheckoutSummaryDto;
+import com.ecommerce.demo.dto.DiscountSummary;
 import com.ecommerce.demo.dto.ProductSummaryDto;
 import com.ecommerce.demo.enums.UserMenuOptions;
 import com.ecommerce.demo.model.Cart;
@@ -140,7 +141,7 @@ public class UserMenu extends AbstractMenu {
      * Imprime los descuentos activos
      */
     private void printDiscounts() {
-        List<DiscountRule> activeDiscounts = discountCalculatorService.getActiveDiscounts();
+        DiscountSummary activeDiscounts = discountCalculatorService.applyDiscount(cart);
         PrintUtil.printDiscounts(activeDiscounts);
     }
 
