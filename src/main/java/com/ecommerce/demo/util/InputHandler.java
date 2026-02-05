@@ -101,8 +101,8 @@ public class InputHandler {
         return readInput(msg, str -> {
             try {
                 BigDecimal val = new BigDecimal(str);
-                if (val.compareTo(BigDecimal.ZERO) < 0) {
-                    throw new InvalidOperationException("Error: El número no debe ser negativo.");
+                if (val.compareTo(BigDecimal.ZERO) <= 0) {
+                    throw new InvalidOperationException("Error: El número no debe <= 0.");
                 }
 
                 return val;
@@ -200,7 +200,7 @@ public class InputHandler {
 
             try {
                 BigDecimal nuevoValor = new BigDecimal(input);
-                if (nuevoValor.compareTo(BigDecimal.ZERO) < 0) {
+                if (nuevoValor.compareTo(BigDecimal.ZERO) <= 0) {
                     System.out.println("El número no debe ser negativo");
                     continue;
                 }
