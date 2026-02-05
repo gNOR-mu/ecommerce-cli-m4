@@ -30,7 +30,7 @@ public class CategoryService implements IdentifiableService<Category, Long> {
      * {@inheritDoc}
      */
     @Override
-    public Category getById(Long id) throws ResourceNotFoundException {
+    public Category getById(Long id)  {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Categoría", id));
     }
