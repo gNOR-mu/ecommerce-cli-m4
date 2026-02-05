@@ -2,6 +2,7 @@ package com.ecommerce.demo.view.menu.admin;
 
 import com.ecommerce.demo.dto.ProductSummaryDto;
 import com.ecommerce.demo.enums.AdminMenuOptions;
+import com.ecommerce.demo.exceptions.InvalidOperationException;
 import com.ecommerce.demo.exceptions.ResourceNotFoundException;
 import com.ecommerce.demo.model.Category;
 import com.ecommerce.demo.model.Product;
@@ -100,7 +101,7 @@ public class AdminMenu extends AbstractMenu {
         try {
             productService.create(product, stock);
             System.out.println("Producto creado exitosamente.");
-        } catch (IllegalArgumentException | ResourceNotFoundException e) {
+        } catch (InvalidOperationException | ResourceNotFoundException e) {
             System.out.println("Datos inválidos: " + e.getMessage());
         }
     }

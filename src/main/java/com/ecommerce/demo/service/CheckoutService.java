@@ -4,6 +4,7 @@ import com.ecommerce.demo.dto.CartProductsDto;
 import com.ecommerce.demo.dto.CartSummary;
 import com.ecommerce.demo.dto.CheckoutSummaryDto;
 import com.ecommerce.demo.dto.DiscountSummary;
+import com.ecommerce.demo.exceptions.InvalidOperationException;
 import com.ecommerce.demo.model.Cart;
 import com.ecommerce.demo.model.Order;
 import com.ecommerce.demo.model.OrderItem;
@@ -20,6 +21,14 @@ public class CheckoutService {
     private final CartService cartService;
     private final InventoryService inventoryService;
 
+    /**
+     * Constructor del servicio de pago
+     * @param orderService Servicio de la orden
+     * @param orderItemService Servicio de orderItem
+     * @param discountCalculatorService Servicio de cálculo de descuentos
+     * @param cartService Servicio del carrito
+     * @param inventoryService Servicio del inventario
+     */
     public CheckoutService(OrderService orderService,
                            OrderItemService orderItemService,
                            DiscountCalculatorService discountCalculatorService, CartService cartService, InventoryService inventoryService) {
@@ -46,7 +55,7 @@ public class CheckoutService {
      */
     public CheckoutSummaryDto getSummary(Cart cart) {
         if (cart == null || cart.getAllItems().isEmpty()) {
-            throw new IllegalArgumentException("El carro no puede estar vacío");
+            throw new InvalidOperationException("El carro no puede estar vacío");
         }
         CartSummary cartSummary = cartService.getAll(cart);
         DiscountSummary discountSummary = discountCalculatorService.applyDiscount(cart);

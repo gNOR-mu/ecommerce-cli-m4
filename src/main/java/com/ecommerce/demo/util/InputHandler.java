@@ -1,5 +1,7 @@
 package com.ecommerce.demo.util;
 
+import com.ecommerce.demo.exceptions.InvalidOperationException;
+
 import java.math.BigDecimal;
 import java.util.Scanner;
 import java.util.function.Function;
@@ -47,7 +49,7 @@ public class InputHandler {
      */
     public String readText(String msg) {
         return readInput(msg, str -> {
-            if (str.isEmpty()) throw new IllegalArgumentException();
+            if (str.isBlank()) throw new InvalidOperationException("Error: No puede estar vacío");
             return str;
         });
     }
@@ -62,11 +64,11 @@ public class InputHandler {
             try {
                 int val = Integer.parseInt(str);
                 if (val < 0) {
-                    throw new IllegalArgumentException("Error: El número no debe ser negativo.");
+                    throw new InvalidOperationException("Error: El número no debe ser negativo.");
                 }
                 return val;
             } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Error: Debes ingresar un número entero válido.");
+                throw new InvalidOperationException("Error: Debes ingresar un número entero válido.");
             }
         });
     }
@@ -81,11 +83,11 @@ public class InputHandler {
             try {
                 long val = Long.parseLong(str);
                 if (val < 0) {
-                    throw new IllegalArgumentException("Error: El número no debe ser negativo.");
+                    throw new InvalidOperationException("Error: El número no debe ser negativo.");
                 }
                 return val;
             } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Error: Debes ingresar un número entero válido.");
+                throw new InvalidOperationException("Error: Debes ingresar un número entero válido.");
             }
         });
     }
@@ -100,12 +102,12 @@ public class InputHandler {
             try {
                 BigDecimal val = new BigDecimal(str);
                 if (val.compareTo(BigDecimal.ZERO) < 0) {
-                    throw new IllegalArgumentException("Error: El número no debe ser negativo.");
+                    throw new InvalidOperationException("Error: El número no debe ser negativo.");
                 }
 
                 return val;
             } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Error: Debes ingresar un número decimal válido.");
+                throw new InvalidOperationException("Error: Debes ingresar un número decimal válido.");
             }
         });
     }

@@ -1,6 +1,7 @@
 package com.ecommerce.demo.service;
 
 import com.ecommerce.demo.dto.ProductSummaryDto;
+import com.ecommerce.demo.exceptions.InvalidOperationException;
 import com.ecommerce.demo.exceptions.ResourceNotFoundException;
 import com.ecommerce.demo.model.Category;
 import com.ecommerce.demo.model.Inventory;
@@ -61,8 +62,8 @@ public class ProductService implements IdentifiableService<Product, Long> {
      * @param quantity Cantidad del producto
      * @return Nuevo producto
      * @throws ResourceNotFoundException Cuando la categoría no existe
-     * @throws IllegalArgumentException  Cuando el nombre es inválido
-     * @throws IllegalArgumentException  Cuando el precio es <= 0
+     * @throws InvalidOperationException Cuando el nombre es inválido
+     * @throws InvalidOperationException Cuando el precio es <= 0
      */
     public Product create(Product product, int quantity) {
         // verifico que exista la categoría
@@ -72,13 +73,13 @@ public class ProductService implements IdentifiableService<Product, Long> {
 
         // verifico que el nombre no sea inválido
         if (product.getName() == null || product.getName().isBlank()) {
-            throw new IllegalArgumentException("El nombre del producto no puede estar vacío");
+            throw new InvalidOperationException("El nombre del producto no puede estar vacío");
         }
 
         // verifico que el precio no sea menor o igual a 0
         // si es <= 0 significa que el precio es menor o igual a 0
         if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("El precio no puede ser <= 0");
+            throw new InvalidOperationException("El precio no puede ser <= 0");
         }
 
         // 1. crea el producto
@@ -137,8 +138,8 @@ public class ProductService implements IdentifiableService<Product, Long> {
      * Elimina un producto
      *
      * @param id Identificación del producto
-     * @throws ResourceNotFoundException                        Viene de {@link #getById(Long)}
-     * @throws com.ecommerce.demo.exceptions.InventoryException Viene de {@link InventoryService#deleteByProductId(Long)}}
+     * @throws ResourceNotFoundException Viene de {@link #getById(Long)}
+     * @throws IllegalArgumentException  Viene de {@link InventoryService#deleteByProductId(Long)}}
      */
     public void deleteById(Long id) {
         inventoryService.deleteByProductId(id);
@@ -154,7 +155,7 @@ public class ProductService implements IdentifiableService<Product, Long> {
      * @return Producto actualizado
      * @throws ResourceNotFoundException Viene de {@link #getById(Long)}
      * @throws ResourceNotFoundException Cuando no encuentra la categoría.
-     * @throws IllegalArgumentException  Cuando el inventario es inferior a 0, viene de {@link InventoryService#updateByProductId(Long, int)}
+     * @throws InvalidOperationException Cuando el inventario es inferior a 0, viene de {@link InventoryService#updateByProductId(Long, int)}
      */
     public Product update(Long id, Product product, int stock) {
         if (categoryService.notExistsById(product.getCategoryId())) {
@@ -162,11 +163,11 @@ public class ProductService implements IdentifiableService<Product, Long> {
         }
 
         if (product.getName() == null || product.getName().isBlank()) {
-            throw new IllegalArgumentException("El nombre del producto es inválido");
+            throw new InvalidOperationException("El nombre del producto es inválido");
         }
 
         if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("El precio no puede ser <= 0");
+            throw new InvalidOperationException("El precio no puede ser <= 0");
         }
         Product existing = getById(id);
 

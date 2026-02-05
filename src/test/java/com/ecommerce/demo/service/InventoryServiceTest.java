@@ -1,5 +1,6 @@
 package com.ecommerce.demo.service;
 
+import com.ecommerce.demo.exceptions.InvalidOperationException;
 import com.ecommerce.demo.exceptions.ResourceNotFoundException;
 import com.ecommerce.demo.model.Inventory;
 import com.ecommerce.demo.repository.InventoryRepository;
@@ -13,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,9 +30,7 @@ class InventoryServiceTest {
     void getById_categoryId_returnsCategory() {
         // arrange
         Long productId = 1L;
-
         Inventory inventory = new Inventory(productId, 100);
-
         when(repository.findByProductId(productId)).thenReturn(Optional.of(inventory));
 
         // act
@@ -38,17 +38,20 @@ class InventoryServiceTest {
 
         // assert
         assertEquals(inventory, obtained);
+        verify(repository).findByProductId(productId);
     }
 
     @Test
     @DisplayName("Obtención: Debe lanzar ResourceNotFoundException cuando la id del producto no existe")
-    void getById_nonExistentIdProductId_throwsResourceNotFoundException() {
+    void getByProductId_nonExistentIdProductId_throwsResourceNotFoundException() {
         //arrange
-        Long nonExistentId = Long.MIN_VALUE;
+        Long nonExistentId = -100000L;
+        when(repository.findByProductId(nonExistentId)).thenReturn(Optional.empty());
 
-        //assert
+        // act & assert
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> service.getByProductId(nonExistentId));
-        assertEquals("No se ha encontrado un inventario correspondiente a un producto con id : " + nonExistentId, exception.getMessage());
+        assertEquals("No se ha encontrado un inventario correspondiente a un producto con id : -100000", exception.getMessage());
+        verify(repository).findByProductId(nonExistentId);
     }
 
     @Test
@@ -56,9 +59,9 @@ class InventoryServiceTest {
     void subtractInventory_validQuantity_reduceInventory() {
         //arrange
         Long productId = 1L;
-        int quantityToReduce = 10;
-        int inventoryQuantity = 1000;
-        int expectedQuantity = inventoryQuantity - quantityToReduce;
+        int inventoryQuantity = 100;
+        int quantityToReduce = 50;
+        int expectedQuantity = 50;
 
         Inventory inventory = new Inventory(productId, inventoryQuantity);
 
@@ -69,11 +72,12 @@ class InventoryServiceTest {
 
         //assert
         assertEquals(expectedQuantity, inventory.getQuantity());
+        assertTrue(inventory.getQuantity() >= 0);
     }
 
     @Test
     @DisplayName("Inventario: No debe poder reducir el inventario cuando el resultado es negativo")
-    void subtractInventory_invalidQuantity_throwsIllegalArgumentException() {
+    void subtractInventory_invalidQuantity_throwsInvalidOperationException() {
         //arrange
         Long productId = 1L;
         int quantityToReduce = 10;
@@ -84,11 +88,49 @@ class InventoryServiceTest {
         when(repository.findByProductId(productId)).thenReturn(Optional.of(inventory));
 
         // act y assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        Exception exception = assertThrows(InvalidOperationException.class,
                 () -> service.subtractInventory(productId, quantityToReduce));
 
         assertEquals("No puede haber un stock negativo", exception.getMessage());
         assertEquals(originalQuantity, inventory.getQuantity());
+    }
+
+    @Test
+    @DisplayName("Sustracción: Es posible sustraer con cantidad válida")
+    void isPossibleSubtract_validQuantity_returnsTrue() {
+        // arrange
+        Long productId = 1L;
+        int productQuantity = 100;
+        int subtractQuantity = 5;
+        Inventory inventory = new Inventory(productId, productQuantity);
+
+        when(repository.findByProductId(productId)).thenReturn(Optional.of(inventory));
+
+        // act
+        boolean result = service.isPossibleSubtract(productId, subtractQuantity);
+
+        // assert
+        assertTrue(result);
+        verify(repository).findByProductId(productId);
+    }
+
+    @Test
+    @DisplayName("Sustracción: No es posible sustraer con cantidad inválida")
+    void isPossibleSubtract_invalidQuantity_returnsFalse() {
+        // arrange
+        Long productId = 1L;
+        int productQuantity = 5;
+        int subtractQuantity = 5000;
+        Inventory inventory = new Inventory(productId, productQuantity);
+
+        when(repository.findByProductId(productId)).thenReturn(Optional.of(inventory));
+
+        // act
+        boolean result = service.isPossibleSubtract(productId, subtractQuantity);
+
+        // assert
+        assertFalse(result);
+        verify(repository).findByProductId(productId);
     }
 
 
