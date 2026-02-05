@@ -1,4 +1,4 @@
-package com.ecommerce.demo.view;
+package com.ecommerce.demo.view.menu;
 
 /**
  * Interfaz con operaciones de los menús

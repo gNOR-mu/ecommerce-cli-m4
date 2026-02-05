@@ -1,9 +1,9 @@
-package com.ecommerce.demo.view;
+package com.ecommerce.demo.view.menu;
 
 import com.ecommerce.demo.config.DependencyContainer;
 import com.ecommerce.demo.util.PrintUtil;
-import com.ecommerce.demo.view.admin.AdminMenu;
-import com.ecommerce.demo.view.user.UserMenu;
+import com.ecommerce.demo.view.menu.admin.AdminMenu;
+import com.ecommerce.demo.view.menu.user.UserMenu;
 
 /**
  * Menú principal

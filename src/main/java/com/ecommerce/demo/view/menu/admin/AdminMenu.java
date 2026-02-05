@@ -1,4 +1,4 @@
-package com.ecommerce.demo.view.admin;
+package com.ecommerce.demo.view.menu.admin;
 
 import com.ecommerce.demo.dto.ProductSummaryDto;
 import com.ecommerce.demo.exceptions.ResourceNotFoundException;
@@ -8,7 +8,7 @@ import com.ecommerce.demo.service.CategoryService;
 import com.ecommerce.demo.service.ProductService;
 import com.ecommerce.demo.util.PrintUtil;
 import com.ecommerce.demo.util.InputHandler;
-import com.ecommerce.demo.view.AbstractMenu;
+import com.ecommerce.demo.view.menu.AbstractMenu;
 
 import java.math.BigDecimal;
 import java.util.List;

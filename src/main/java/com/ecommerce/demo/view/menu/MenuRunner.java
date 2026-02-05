@@ -1,4 +1,4 @@
-package com.ecommerce.demo.view;
+package com.ecommerce.demo.view.menu;
 
 /**
  * Clase utilizada para cargar los menús

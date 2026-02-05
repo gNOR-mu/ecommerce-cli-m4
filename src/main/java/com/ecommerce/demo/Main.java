@@ -2,8 +2,8 @@ package com.ecommerce.demo;
 
 
 import com.ecommerce.demo.config.DependencyContainer;
-import com.ecommerce.demo.view.MainMenu;
-import com.ecommerce.demo.view.Menu;
+import com.ecommerce.demo.view.menu.MainMenu;
+import com.ecommerce.demo.view.menu.Menu;
 
 /**
  * Clase principal

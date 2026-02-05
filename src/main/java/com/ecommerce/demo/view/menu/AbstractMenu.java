@@ -1,4 +1,4 @@
-package com.ecommerce.demo.view;
+package com.ecommerce.demo.view.menu;
 
 import com.ecommerce.demo.util.InputHandler;
 

@@ -1,4 +1,4 @@
-package com.ecommerce.demo.view.user;
+package com.ecommerce.demo.view.menu.user;
 
 import com.ecommerce.demo.discount.DiscountRule;
 import com.ecommerce.demo.dto.CartSummary;
@@ -8,7 +8,7 @@ import com.ecommerce.demo.model.Cart;
 import com.ecommerce.demo.service.*;
 import com.ecommerce.demo.util.PrintUtil;
 import com.ecommerce.demo.util.InputHandler;
-import com.ecommerce.demo.view.AbstractMenu;
+import com.ecommerce.demo.view.menu.AbstractMenu;
 
 import java.util.List;
 
