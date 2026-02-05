@@ -22,4 +22,11 @@ public interface CategoryRepository extends CrudRepository<Category, Long> {
      * @return Un listado con las ids coincidentes.
      */
     List<Long> findIdsByName(String searchText);
+
+    /**
+     * Verifica si existe una categoría con ese nombre
+     * @param name Nombre a buscar
+     * @return Verdadero si ya existe, falso en caso contrario
+     */
+    boolean existsByName(String name);
 }

@@ -22,4 +22,13 @@ public class InMemoryCategoryRepository extends InMemoryAbstractRepository<Categ
                 .map(Category::getId)
                 .toList();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean existsByName(String name) {
+        return database.values().stream()
+                .anyMatch(category -> category.getName().equalsIgnoreCase(name));
+    }
 }
