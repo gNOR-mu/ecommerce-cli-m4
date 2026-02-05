@@ -91,7 +91,7 @@ public class ProductCategoryDiscountRuleTest {
         for (long i = 0; i < productsQuantity; i++) {
             String name = "category_" + i;
             //el precio es irrelevante para esta regla
-            Product product = new Product(i, new BigDecimal("1"), name);
+            Product product = new Product(i, BigDecimal.ONE, name);
             product.setId(i);
 
             cart.addProduct(product, 1);
