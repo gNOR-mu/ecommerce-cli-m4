@@ -1,11 +1,13 @@
 package com.ecommerce.demo.view.menu.admin;
 
 import com.ecommerce.demo.dto.ProductSummaryDto;
+import com.ecommerce.demo.enums.AdminMenuOptions;
 import com.ecommerce.demo.exceptions.ResourceNotFoundException;
 import com.ecommerce.demo.model.Category;
 import com.ecommerce.demo.model.Product;
 import com.ecommerce.demo.service.CategoryService;
 import com.ecommerce.demo.service.ProductService;
+import com.ecommerce.demo.util.MenuOption;
 import com.ecommerce.demo.util.PrintUtil;
 import com.ecommerce.demo.util.InputHandler;
 import com.ecommerce.demo.view.menu.AbstractMenu;
@@ -15,6 +17,7 @@ import java.util.List;
 
 /**
  * Menú de administrador
+ *
  * @author Gabriel Norambuena
  * @version 1.0
  */
@@ -23,8 +26,8 @@ public class AdminMenu extends AbstractMenu {
     private final CategoryService categoryService;
 
     /**
-     * @param inputHandler Clase de utilidad para manejar las entradas.
-     * @param productService Servicio de productos
+     * @param inputHandler    Clase de utilidad para manejar las entradas.
+     * @param productService  Servicio de productos
      * @param categoryService Servicio de la categoría
      */
     public AdminMenu(InputHandler inputHandler, ProductService productService, CategoryService categoryService) {
@@ -45,19 +48,21 @@ public class AdminMenu extends AbstractMenu {
      * {@inheritDoc}
      */
     @Override
-    protected boolean handleOption(int option) {
+    protected boolean handleOption(int code) {
+        AdminMenuOptions option = MenuOption.find(AdminMenuOptions.class, code).orElse(null);
+
         switch (option) {
-            case 0 -> {
+            case LIST_PRODUCTS -> listProducts();
+            case SEARCH_PRODUCT -> searchProduct();
+            case CREATE_PRODUCT -> createProduct();
+            case UPDATE_PRODUCT -> updateProduct();
+            case DELETE_PRODUCT -> delete();
+            case EXIT -> {
                 return false;
             }
-            case 1 -> listProducts();
-            case 2 -> searchProduct();
-            case 3 -> createProduct();
-            case 4 -> updateProduct();
-            case 5 -> delete();
-            default -> System.out.println("Opción inválida");
+            case null, default -> System.out.println("Opción inválida");
         }
-            inputHandler.awaitInput();
+        inputHandler.awaitInput();
         return true;
     }
 

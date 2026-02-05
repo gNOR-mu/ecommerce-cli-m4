@@ -4,8 +4,10 @@ import com.ecommerce.demo.discount.DiscountRule;
 import com.ecommerce.demo.dto.CartSummary;
 import com.ecommerce.demo.dto.CheckoutSummaryDto;
 import com.ecommerce.demo.dto.ProductSummaryDto;
+import com.ecommerce.demo.enums.UserMenuOptions;
 import com.ecommerce.demo.model.Cart;
 import com.ecommerce.demo.service.*;
+import com.ecommerce.demo.util.MenuOption;
 import com.ecommerce.demo.util.PrintUtil;
 import com.ecommerce.demo.util.InputHandler;
 import com.ecommerce.demo.view.menu.AbstractMenu;
@@ -14,6 +16,7 @@ import java.util.List;
 
 /**
  * Menú de usuario
+ *
  * @author Gabriel Norambuena
  * @version 1.0
  */
@@ -26,12 +29,13 @@ public class UserMenu extends AbstractMenu {
 
     /**
      * Constructor de la clase.
-     * @param inputHandler Clase de utilidad para manejar las entradas.
-     * @param productService Servicio de productos
+     *
+     * @param inputHandler              Clase de utilidad para manejar las entradas.
+     * @param productService            Servicio de productos
      * @param discountCalculatorService Servicio de descuentos
-     * @param inventoryService Servicio de inventario
-     * @param cartService Servicio del carrito
-     * @param checkoutService Servicio de checkout
+     * @param inventoryService          Servicio de inventario
+     * @param cartService               Servicio del carrito
+     * @param checkoutService           Servicio de checkout
      */
     public UserMenu(InputHandler inputHandler,
                     ProductService productService,
@@ -58,19 +62,21 @@ public class UserMenu extends AbstractMenu {
      * {@inheritDoc}
      */
     @Override
-    protected boolean handleOption(int option) {
+    protected boolean handleOption(int code) {
+        UserMenuOptions option = MenuOption.find(UserMenuOptions.class, code).orElse(null);
+
         switch (option) {
-            case 0 -> {
+            case EXIT -> {
                 return false;
             }
-            case 1 -> listProducts();
-            case 2 -> searchProduct();
-            case 3 -> addToCart();
-            case 4 -> removeFromCart();
-            case 5 -> printCart();
-            case 6 -> printDiscounts();
-            case 7 -> confirmPurchase();
-            default -> System.out.println("Opción inválida");
+            case LIST_PRODUCTS -> listProducts();
+            case SEARCH_PRODUCTS -> searchProduct();
+            case ADD_TO_CART -> addToCart();
+            case REMOVE_FROM_CART -> removeFromCart();
+            case VIEW_CART -> printCart();
+            case VIEW_ACTIVE_DISCOUNTS -> printDiscounts();
+            case CHECKOUT -> confirmPurchase();
+            case null, default -> System.out.println("Opción inválida");
         }
         inputHandler.awaitInput();
         return true;
@@ -141,12 +147,12 @@ public class UserMenu extends AbstractMenu {
     /**
      * Confirma la compra
      */
-    private void confirmPurchase(){
-        try{
+    private void confirmPurchase() {
+        try {
             CheckoutSummaryDto checkoutSummary = checkoutService.getSummary(cart);
             PrintUtil.printCheckoutSummary(checkoutSummary);
             String confirm = inputHandler.readText("¿Seguro que quieres continuar con la compra? (Sí/No): ");
-            if(!confirm(confirm)){
+            if (!confirm(confirm)) {
                 System.out.println("Pago cancelado");
                 return;
             }
@@ -154,7 +160,7 @@ public class UserMenu extends AbstractMenu {
             checkoutService.checkout(cart);
             System.out.println("Compra realizada exitosamente");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }

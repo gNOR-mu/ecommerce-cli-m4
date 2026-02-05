@@ -31,10 +31,10 @@ public abstract class AbstractMenu implements Menu {
             printMenuOptions();
 
             //pido que ingrese una opción
-            int option = inputHandler.readInt("Ingrese una opción: ");
+            int code = inputHandler.readInt("Ingrese una opción: ");
 
             // basado en la opción que ingreso, la implementación de handleOption decide si salir.
-            running = handleOption(option);
+            running = handleOption(code);
         }
     }
 
@@ -45,10 +45,10 @@ public abstract class AbstractMenu implements Menu {
 
     /**
      * Manipula la opción ingresada del usuario.
-     * @param option Número de la opción
+     * @param code Código de la opción
      * @return Verdadero si continua la ejecución, falso si decide cancelarla.
      */
-    protected abstract boolean handleOption(int option);
+    protected abstract boolean handleOption(int code);
 
     /**
      * Confirma una opción determinada

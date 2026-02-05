@@ -2,6 +2,9 @@ package com.ecommerce.demo.util;
 
 import com.ecommerce.demo.discount.DiscountRule;
 import com.ecommerce.demo.dto.*;
+import com.ecommerce.demo.enums.AdminMenuOptions;
+import com.ecommerce.demo.enums.MainMenuOptions;
+import com.ecommerce.demo.enums.UserMenuOptions;
 import com.ecommerce.demo.model.Category;
 import com.ecommerce.demo.view.TableBuilder;
 
@@ -14,15 +17,6 @@ import java.util.List;
  * @version 1.0
  */
 public class PrintUtil {
-    /**
-     * Registro con las opciones de un menú
-     *
-     * @param key         Opción
-     * @param description Descripción
-     */
-    private record MenuOption(String key, String description) {
-    }
-
     /**
      * Función de utilidad para imprimir los productos de forma formateada
      * <p> Muestra: ID, PRODUCTO, CATEGORÍA, PRECIO y STOCK </ṕ>
@@ -77,17 +71,12 @@ public class PrintUtil {
      * @see TableBuilder
      */
     public static void printMainMenu() {
-        //TODO MOVER
-        List<MenuOption> options = List.of(
-                new MenuOption("1", "Administrador"),
-                new MenuOption("2", "Usuario"),
-                new MenuOption("0", "Salir")
-        );
+        List<MainMenuOptions> options = List.of(MainMenuOptions.values());
 
-        TableBuilder.of(MenuOption.class)
+        TableBuilder.of(MainMenuOptions.class)
                 .setTitle("MENÚ PRINCIPAL")
-                .addColumn("OPCIÓN", 8, MenuOption::key)
-                .addColumn("DESCRIPCIÓN", 25, MenuOption::description)
+                .addColumn("OPCIÓN", 8, MenuOption::getCode)
+                .addColumn("DESCRIPCIÓN", 25, MenuOption::getDescription)
                 .setData(options)
                 .build()
                 .print();
@@ -99,19 +88,13 @@ public class PrintUtil {
      * @see TableBuilder
      */
     public static void printAdminMenu() {
-        List<MenuOption> options = List.of(
-                new MenuOption("1", "Listar productos"),
-                new MenuOption("2", "Buscar (nombre/categoría)"),
-                new MenuOption("3", "Crear producto"),
-                new MenuOption("4", "Editar producto"),
-                new MenuOption("5", "Eliminar producto"),
-                new MenuOption("0", "Salir")
-        );
 
-        TableBuilder.of(MenuOption.class)
+        List<AdminMenuOptions> options = List.of(AdminMenuOptions.values());
+
+        TableBuilder.of(AdminMenuOptions.class)
                 .setTitle("MENÚ ADMINISTRADOR")
-                .addColumn("OPCIÓN", 8, MenuOption::key)
-                .addColumn("DESCRIPCIÓN", 25, MenuOption::description)
+                .addColumn("OPCIÓN", 8, MenuOption::getCode)
+                .addColumn("DESCRIPCIÓN", 25, MenuOption::getDescription)
                 .setData(options)
                 .build()
                 .print();
@@ -123,21 +106,12 @@ public class PrintUtil {
      * @see TableBuilder
      */
     public static void printUserMenu() {
-        List<MenuOption> options = List.of(
-                new MenuOption("1", "Listar productos"),
-                new MenuOption("2", "Buscar productos"),
-                new MenuOption("3", "Agregar al carrito"),
-                new MenuOption("4", "Quitar del carro"),
-                new MenuOption("5", "Ver carrito"),
-                new MenuOption("6", "Ver descuentos activos"),
-                new MenuOption("7", "Confirmar compra"),
-                new MenuOption("0", "Salir")
-        );
+        List<UserMenuOptions> options = List.of(UserMenuOptions.values());
 
-        TableBuilder.of(MenuOption.class)
+        TableBuilder.of(UserMenuOptions.class)
                 .setTitle("MENÚ USUARIO")
-                .addColumn("OPCIÓN", 8, MenuOption::key)
-                .addColumn("DESCRIPCIÓN", 25, MenuOption::description)
+                .addColumn("OPCIÓN", 8, MenuOption::getCode)
+                .addColumn("DESCRIPCIÓN", 25, MenuOption::getDescription)
                 .setData(options)
                 .build()
                 .print();
@@ -200,6 +174,7 @@ public class PrintUtil {
 
     /**
      * Imprime un resumen del pago
+     *
      * @param checkoutSummaryDto Resumen del pago
      */
     public static void printCheckoutSummary(CheckoutSummaryDto checkoutSummaryDto) {

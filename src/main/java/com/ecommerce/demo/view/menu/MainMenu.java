@@ -1,9 +1,13 @@
 package com.ecommerce.demo.view.menu;
 
 import com.ecommerce.demo.config.DependencyContainer;
+import com.ecommerce.demo.enums.MainMenuOptions;
+import com.ecommerce.demo.util.MenuOption;
 import com.ecommerce.demo.util.PrintUtil;
 import com.ecommerce.demo.view.menu.admin.AdminMenu;
 import com.ecommerce.demo.view.menu.user.UserMenu;
+
+import java.util.Optional;
 
 /**
  * Menú principal
@@ -49,14 +53,16 @@ public class MainMenu extends AbstractMenu {
      * {@inheritDoc}
      */
     @Override
-    protected boolean handleOption(int option) {
+    protected boolean handleOption(int code) {
+        MainMenuOptions option = MenuOption.find(MainMenuOptions.class, code).orElse(null);
+
         switch (option) {
-            case 0 -> {
+            case ADMIN -> MenuRunner.run(adminMenu);
+            case USER -> MenuRunner.run(userMenu);
+            case EXIT -> {
                 return false;
             }
-            case 1 -> MenuRunner.run(adminMenu);
-            case 2 -> MenuRunner.run(userMenu);
-            default -> System.out.println("Opción inválida");
+            case null, default -> System.out.println("Opción inválida");
         }
         return true;
     }
