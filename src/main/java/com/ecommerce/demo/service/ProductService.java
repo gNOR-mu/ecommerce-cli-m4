@@ -66,31 +66,24 @@ public class ProductService implements IdentifiableService<Product, Long> {
      * @throws InvalidOperationException Cuando el precio es <= 0
      */
     public Product create(Product product, int quantity) {
-        // verifico que exista la categoría
-        if (categoryService.notExistsById(product.getCategoryId())) {
-            throw new ResourceNotFoundException("Categoría", product.getCategoryId());
-        }
-
-        // verifico que el nombre no sea inválido
-        if (product.getName() == null || product.getName().isBlank()) {
-            throw new InvalidOperationException("El nombre del producto no puede estar vacío");
-        }
-
-        // verifico que el precio no sea menor o igual a 0
-        // si es <= 0 significa que el precio es menor o igual a 0
-        if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidOperationException("El precio no puede ser <= 0");
-        }
-
+        validateFields(product);
         // 1. crea el producto
         Product createdProduct = productRepository.save(product);
 
         // 2. creo su inventario
-        Inventory inventory = new Inventory(createdProduct.getId(), quantity);
-        inventoryService.create(inventory);
+        try {
+            Inventory inventory = new Inventory(createdProduct.getId(), quantity);
+            inventoryService.create(inventory);
+        } catch (Exception e) {
+            //lo debería eliminar si hay algún problema
+            // en una bd se revertiría con el rollback
+            deleteById(product.getId());
+            throw e;
+        }
 
         return createdProduct;
     }
+
 
     /**
      * Obtiene un resumen de todos los productos
@@ -158,17 +151,8 @@ public class ProductService implements IdentifiableService<Product, Long> {
      * @throws InvalidOperationException Cuando el inventario es inferior a 0, viene de {@link InventoryService#updateByProductId(Long, int)}
      */
     public Product update(Long id, Product product, int stock) {
-        if (categoryService.notExistsById(product.getCategoryId())) {
-            throw new ResourceNotFoundException("Categoría", product.getCategoryId());
-        }
+        validateFields(product);
 
-        if (product.getName() == null || product.getName().isBlank()) {
-            throw new InvalidOperationException("El nombre del producto es inválido");
-        }
-
-        if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidOperationException("El precio no puede ser <= 0");
-        }
         Product existing = getById(id);
 
         inventoryService.updateByProductId(id, stock);
@@ -201,10 +185,10 @@ public class ProductService implements IdentifiableService<Product, Long> {
     }
 
     /**
-     * Convierte los productos a una lista ordenada de {@link ProductSummaryDto}
+     * Convierte los productos a una lista ordenada de {@link ProductSummaryDto} y los ordena
      *
      * @param products Listado de productos
-     * @return Un resumen del producto
+     * @return Un resumen ordenado de los productos
      */
     private List<ProductSummaryDto> convertToDto(List<Product> products) {
         return products.stream().map(p -> {
@@ -221,5 +205,26 @@ public class ProductService implements IdentifiableService<Product, Long> {
                     );
                 }).sorted(comparatorPrice)
                 .toList();
+    }
+
+    /**
+     * Valida que los datos del producto a crear o actualizar sean válidos
+     *
+     * @apiNote No se valida un nombre repetido ya que es viable
+     * @param product Producto a validar
+     */
+    private void validateFields(Product product) {
+        Category category = categoryService.getById(product.getCategoryId());
+
+        if (product.getName() == null || product.getName().isBlank()) {
+            throw new InvalidOperationException("El nombre del producto es inválido");
+        }
+
+        if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidOperationException("El precio no puede ser <= 0");
+        }
+
+        product.setCategoryId(category.getId());
+
     }
 }
